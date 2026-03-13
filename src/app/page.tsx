@@ -62,7 +62,7 @@ export default function Home() {
               <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>{item}</a>
             ))}
           </div>
-          <a href="#eventos" className="nav-link" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>
+          <a href="#eventos" className="nav-link hp-nav-cta" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s", whiteSpace: "nowrap" }}>
             Ver Eventos
           </a>
         </div>
@@ -146,9 +146,9 @@ export default function Home() {
       </section>
 
       {/* ═══ FEATURED — MIJARES ═══ */}
-      <section style={{ position: "relative", height: "80vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      <section className="hp-featured-section" style={{ position: "relative", height: "80vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         <Image src="/event2.jpg" alt="Mijares Sinfónico" fill style={{ objectFit: "cover" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, rgba(5,5,5,0.4), transparent)" }} />
+        <div className="hp-featured-overlay" style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, rgba(5,5,5,0.4), transparent)" }} />
         <FadeIn className="section-centered">
           <div style={{ position: "relative", zIndex: 10, maxWidth: "900px", margin: "0 auto", padding: "0 2rem", textAlign: "center" }}>
           <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>Evento Destacado</p>
@@ -238,9 +238,9 @@ export default function Home() {
       </section>
 
       {/* ═══ FEATURED — ASÍ LO VEO YO ═══ */}
-      <section style={{ position: "relative", height: "70vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+      <section className="hp-featured-section" style={{ position: "relative", height: "70vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill style={{ objectFit: "cover" }} />
-        <div style={{ position: "absolute", inset: 0, background: "rgba(5,5,5,0.7)" }} />
+        <div className="hp-featured-overlay" style={{ position: "absolute", inset: 0, background: "rgba(5,5,5,0.7)" }} />
         <FadeIn>
           <div style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
             <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}>En Cartelera</p>

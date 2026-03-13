@@ -111,6 +111,27 @@ body {
   .hp-nav-links {
     display: none;
   }
+  .hp-nav-cta {
+    font-size: 11px !important;
+    letter-spacing: 0.1em !important;
+  }
+  .hp-featured-section {
+    height: auto !important;
+    min-height: 60vh;
+    padding: 4rem 0;
+  }
+  .hp-featured-overlay {
+    background: rgba(5, 5, 5, 0.75) !important;
+  }
+  .hp-featured-section h2 {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+  .hp-featured-section p {
+    font-size: 0.95rem !important;
+  }
+  .hp-featured-section span[style*="fontSize"] {
+    font-size: 1.5rem !important;
+  }
   .grid-events {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
