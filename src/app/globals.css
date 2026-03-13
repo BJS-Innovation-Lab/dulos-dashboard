@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  background: #050505;
+  background: #0a0a0a;
   color: #ededed;
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -50,13 +50,13 @@ body {
 }
 
 .btn-primary:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
   box-shadow: 0 0 24px rgba(230, 57, 70, 0.4);
 }
 
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.18) !important;
-  transform: scale(1.05);
+  transform: scale(1.06);
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
 }
 
@@ -64,11 +64,28 @@ body {
   color: #E63946 !important;
 }
 
+/* Event card image zoom on hover */
+.event-card-link:hover .event-card-img {
+  transform: scale(1.05) !important;
+}
+
+/* Star twinkle animation */
+@keyframes twinkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.star-twinkle {
+  display: inline-block;
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: #0a0a0a;
 }
 ::-webkit-scrollbar-thumb {
   background: #333;
