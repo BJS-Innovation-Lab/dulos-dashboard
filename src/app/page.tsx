@@ -39,40 +39,45 @@ export default function Home() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <main className="bg-[#050505] text-white overflow-x-hidden">
+    <main style={{ background: "#050505", color: "#fff", overflowX: "hidden" }}>
 
       {/* ═══ NAVBAR ═══ */}
       <motion.nav
         initial={{ y: -80 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-        className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/60 backdrop-blur-2xl border-b border-white/[0.04]"
+        style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+          background: "rgba(5,5,5,0.6)", backdropFilter: "blur(24px)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+          display: "flex", justifyContent: "center"
+        }}
       >
-        <div className="w-full max-w-[1200px] mx-auto px-8 md:px-16 py-5 flex items-center justify-between">
+        <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1.25rem", paddingBottom: "1.25rem" }}>
           <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
-          <div className="hidden md:flex items-center gap-10">
+          <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
             {["Eventos", "Experiencia", "Testimonios"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="text-[13px] text-white/40 hover:text-white transition-colors duration-500 tracking-wider uppercase">{item}</a>
+              <a key={item} href={`#${item.toLowerCase()}`} style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.5s" }}>{item}</a>
             ))}
           </div>
-          <a href="#eventos" className="text-[13px] text-[#E63946] tracking-wider uppercase hover:text-white transition-colors duration-500">
+          <a href="#eventos" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase" }}>
             Ver Eventos
           </a>
         </div>
       </motion.nav>
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative h-[100vh] flex items-center justify-center overflow-hidden">
-        <motion.div style={{ y: heroY }} className="absolute inset-0">
-          <Image src="/hero.jpg" alt="Hero" fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/50 via-[#050505]/20 to-[#050505]" />
+      <section ref={heroRef} style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <motion.div style={{ y: heroY, position: "absolute", inset: 0 }}>
+          <Image src="/hero.jpg" alt="Hero" fill style={{ objectFit: "cover" }} priority />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(5,5,5,0.5), rgba(5,5,5,0.2), #050505)" }} />
         </motion.div>
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 text-center w-full max-w-[900px] mx-auto px-8 md:px-16">
+        <motion.div style={{ opacity: heroOpacity, position: "relative", zIndex: 10, textAlign: "center", width: "100%", maxWidth: "900px", margin: "0 auto", padding: "0 2rem" }}>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-[#E63946] text-[11px] md:text-[13px] tracking-[0.4em] uppercase mb-6"
+            style={{ color: "#E63946", fontSize: "13px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}
           >
             Tu acceso directo al entretenimiento
           </motion.p>
@@ -80,16 +85,16 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 1 }}
-            className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-tight"
+            style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}
           >
             MOMENTOS<br />
-            <span className="bg-gradient-to-r from-[#E63946] to-[#ff6b6b] bg-clip-text text-transparent">INOLVIDABLES</span>
+            <span style={{ background: "linear-gradient(to right, #E63946, #ff6b6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>INOLVIDABLES</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 1 }}
-            className="text-white/40 text-base md:text-lg mt-8 max-w-[500px] mx-auto leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.1rem", marginTop: "2rem", lineHeight: 1.7 }}
           >
             Música, teatro y entretenimiento.<br />Sin las comisiones de siempre.
           </motion.p>
@@ -98,7 +103,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
             href="#eventos"
-            className="inline-block mt-10 bg-[#E63946] text-white text-sm px-10 py-4 rounded-full font-medium hover:shadow-[0_0_40px_rgba(230,57,70,0.4)] hover:scale-105 transition-all duration-500"
+            style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", fontSize: "14px", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, textDecoration: "none", transition: "all 0.5s" }}
           >
             Explorar Eventos
           </motion.a>
@@ -106,30 +111,30 @@ export default function Home() {
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 w-[1px] h-16 bg-gradient-to-b from-white/20 to-transparent"
+          style={{ position: "absolute", bottom: "3rem", left: "50%", transform: "translateX(-50%)", width: "1px", height: "4rem", background: "linear-gradient(to bottom, rgba(255,255,255,0.2), transparent)" }}
         />
       </section>
 
       {/* ═══ STATEMENT ═══ */}
-      <section className="w-full py-32 px-8 md:px-16">
-        <div className="w-full max-w-[1200px] mx-auto text-center">
+      <section className="section-centered" style={{ padding: "8rem 0" }}>
+        <div className="container-page" style={{ textAlign: "center" }}>
           <FadeIn>
-            <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-8">Nuestra Filosofía</p>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-light leading-snug text-white/90 max-w-[900px] mx-auto">
+            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "2rem" }}>Nuestra Filosofía</p>
+            <h2 style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", fontWeight: 300, lineHeight: 1.4, color: "rgba(255,255,255,0.9)", maxWidth: "800px", margin: "0 auto" }}>
               Nos cansamos de las letras chiquitas y los procesos de compra complicados.
-              <span className="text-white/30"> Dulos es diferente.</span>
+              <span style={{ color: "rgba(255,255,255,0.3)" }}> Dulos es diferente.</span>
             </h2>
           </FadeIn>
-          <div className="flex items-center justify-center gap-12 md:gap-20 mt-16">
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5rem", marginTop: "4rem" }}>
             {[
               { number: "0%", label: "Comisiones" },
               { number: "12,847", label: "Boletos vendidos" },
               { number: "34K+", label: "Usuarios" },
             ].map((s, i) => (
               <FadeIn key={s.label} delay={i * 0.15}>
-                <div className="text-center">
-                  <p className="text-2xl md:text-4xl font-black text-[#E63946]">{s.number}</p>
-                  <p className="text-white/30 text-[10px] md:text-xs mt-2 tracking-wider uppercase">{s.label}</p>
+                <div style={{ textAlign: "center" }}>
+                  <p style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontWeight: 900, color: "#E63946" }}>{s.number}</p>
+                  <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", marginTop: "0.5rem", letterSpacing: "0.15em", textTransform: "uppercase" }}>{s.label}</p>
                 </div>
               </FadeIn>
             ))}
@@ -137,58 +142,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ FEATURED EVENT — MIJARES ═══ */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <Image src="/event2.jpg" alt="Mijares Sinfónico" fill className="object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
-        <FadeIn className="relative z-10 w-full max-w-[900px] mx-auto px-8 md:px-16 text-center">
-          <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Evento Destacado</p>
-          <h2 className="text-5xl md:text-7xl font-black">Mijares Sinfónico</h2>
-          <p className="text-white/40 text-lg mt-3">Teatro Morelos • Toluca • 13 Marzo 2026</p>
-          <div className="flex items-center justify-center gap-6 mt-8">
-            <span className="text-3xl font-black text-[#E63946]">$1,249</span>
-            <a href="#" className="bg-white/10 backdrop-blur-sm border border-white/10 text-white px-8 py-3 rounded-full text-sm hover:bg-[#E63946] hover:border-[#E63946] transition-all duration-500">
+      {/* ═══ FEATURED — MIJARES ═══ */}
+      <section style={{ position: "relative", height: "80vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <Image src="/event2.jpg" alt="Mijares Sinfónico" fill style={{ objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, rgba(5,5,5,0.4), transparent)" }} />
+        <FadeIn className="section-centered">
+          <div style={{ position: "relative", zIndex: 10, maxWidth: "900px", margin: "0 auto", padding: "0 2rem", textAlign: "center" }}>
+          <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>Evento Destacado</p>
+          <h2 style={{ fontSize: "clamp(3rem, 7vw, 5rem)", fontWeight: 900, textAlign: "center" }}>Mijares Sinfónico</h2>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.1rem", marginTop: "0.75rem", textAlign: "center" }}>Teatro Morelos • Toluca • 13 Marzo 2026</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", marginTop: "2rem" }}>
+            <span style={{ fontSize: "1.8rem", fontWeight: 900, color: "#E63946" }}>$1,249</span>
+            <a href="#" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", padding: "0.75rem 2rem", borderRadius: "9999px", fontSize: "14px", textDecoration: "none", transition: "all 0.5s" }}>
               Comprar Boletos
             </a>
+          </div>
           </div>
         </FadeIn>
       </section>
 
       {/* ═══ EVENTS GRID ═══ */}
-      <section id="eventos" className="w-full py-32 px-8 md:px-16">
-        <div className="w-full max-w-[1200px] mx-auto">
-          <FadeIn className="text-center mb-20">
-            <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Próximos Eventos</p>
-            <h2 className="text-4xl md:text-6xl font-black">Elige Tu Momento</h2>
+      <section id="eventos" className="section-centered" style={{ padding: "8rem 0" }}>
+        <div className="container-page">
+          <FadeIn>
+            <div style={{ textAlign: "center", marginBottom: "5rem" }}>
+              <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Próximos Eventos</p>
+              <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900 }}>Elige Tu Momento</h2>
+            </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
             {events.map((event, i) => (
               <FadeIn key={event.name} delay={i * 0.08}>
                 <motion.div
                   whileHover={{ y: -6 }}
                   transition={{ duration: 0.4 }}
-                  className="group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0a0a0a]"
+                  style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#0a0a0a" }}
                 >
-                  <div className="relative aspect-[3/4] overflow-hidden bg-[#050505]">
-                    <Image src={event.image} alt={event.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+                  <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
+                    <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", transition: "transform 0.7s" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, transparent, transparent)" }} />
                     {event.original && (
-                      <div className="absolute top-4 right-4 bg-[#E63946] text-white text-[10px] font-bold px-3 py-1.5 rounded-full tracking-wider">
+                      <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
                         -{Math.round((1 - event.price / event.original) * 100)}% OFF
                       </div>
                     )}
                   </div>
-                  <div className="p-6 -mt-20 relative z-10">
-                    <p className="text-white/30 text-[11px] tracking-wider uppercase">{event.date}</p>
-                    <h3 className="text-xl font-bold text-white mt-2 group-hover:text-[#E63946] transition-colors duration-500">{event.name}</h3>
-                    <p className="text-white/30 text-sm mt-1">{event.venue} • {event.city}</p>
-                    <div className="flex items-center justify-between mt-5">
-                      <div className="flex items-baseline gap-2">
-                        {event.original && <span className="text-white/20 line-through text-sm">${event.original}</span>}
-                        <span className="text-[#E63946] text-2xl font-black">${event.price.toLocaleString()}</span>
+                  <div style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
+                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
+                    <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginTop: "0.5rem" }}>{event.name}</h3>
+                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem" }}>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
+                        {event.original && <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
+                        <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
                       </div>
-                      <span className="text-white/20 text-xs group-hover:text-[#E63946] transition-colors duration-500">Ver más →</span>
+                      <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px" }}>Ver más →</span>
                     </div>
                   </div>
                 </motion.div>
@@ -199,64 +208,68 @@ export default function Home() {
       </section>
 
       {/* ═══ EXPERIENCE ═══ */}
-      <section id="experiencia" className="w-full py-32 px-8 md:px-16 border-t border-white/[0.04]">
-        <div className="w-full max-w-[1200px] mx-auto">
-          <FadeIn className="text-center mb-20">
-            <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">¿Por qué Dulos?</p>
-            <h2 className="text-4xl md:text-5xl font-black">La Experiencia</h2>
+      <section id="experiencia" className="section-centered" style={{ padding: "8rem 0", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <div className="container-page" style={{ textAlign: "center" }}>
+          <FadeIn>
+            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>¿Por qué Dulos?</p>
+            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, marginBottom: "5rem" }}>La Experiencia</h2>
           </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "4rem" }}>
             {[
               { icon: "🎟️", title: "Sin Comisiones", desc: "El precio que ves es el precio que pagas. Sin sorpresas, sin letras chiquitas." },
               { icon: "⚡", title: "Compra en Segundos", desc: "Selecciona, paga y recibe tus boletos al instante. Así de simple." },
               { icon: "🔒", title: "100% Seguro", desc: "Pagos protegidos con Stripe. Tu información siempre encriptada." },
             ].map((f, i) => (
-              <FadeIn key={f.title} delay={i * 0.15} className="text-center">
-                <span className="text-4xl block mb-5">{f.icon}</span>
-                <h3 className="text-lg font-bold text-white mb-3">{f.title}</h3>
-                <p className="text-white/30 text-sm leading-relaxed">{f.desc}</p>
+              <FadeIn key={f.title} delay={i * 0.15}>
+                <div style={{ textAlign: "center" }}>
+                  <span style={{ fontSize: "2.5rem", display: "block", marginBottom: "1.25rem" }}>{f.icon}</span>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.75rem" }}>{f.title}</h3>
+                  <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", lineHeight: 1.7 }}>{f.desc}</p>
+                </div>
               </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ SECOND FEATURED — ASÍ LO VEO YO ═══ */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
-        <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill className="object-cover" />
-        <div className="absolute inset-0 bg-[#050505]/60" />
-        <FadeIn className="relative z-10 w-full max-w-[800px] mx-auto px-8 md:px-16 text-center">
-          <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-6">En Cartelera</p>
-          <h2 className="text-5xl md:text-8xl font-black">Así Lo Veo Yo</h2>
-          <p className="text-white/50 text-base md:text-lg mt-6 max-w-[600px] mx-auto leading-relaxed">
-            Un monólogo donde René desnuda su verdad. No hay fórmulas ni héroes, solo la confesión de alguien que se atrevió a pedir ayuda.
-          </p>
-          <div className="flex items-center justify-center gap-4 mt-10">
-            <span className="text-white/30 line-through text-lg">$600</span>
-            <span className="text-[#E63946] text-4xl font-black">$299</span>
+      {/* ═══ FEATURED — ASÍ LO VEO YO ═══ */}
+      <section style={{ position: "relative", height: "70vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill style={{ objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "rgba(5,5,5,0.7)" }} />
+        <FadeIn>
+          <div style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}>En Cartelera</p>
+            <h2 style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 900 }}>Así Lo Veo Yo</h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.1rem", marginTop: "1.5rem", maxWidth: "600px", margin: "1.5rem auto 0", lineHeight: 1.7 }}>
+              Un monólogo donde René desnuda su verdad. No hay fórmulas ni héroes, solo la confesión de alguien que se atrevió a pedir ayuda.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginTop: "2.5rem" }}>
+              <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "1.1rem" }}>$600</span>
+              <span style={{ color: "#E63946", fontSize: "2.5rem", fontWeight: 900 }}>$299</span>
+            </div>
+            <a href="#" style={{ display: "inline-block", marginTop: "2rem", background: "#E63946", color: "#fff", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, fontSize: "14px", textDecoration: "none", transition: "all 0.5s" }}>
+              Comprar Boletos
+            </a>
           </div>
-          <a href="#" className="inline-block mt-8 bg-[#E63946] text-white px-10 py-4 rounded-full font-medium hover:shadow-[0_0_40px_rgba(230,57,70,0.4)] hover:scale-105 transition-all duration-500 text-sm">
-            Comprar Boletos
-          </a>
         </FadeIn>
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section id="testimonios" className="w-full py-32 px-8 md:px-16">
-        <div className="w-full max-w-[1200px] mx-auto">
-          <FadeIn className="text-center mb-20">
-            <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Testimonios</p>
-            <h2 className="text-4xl md:text-5xl font-black">Lo Que Dicen</h2>
+      <section id="testimonios" className="section-centered" style={{ padding: "8rem 0" }}>
+        <div className="container-page" style={{ textAlign: "center" }}>
+          <FadeIn>
+            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Testimonios</p>
+            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, marginBottom: "5rem" }}>Lo Que Dicen</h2>
           </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "3rem" }}>
             {testimonials.map((t, i) => (
-              <FadeIn key={t.name} delay={i * 0.12} className="text-center">
-                <div className="border-t border-white/[0.06] pt-8">
-                  <div className="flex gap-1 mb-5 justify-center">
-                    {[...Array(5)].map((_, j) => <span key={j} className="text-[#E63946] text-xs">★</span>)}
+              <FadeIn key={t.name} delay={i * 0.12}>
+                <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "2rem", textAlign: "center" }}>
+                  <div style={{ display: "flex", gap: "0.25rem", marginBottom: "1.25rem", justifyContent: "center" }}>
+                    {[...Array(5)].map((_, j) => <span key={j} style={{ color: "#E63946", fontSize: "12px" }}>★</span>)}
                   </div>
-                  <p className="text-white/50 text-sm leading-relaxed mb-6">&ldquo;{t.text}&rdquo;</p>
-                  <p className="text-white text-sm font-medium">{t.name}</p>
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.875rem", lineHeight: 1.7, marginBottom: "1.5rem" }}>&ldquo;{t.text}&rdquo;</p>
+                  <p style={{ color: "#fff", fontSize: "0.875rem", fontWeight: 500 }}>{t.name}</p>
                 </div>
               </FadeIn>
             ))}
@@ -265,25 +278,28 @@ export default function Home() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="w-full py-32 px-8 md:px-16">
-        <FadeIn className="w-full max-w-[1200px] mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-black leading-tight max-w-[700px] mx-auto">
-            Tu próximo momento <span className="text-[#E63946]">te espera.</span>
-          </h2>
-          <a href="#eventos" className="inline-block mt-10 bg-[#E63946] text-white px-12 py-5 rounded-full font-medium text-base hover:shadow-[0_0_50px_rgba(230,57,70,0.5)] hover:scale-105 transition-all duration-500">
-            Explorar Eventos
-          </a>
-        </FadeIn>
+      <section className="section-centered" style={{ padding: "8rem 0" }}>
+        <div className="container-page" style={{ textAlign: "center" }}>
+          <FadeIn>
+            <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: "700px", margin: "0 auto" }}>
+              Tu próximo momento{" "}
+              <span style={{ color: "#E63946" }}>te espera.</span>
+            </h2>
+            <a href="#eventos" style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", padding: "1.25rem 3rem", borderRadius: "9999px", fontWeight: 500, fontSize: "1rem", textDecoration: "none", transition: "all 0.5s" }}>
+              Explorar Eventos
+            </a>
+          </FadeIn>
+        </div>
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="border-t border-white/[0.04] py-10 px-8 md:px-16">
-        <div className="w-full max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} className="opacity-40" />
-          <p className="text-white/15 text-xs">© 2026 Dulos. Sin comisiones, sin excusas.</p>
-          <div className="flex gap-8 text-white/20 text-xs">
-            <a href="#" className="hover:text-white/50 transition-colors">Términos</a>
-            <a href="#" className="hover:text-white/50 transition-colors">Privacidad</a>
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0" }}>
+        <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
+          <p style={{ color: "rgba(255,255,255,0.15)", fontSize: "12px" }}>© 2026 Dulos. Sin comisiones, sin excusas.</p>
+          <div style={{ display: "flex", gap: "2rem" }}>
+            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Términos</a>
+            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Privacidad</a>
           </div>
         </div>
       </footer>

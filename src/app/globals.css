@@ -1,15 +1,5 @@
 @import "tailwindcss";
 
-@theme {
-  --color-dulos-red: #E63946;
-  --color-dulos-dark: #0a0a0a;
-  --color-dulos-darker: #050505;
-  --color-dulos-card: #111111;
-  --color-dulos-border: #1a1a1a;
-  --color-dulos-text: #e0e0e0;
-  --color-dulos-muted: #888888;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -21,26 +11,49 @@ html {
 }
 
 body {
-  background: #0a0a0a;
-  color: #e0e0e0;
+  background: #050505;
+  color: #ededed;
   font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Centered container utility */
+.container-page {
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* Center all text sections */
+.section-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  text-align: center;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: #050505;
 }
 ::-webkit-scrollbar-thumb {
   background: #333;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #E63946;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
 }
