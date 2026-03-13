@@ -78,6 +78,8 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  overflow: hidden;
+  width: 100%;
 }
 
 .grid-features {
@@ -109,11 +111,18 @@ body {
 
 @media (max-width: 768px) {
   .hp-nav-links {
-    display: none;
+    display: none !important;
   }
   .hp-nav-cta {
     font-size: 11px !important;
     letter-spacing: 0.1em !important;
+  }
+  .grid-events {
+    overflow: hidden;
+  }
+  .grid-events > * {
+    min-width: 0;
+    width: 100%;
   }
   .hp-featured-section {
     height: auto !important;

@@ -57,7 +57,7 @@ export default function Home() {
           <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
           </a>
-          <div className="hp-nav-links" style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
+          <div className="hp-nav-links">
             {["Eventos", "Experiencia", "Testimonios"].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>{item}</a>
             ))}
@@ -174,7 +174,7 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div className="grid-events" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
+          <div className="grid-events">
             {events.map((event, i) => (
               <FadeIn key={event.name} delay={i * 0.08}>
                 <a href={event.url} target="_blank" rel="noopener noreferrer" className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
