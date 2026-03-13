@@ -122,26 +122,21 @@ export default function Home() {
             Tu acceso directo al entretenimiento
           </motion.p>
           <h1 style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}>
-            {"MOMENTOS".split("").map((letter, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.06, duration: 0.4, ease: "easeOut" }}
-                style={{ display: "inline-block" }}
-              >
-                {letter}
-              </motion.span>
-            ))}
-            <br />
-            <motion.span
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
+            >
+              MOMENTOS
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ delay: 1.3, duration: 0.8, ease: "easeOut" }}
-              style={{ display: "inline-block", background: "linear-gradient(to right, #E63946, #ff6b6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+              style={{ background: "linear-gradient(to right, #E63946, #ff6b6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
             >
               INOLVIDABLES
-            </motion.span>
+            </motion.div>
           </h1>
           <motion.p
             initial={{ opacity: 0 }}
