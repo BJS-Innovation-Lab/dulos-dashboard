@@ -183,8 +183,8 @@ export default function Home() {
                     transition={{ duration: 0.4 }}
                     style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#0a0a0a" }}
                   >
-                    <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
-                      <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", transition: "transform 0.7s" }} />
+                    <div className="event-card-image" style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
+                      <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.7s" }} />
                       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, transparent, transparent)" }} />
                       {event.original && (
                         <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
@@ -192,7 +192,7 @@ export default function Home() {
                         </div>
                       )}
                     </div>
-                    <div style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
+                    <div className="event-card-text" style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
                       <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
                       <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginTop: "0.5rem" }}>{event.name}</h3>
                       <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>

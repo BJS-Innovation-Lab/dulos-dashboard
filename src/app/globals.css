@@ -144,6 +144,19 @@ body {
   .grid-events {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
+    padding: 0 0.5rem;
+  }
+  .event-card-image {
+    aspect-ratio: 16/9 !important;
+  }
+  .event-card-text {
+    text-align: center;
+  }
+  .event-card-text > div {
+    justify-content: center !important;
+  }
+  .event-card-text > div > div {
+    justify-content: center;
   }
   .grid-features {
     grid-template-columns: 1fr !important;
