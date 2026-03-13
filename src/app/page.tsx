@@ -25,6 +25,7 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] }}
       className={className}
+      style={{ width: "100%" }}
     >
       {children}
     </motion.div>
@@ -47,7 +48,7 @@ export default function Home() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/60 backdrop-blur-2xl border-b border-white/[0.04]"
       >
-        <div className="w-full max-w-[1400px] mx-auto px-12 lg:px-16 py-5 flex items-center justify-between">
+        <div className="w-full max-w-[1200px] mx-auto px-8 md:px-16 py-5 flex items-center justify-between">
           <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
           <div className="hidden md:flex items-center gap-10">
             {["Eventos", "Experiencia", "Testimonios"].map((item) => (
@@ -66,7 +67,7 @@ export default function Home() {
           <Image src="/hero.jpg" alt="Hero" fill className="object-cover" priority />
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/50 via-[#050505]/20 to-[#050505]" />
         </motion.div>
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 text-center w-full max-w-[900px] mx-auto px-12">
+        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 text-center w-full max-w-[900px] mx-auto px-8 md:px-16">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,11 +111,11 @@ export default function Home() {
       </section>
 
       {/* ═══ STATEMENT ═══ */}
-      <section className="py-32 px-12 lg:px-16">
-        <div className="w-full max-w-[900px] mx-auto text-center">
+      <section className="w-full py-32 px-8 md:px-16">
+        <div className="w-full max-w-[1200px] mx-auto text-center">
           <FadeIn>
             <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-8">Nuestra Filosofía</p>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-light leading-snug text-white/90">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl font-light leading-snug text-white/90 max-w-[900px] mx-auto">
               Nos cansamos de las letras chiquitas y los procesos de compra complicados.
               <span className="text-white/30"> Dulos es diferente.</span>
             </h2>
@@ -140,7 +141,7 @@ export default function Home() {
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <Image src="/event2.jpg" alt="Mijares Sinfónico" fill className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
-        <FadeIn className="relative z-10 w-full max-w-[900px] mx-auto px-12 lg:px-16 text-center">
+        <FadeIn className="relative z-10 w-full max-w-[900px] mx-auto px-8 md:px-16 text-center">
           <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Evento Destacado</p>
           <h2 className="text-5xl md:text-7xl font-black">Mijares Sinfónico</h2>
           <p className="text-white/40 text-lg mt-3">Teatro Morelos • Toluca • 13 Marzo 2026</p>
@@ -154,7 +155,7 @@ export default function Home() {
       </section>
 
       {/* ═══ EVENTS GRID ═══ */}
-      <section id="eventos" className="py-32 px-12 lg:px-16">
+      <section id="eventos" className="w-full py-32 px-8 md:px-16">
         <div className="w-full max-w-[1200px] mx-auto">
           <FadeIn className="text-center mb-20">
             <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Próximos Eventos</p>
@@ -198,8 +199,8 @@ export default function Home() {
       </section>
 
       {/* ═══ EXPERIENCE ═══ */}
-      <section id="experiencia" className="py-32 px-12 lg:px-16 border-t border-white/[0.04]">
-        <div className="w-full max-w-[1000px] mx-auto">
+      <section id="experiencia" className="w-full py-32 px-8 md:px-16 border-t border-white/[0.04]">
+        <div className="w-full max-w-[1200px] mx-auto">
           <FadeIn className="text-center mb-20">
             <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">¿Por qué Dulos?</p>
             <h2 className="text-4xl md:text-5xl font-black">La Experiencia</h2>
@@ -224,7 +225,7 @@ export default function Home() {
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill className="object-cover" />
         <div className="absolute inset-0 bg-[#050505]/60" />
-        <FadeIn className="relative z-10 w-full max-w-[800px] mx-auto px-12 text-center">
+        <FadeIn className="relative z-10 w-full max-w-[800px] mx-auto px-8 md:px-16 text-center">
           <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-6">En Cartelera</p>
           <h2 className="text-5xl md:text-8xl font-black">Así Lo Veo Yo</h2>
           <p className="text-white/50 text-base md:text-lg mt-6 max-w-[600px] mx-auto leading-relaxed">
@@ -241,8 +242,8 @@ export default function Home() {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section id="testimonios" className="py-32 px-12 lg:px-16">
-        <div className="w-full max-w-[1000px] mx-auto">
+      <section id="testimonios" className="w-full py-32 px-8 md:px-16">
+        <div className="w-full max-w-[1200px] mx-auto">
           <FadeIn className="text-center mb-20">
             <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Testimonios</p>
             <h2 className="text-4xl md:text-5xl font-black">Lo Que Dicen</h2>
@@ -264,9 +265,9 @@ export default function Home() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="py-32 px-12 lg:px-16">
-        <FadeIn className="w-full max-w-[700px] mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl font-black leading-tight">
+      <section className="w-full py-32 px-8 md:px-16">
+        <FadeIn className="w-full max-w-[1200px] mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl font-black leading-tight max-w-[700px] mx-auto">
             Tu próximo momento <span className="text-[#E63946]">te espera.</span>
           </h2>
           <a href="#eventos" className="inline-block mt-10 bg-[#E63946] text-white px-12 py-5 rounded-full font-medium text-base hover:shadow-[0_0_50px_rgba(230,57,70,0.5)] hover:scale-105 transition-all duration-500">
@@ -276,8 +277,8 @@ export default function Home() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer className="border-t border-white/[0.04] py-10 px-12 lg:px-16">
-        <div className="w-full max-w-[1400px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <footer className="border-t border-white/[0.04] py-10 px-8 md:px-16">
+        <div className="w-full max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} className="opacity-40" />
           <p className="text-white/15 text-xs">© 2026 Dulos. Sin comisiones, sin excusas.</p>
           <div className="flex gap-8 text-white/20 text-xs">
