@@ -57,7 +57,7 @@ export default function Home() {
           <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
           </a>
-          <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
+          <div className="hp-nav-links" style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
             {["Eventos", "Experiencia", "Testimonios"].map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>{item}</a>
             ))}
@@ -128,7 +128,7 @@ export default function Home() {
               <span style={{ color: "rgba(255,255,255,0.3)" }}> Dulos es diferente.</span>
             </h2>
           </FadeIn>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5rem", marginTop: "4rem" }}>
+          <div className="stats-row" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5rem", marginTop: "4rem" }}>
             {[
               { number: "0%", label: "Comisiones" },
               { number: "12,847", label: "Boletos vendidos" },
@@ -174,7 +174,7 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
+          <div className="grid-events" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
             {events.map((event, i) => (
               <FadeIn key={event.name} delay={i * 0.08}>
                 <a href={event.url} target="_blank" rel="noopener noreferrer" className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
@@ -219,7 +219,7 @@ export default function Home() {
             <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>¿Por qué Dulos?</p>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, marginBottom: "5rem" }}>La Experiencia</h2>
           </FadeIn>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "4rem" }}>
+          <div className="grid-features" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "4rem" }}>
             {[
               { icon: "🎟️", title: "Sin Comisiones", desc: "El precio que ves es el precio que pagas. Sin sorpresas, sin letras chiquitas." },
               { icon: "⚡", title: "Compra en Segundos", desc: "Selecciona, paga y recibe tus boletos al instante. Así de simple." },
@@ -266,7 +266,7 @@ export default function Home() {
             <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Testimonios</p>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, marginBottom: "5rem" }}>Lo Que Dicen</h2>
           </FadeIn>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "3rem" }}>
+          <div className="grid-testimonials" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "3rem" }}>
             {testimonials.map((t, i) => (
               <FadeIn key={t.name} delay={i * 0.12}>
                 <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "2rem", textAlign: "center" }}>
@@ -299,7 +299,7 @@ export default function Home() {
 
       {/* ═══ FOOTER ═══ */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0" }}>
-        <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className="container-page hp-footer" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
           </a>
