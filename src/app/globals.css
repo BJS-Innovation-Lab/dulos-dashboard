@@ -44,6 +44,26 @@ body {
   text-align: center;
 }
 
+/* Hover effects */
+.nav-link:hover {
+  color: #fff !important;
+}
+
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(230, 57, 70, 0.4);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
+}
+
+.event-card-link:hover .ver-mas {
+  color: #E63946 !important;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }

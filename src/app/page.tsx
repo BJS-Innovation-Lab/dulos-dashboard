@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useRef } from "react";
 
 const events = [
-  { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar" },
-  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, image: "/event2.jpg", date: "13 Marzo 2026" },
-  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026" },
-  { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026" },
-  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, image: "/event5.png", date: "28 Marzo 2026" },
+  { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar", url: "https://dulos.io/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" },
+  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, image: "/event2.jpg", date: "13 Marzo 2026", url: "https://dulos.io/mijares-sinfonico/teatro-morelos-toluca" },
+  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026", url: "https://dulos.io/infierno/teatro-enrique-lizalde-cdmx" },
+  { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026", url: "https://dulos.io/oh-karen/teatro-xola-cdmx" },
+  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, image: "/event5.png", date: "28 Marzo 2026", url: "https://dulos.io/lucero/auditorio-explanada-puebla" },
 ];
 
 const testimonials = [
@@ -54,13 +54,15 @@ export default function Home() {
         }}
       >
         <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1.25rem", paddingBottom: "1.25rem" }}>
-          <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
+          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
+            <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
+          </a>
           <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
             {["Eventos", "Experiencia", "Testimonios"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.5s" }}>{item}</a>
+              <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>{item}</a>
             ))}
           </div>
-          <a href="#eventos" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+          <a href="#eventos" className="nav-link" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>
             Ver Eventos
           </a>
         </div>
@@ -103,7 +105,8 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
             href="#eventos"
-            style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", fontSize: "14px", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, textDecoration: "none", transition: "all 0.5s" }}
+            className="btn-primary"
+            style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", fontSize: "14px", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, textDecoration: "none", transition: "all 0.3s" }}
           >
             Explorar Eventos
           </motion.a>
@@ -153,7 +156,7 @@ export default function Home() {
           <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.1rem", marginTop: "0.75rem", textAlign: "center" }}>Teatro Morelos • Toluca • 13 Marzo 2026</p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", marginTop: "2rem" }}>
             <span style={{ fontSize: "1.8rem", fontWeight: 900, color: "#E63946" }}>$1,249</span>
-            <a href="#" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", padding: "0.75rem 2rem", borderRadius: "9999px", fontSize: "14px", textDecoration: "none", transition: "all 0.5s" }}>
+            <a href="https://dulos.io/mijares-sinfonico/teatro-morelos-toluca" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", padding: "0.75rem 2rem", borderRadius: "9999px", fontSize: "14px", textDecoration: "none", transition: "all 0.3s" }}>
               Comprar Boletos
             </a>
           </div>
@@ -174,33 +177,35 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
             {events.map((event, i) => (
               <FadeIn key={event.name} delay={i * 0.08}>
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.4 }}
-                  style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#0a0a0a" }}
-                >
-                  <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
-                    <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", transition: "transform 0.7s" }} />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, transparent, transparent)" }} />
-                    {event.original && (
-                      <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
-                        -{Math.round((1 - event.price / event.original) * 100)}% OFF
-                      </div>
-                    )}
-                  </div>
-                  <div style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
-                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
-                    <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginTop: "0.5rem" }}>{event.name}</h3>
-                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem" }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-                        {event.original && <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
-                        <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
-                      </div>
-                      <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px" }}>Ver más →</span>
+                <a href={event.url} target="_blank" rel="noopener noreferrer" className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+                  <motion.div
+                    whileHover={{ y: -6 }}
+                    transition={{ duration: 0.4 }}
+                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#0a0a0a" }}
+                  >
+                    <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
+                      <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", transition: "transform 0.7s" }} />
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, transparent, transparent)" }} />
+                      {event.original && (
+                        <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
+                          -{Math.round((1 - event.price / event.original) * 100)}% OFF
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </motion.div>
+                    <div style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
+                      <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginTop: "0.5rem" }}>{event.name}</h3>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem" }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
+                          {event.original && <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
+                          <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
+                        </div>
+                        <span className="ver-mas" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", transition: "color 0.3s" }}>Ver más →</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </a>
               </FadeIn>
             ))}
           </div>
@@ -247,7 +252,7 @@ export default function Home() {
               <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "1.1rem" }}>$600</span>
               <span style={{ color: "#E63946", fontSize: "2.5rem", fontWeight: 900 }}>$299</span>
             </div>
-            <a href="#" style={{ display: "inline-block", marginTop: "2rem", background: "#E63946", color: "#fff", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, fontSize: "14px", textDecoration: "none", transition: "all 0.5s" }}>
+            <a href="https://dulos.io/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ display: "inline-block", marginTop: "2rem", background: "#E63946", color: "#fff", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, fontSize: "14px", textDecoration: "none", transition: "all 0.3s" }}>
               Comprar Boletos
             </a>
           </div>
@@ -285,7 +290,7 @@ export default function Home() {
               Tu próximo momento{" "}
               <span style={{ color: "#E63946" }}>te espera.</span>
             </h2>
-            <a href="#eventos" style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", padding: "1.25rem 3rem", borderRadius: "9999px", fontWeight: 500, fontSize: "1rem", textDecoration: "none", transition: "all 0.5s" }}>
+            <a href="#eventos" className="btn-primary" style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", padding: "1.25rem 3rem", borderRadius: "9999px", fontWeight: 500, fontSize: "1rem", textDecoration: "none", transition: "all 0.3s" }}>
               Explorar Eventos
             </a>
           </FadeIn>
@@ -295,7 +300,9 @@ export default function Home() {
       {/* ═══ FOOTER ═══ */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0" }}>
         <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
+          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
+            <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
+          </a>
           <p style={{ color: "rgba(255,255,255,0.15)", fontSize: "12px" }}>© 2026 Dulos. Sin comisiones, sin excusas.</p>
           <div style={{ display: "flex", gap: "2rem" }}>
             <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Términos</a>
