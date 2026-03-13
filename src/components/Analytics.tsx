@@ -1,33 +1,36 @@
 "use client";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
-function AnimatedCounter({ end, prefix = "", suffix = "", duration = 2 }: { end: number; prefix?: string; suffix?: string; duration?: number }) {
+function AnimatedCounter({ end, prefix = "", suffix = "" }: { end: number; prefix?: string; suffix?: string }) {
   const [count, setCount] = useState(0);
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const ref = useRef<HTMLSpanElement>(null);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    if (!ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStarted(true); },
+      { threshold: 0.1 }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
     let start = 0;
+    const duration = 2;
     const increment = end / (duration * 60);
     const timer = setInterval(() => {
       start += increment;
-      if (start >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
+      if (start >= end) { setCount(end); clearInterval(timer); }
+      else setCount(Math.floor(start));
     }, 1000 / 60);
     return () => clearInterval(timer);
-  }, [isInView, end, duration]);
+  }, [started, end]);
 
-  return (
-    <span ref={ref}>
-      {prefix}{count.toLocaleString()}{suffix}
-    </span>
-  );
+  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
 }
 
 const stats = [
@@ -36,7 +39,7 @@ const stats = [
   { label: "Eventos Activos", value: 6, prefix: "", suffix: "", icon: "🎭" },
   { label: "Usuarios", value: 34291, prefix: "", suffix: "", icon: "👥" },
   { label: "Comisiones Ahorradas", value: 847, prefix: "$", suffix: "K", icon: "🎉" },
-  { label: "Rating Promedio", value: 48, prefix: "", suffix: "", icon: "⭐" },
+  { label: "Rating Promedio", value: 0, prefix: "", suffix: "", icon: "⭐" },
 ];
 
 export default function Analytics() {
@@ -46,7 +49,7 @@ export default function Analytics() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -60,7 +63,7 @@ export default function Analytics() {
               key={stat.label}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="group relative bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 md:p-8 hover:border-[#E63946]/30 transition-all duration-500 hover:shadow-[0_0_30px_rgba(230,57,70,0.1)]"
             >
@@ -68,9 +71,7 @@ export default function Analytics() {
               <div className="relative">
                 <span className="text-2xl mb-3 block">{stat.icon}</span>
                 <p className="text-3xl md:text-4xl font-black text-white mb-2">
-                  {stat.label === "Rating Promedio" ? (
-                    "4.8/5"
-                  ) : (
+                  {stat.label === "Rating Promedio" ? "4.8/5" : (
                     <AnimatedCounter end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
                   )}
                 </p>
@@ -80,11 +81,10 @@ export default function Analytics() {
           ))}
         </div>
 
-        {/* Chart */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-12 bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
         >
@@ -101,7 +101,7 @@ export default function Analytics() {
                 <motion.div
                   initial={{ height: 0 }}
                   whileInView={{ height: `${h}%` }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, amount: 0.1 }}
                   transition={{ duration: 0.8, delay: i * 0.05 }}
                   className="w-full bg-gradient-to-t from-[#E63946] to-[#E63946]/30 rounded-t-md"
                 />

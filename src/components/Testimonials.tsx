@@ -17,7 +17,7 @@ export default function Testimonials() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-16"
         >
           <p className="text-[#E63946] text-sm tracking-[0.3em] uppercase mb-3">Lo que dicen nuestros clientes</p>
@@ -30,7 +30,7 @@ export default function Testimonials() {
               key={i}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-[#E63946]/20 transition-all duration-500"
             >

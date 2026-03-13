@@ -18,7 +18,7 @@ export default function Payments() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.1 }}
           className="text-center mb-16"
         >
           <p className="text-[#E63946] text-sm tracking-[0.3em] uppercase mb-3">Experiencia de compra</p>
@@ -30,7 +30,7 @@ export default function Payments() {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             className="bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
           >
             <h3 className="text-white font-semibold mb-6 text-lg">Mapa del Venue</h3>
@@ -67,7 +67,7 @@ export default function Payments() {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.1 }}
             className="bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
           >
             <h3 className="text-white font-semibold mb-6 text-lg">Resumen de Compra</h3>
