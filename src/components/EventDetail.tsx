@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -59,19 +59,73 @@ interface EventData {
   slug: string;
 }
 
+const inputStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "0.9rem 1rem",
+  background: "#1a1a1a",
+  border: "1px solid rgba(255,255,255,0.1)",
+  borderRadius: "0.5rem",
+  color: "#fff",
+  fontSize: "0.95rem",
+  fontFamily: "inherit",
+  outline: "none",
+  transition: "border-color 0.2s ease",
+};
+
 export default function EventDetailPage({ event }: { event: EventData }) {
   const otherEvents = allEvents.filter((e) => e.slug !== event.slug);
   const zones = eventZones[event.name] || eventZones["Así Lo Veo Yo"];
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
+  const [discountCode, setDiscountCode] = useState("");
+  const [countryCode, setCountryCode] = useState("+52");
+  const [phone, setPhone] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const checkoutRef = useRef<HTMLDivElement>(null);
 
   const selected = zones.find((z) => z.name === selectedZone);
   const subtotal = selected ? selected.price * quantity : 0;
+
+  // Countdown timer
+  useEffect(() => {
+    if (!showCheckout) return;
+    setTimeLeft(15 * 60);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [showCheckout]);
+
+  const formatTime = useCallback((seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }, []);
 
   const handleBuyClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const el = document.getElementById("comprar");
     if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handlePagarClick = () => {
+    setShowCheckout(true);
+    setTimeout(() => {
+      checkoutRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   return (
@@ -104,13 +158,14 @@ export default function EventDetailPage({ event }: { event: EventData }) {
       {/* ═══ RED BANNER ═══ */}
       {event.original && (
         <div style={{
-          background: "#E63946",
-          padding: "0.75rem 0",
+          background: "linear-gradient(135deg, #E63946, #c0212e)",
+          padding: "0.85rem 0",
           textAlign: "center",
-          fontSize: "0.95rem",
-          fontWeight: 600,
+          fontSize: "1rem",
+          fontWeight: 700,
           color: "#fff",
-          letterSpacing: "0.02em",
+          letterSpacing: "0.03em",
+          textShadow: "0 1px 2px rgba(0,0,0,0.2)",
         }}>
           🎉 Oferta: De ${event.original.toLocaleString()}.00 a ${event.price.toLocaleString()}.00
         </div>
@@ -125,21 +180,25 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
       {/* ═══ EVENT DETAIL ═══ */}
       <section className="container-page" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4rem", alignItems: "center" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "5rem", alignItems: "start" }}>
           {/* Left — Info */}
           <div>
             <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>
               {event.venue}
             </p>
-            <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.5rem" }}>
+            <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.75rem" }}>
               {event.name}
             </h1>
-            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem", lineHeight: 1.8, marginBottom: "2rem", maxWidth: "500px" }}>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.05rem", lineHeight: 1.9, marginBottom: "2.5rem", maxWidth: "540px" }}>
               {event.description}
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
               <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "14px" }}>📅</span>
               <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem" }}>{event.dates}</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "2.5rem" }}>
+              <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "14px" }}>📍</span>
+              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem" }}>{event.venue}</span>
             </div>
             <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", marginBottom: "2.5rem" }}>
               {event.original && (
@@ -147,9 +206,10 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   ${event.original.toLocaleString()}
                 </span>
               )}
-              <span style={{ color: "#E63946", fontSize: "2.25rem", fontWeight: 900 }}>
+              <span style={{ color: "#E63946", fontSize: "2.5rem", fontWeight: 900 }}>
                 ${event.price.toLocaleString()}
               </span>
+              <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.9rem" }}>MXN</span>
             </div>
             <a
               href="#comprar"
@@ -173,13 +233,13 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           </div>
 
           {/* Right — Poster */}
-          <div style={{ position: "relative", aspectRatio: "3/4", borderRadius: "1rem", overflow: "hidden", background: "#111" }}>
+          <div style={{ position: "relative", aspectRatio: "3/4", borderRadius: "1rem", overflow: "hidden", background: "#111", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}>
             <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover" }} priority />
           </div>
         </div>
       </section>
 
-      {/* ═══ CHECKOUT / TICKET PURCHASE ═══ */}
+      {/* ═══ TICKET PURCHASE / ZONE SELECTION ═══ */}
       <section id="comprar" style={{ padding: "5rem 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "#080808" }}>
         <div className="container-page">
           <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
@@ -230,6 +290,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                       onClick={() => {
                         setSelectedZone(zone.name);
                         setQuantity(1);
+                        setShowCheckout(false);
                       }}
                       className="zone-btn"
                       style={{
@@ -469,6 +530,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               {/* Pay button */}
               <button
                 disabled={!selected}
+                onClick={handlePagarClick}
                 style={{
                   width: "100%",
                   padding: "1rem",
@@ -496,6 +558,288 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           </div>
         </div>
       </section>
+
+      {/* ═══ CHECKOUT FLOW ═══ */}
+      {showCheckout && selected && (
+        <section ref={checkoutRef} style={{ padding: "0 0 5rem 0", background: "#080808" }}>
+          {/* Reservation Timer Banner */}
+          <div style={{
+            background: "linear-gradient(135deg, #8B0000, #E63946, #8B0000)",
+            padding: "1rem 0",
+            textAlign: "center",
+            marginBottom: "3rem",
+          }}>
+            <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+              <span style={{ fontSize: "1.1rem" }}>⏱️</span>
+              <span style={{ fontSize: "1rem", fontWeight: 700, color: "#fff", letterSpacing: "0.02em" }}>
+                Tu reserva expira en:{" "}
+                <span style={{ fontFamily: "monospace", fontSize: "1.15rem", letterSpacing: "0.1em" }}>
+                  {formatTime(timeLeft)}
+                </span>
+                {" "}min
+              </span>
+            </div>
+          </div>
+
+          <div className="container-page">
+            {/* Checkout Header */}
+            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, marginBottom: "0.75rem" }}>
+                ¡Estás a un paso de tus boletos!
+              </h2>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.05rem" }}>
+                Solo necesitamos unos datos para procesar tu compra.
+              </p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "3rem", alignItems: "start" }}>
+              {/* Left — Contact Form */}
+              <div style={{
+                background: "#111",
+                borderRadius: "1.25rem",
+                padding: "2.5rem",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "0.5rem" }}>Datos de contacto</h3>
+                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.85rem", marginBottom: "2rem" }}>
+                  Te enviaremos tus boletos digitales a este correo.
+                </p>
+
+                {/* Phone */}
+                <div style={{ marginBottom: "1.25rem" }}>
+                  <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
+                    📱 Teléfono
+                  </label>
+                  <div style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: "0.75rem" }}>
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      style={{
+                        ...inputStyle,
+                        cursor: "pointer",
+                        appearance: "none",
+                        backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E\")",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "right 0.75rem center",
+                        paddingRight: "2rem",
+                      }}
+                    >
+                      <option value="+52">🇲🇽 +52</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+34">🇪🇸 +34</option>
+                      <option value="+57">🇨🇴 +57</option>
+                      <option value="+54">🇦🇷 +54</option>
+                    </select>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="55 1234 5678"
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+
+                {/* Name row */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "1.25rem" }}>
+                  <div>
+                    <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
+                      Nombre
+                    </label>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="Tu nombre"
+                      style={inputStyle}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
+                      Apellido
+                    </label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      placeholder="Tu apellido"
+                      style={inputStyle}
+                    />
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div style={{ marginBottom: "2rem" }}>
+                  <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
+                    Correo electrónico
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="tu@correo.com"
+                    style={inputStyle}
+                  />
+                </div>
+
+                {/* Submit */}
+                <button
+                  style={{
+                    width: "100%",
+                    padding: "1.1rem",
+                    background: "#E63946",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "9999px",
+                    fontSize: "1.05rem",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    letterSpacing: "0.02em",
+                    boxShadow: "0 4px 24px rgba(230,57,70,0.3)",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  Continuar al pago
+                </button>
+              </div>
+
+              {/* Right — Order Summary (Checkout) */}
+              <div style={{
+                position: "sticky",
+                top: "100px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
+              }}>
+                {/* Summary Card */}
+                <div style={{
+                  background: "#111",
+                  borderRadius: "1.25rem",
+                  padding: "2rem",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}>
+                  <h3 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "1.5rem", paddingBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                    Resumen de tu pedido
+                  </h3>
+
+                  {/* Reserved badge */}
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    background: "rgba(46,204,113,0.1)",
+                    border: "1px solid rgba(46,204,113,0.2)",
+                    borderRadius: "0.5rem",
+                    padding: "0.75rem 1rem",
+                    marginBottom: "1.5rem",
+                  }}>
+                    <span style={{ fontSize: "14px" }}>✅</span>
+                    <span style={{ color: "#2ECC71", fontSize: "0.85rem", fontWeight: 600 }}>Boletos reservados temporalmente</span>
+                  </div>
+
+                  {/* Event details */}
+                  <div style={{ marginBottom: "1.25rem" }}>
+                    <p style={{ fontWeight: 700, fontSize: "1.05rem", marginBottom: "0.3rem" }}>{event.name}</p>
+                    <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>{event.venue}</p>
+                  </div>
+
+                  {/* Details grid */}
+                  <div style={{
+                    background: "rgba(255,255,255,0.03)",
+                    borderRadius: "0.75rem",
+                    padding: "1.25rem",
+                    marginBottom: "1.5rem",
+                    border: "1px solid rgba(255,255,255,0.04)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.75rem",
+                  }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Zona</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: selected.color }} />
+                        <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>{selected.name}</span>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Fecha</span>
+                      <span style={{ fontSize: "0.9rem" }}>{event.dates}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Cantidad</span>
+                      <span style={{ fontSize: "0.9rem" }}>{quantity} boleto{quantity > 1 ? "s" : ""}</span>
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Precio unitario</span>
+                      <span style={{ fontSize: "0.9rem" }}>${selected.price.toLocaleString()}.00</span>
+                    </div>
+                  </div>
+
+                  {/* Discount code */}
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <label style={{ display: "block", color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", marginBottom: "0.5rem" }}>
+                      Código de descuento
+                    </label>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "0.5rem" }}>
+                      <input
+                        type="text"
+                        value={discountCode}
+                        onChange={(e) => setDiscountCode(e.target.value)}
+                        placeholder="Ingresa tu código"
+                        style={{ ...inputStyle, fontSize: "0.9rem" }}
+                      />
+                      <button style={{
+                        padding: "0.9rem 1.25rem",
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.1)",
+                        borderRadius: "0.5rem",
+                        color: "#fff",
+                        fontSize: "0.85rem",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        fontFamily: "inherit",
+                        transition: "background 0.2s ease",
+                        whiteSpace: "nowrap",
+                      }}>
+                        Aplicar
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Divider */}
+                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: "1rem" }} />
+
+                  {/* Subtotal */}
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>Subtotal</span>
+                    <span style={{ fontSize: "0.95rem" }}>${subtotal.toLocaleString()}.00</span>
+                  </div>
+
+                  {/* Total */}
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "baseline",
+                    paddingTop: "1rem",
+                    borderTop: "1px solid rgba(255,255,255,0.06)",
+                  }}>
+                    <span style={{ fontWeight: 700, fontSize: "1.1rem" }}>Total</span>
+                    <span style={{ fontWeight: 900, fontSize: "1.75rem", color: "#E63946" }}>
+                      ${subtotal.toLocaleString()}.00
+                    </span>
+                  </div>
+                </div>
+
+                {/* SSL Note */}
+                <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.75rem", textAlign: "center" }}>
+                  🔒 Tu información está protegida con encriptación SSL
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ═══ OTHER EVENTS ═══ */}
       <section style={{ padding: "5rem 0", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
