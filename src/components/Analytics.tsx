@@ -54,7 +54,7 @@ export default function Analytics() {
           <h2 className="text-4xl md:text-6xl font-bold text-white">Analytics</h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -88,7 +88,7 @@ export default function Analytics() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-12 bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
+          className="mt-12 bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8 max-w-5xl mx-auto overflow-hidden"
         >
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-white font-semibold text-lg">Ventas Mensuales</h3>
@@ -97,20 +97,20 @@ export default function Analytics() {
               <span className="text-white/40">● Ingresos</span>
             </div>
           </div>
-          <div className="flex items-end gap-2 h-48">
+          <div className="flex items-end gap-2 h-48 overflow-hidden">
             {[35, 45, 30, 65, 50, 75, 60, 85, 70, 95, 80, 100].map((h, i) => (
-              <motion.div
-                key={i}
-                initial={{ height: 0 }}
-                whileInView={{ height: `${h}%` }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: i * 0.05 }}
-                className="flex-1 bg-gradient-to-t from-[#E63946] to-[#E63946]/30 rounded-t-md relative group cursor-pointer"
-              >
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-[#E63946] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+              <div key={i} className="flex-1 flex flex-col justify-end h-full relative group cursor-pointer">
+                <div className="absolute -top-0 left-1/2 -translate-x-1/2 bg-[#E63946] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                   {["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"][i]}
                 </div>
-              </motion.div>
+                <motion.div
+                  initial={{ height: 0 }}
+                  whileInView={{ height: `${h}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: i * 0.05 }}
+                  className="w-full bg-gradient-to-t from-[#E63946] to-[#E63946]/30 rounded-t-md"
+                />
+              </div>
             ))}
           </div>
         </motion.div>

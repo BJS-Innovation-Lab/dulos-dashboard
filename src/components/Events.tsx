@@ -8,7 +8,7 @@ const events = [
   { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Mar 2026", sold: 1456 },
   { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Mar 2026", sold: 634 },
   { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, image: "/event5.png", date: "28 Mar 2026", sold: 3891 },
-  { name: "El Maleficio de la Mariposa", city: "CDMX", venue: "Foro Shakespeare", price: 350, image: "/event3.jpg", date: "7 Feb 2026", sold: 1022 },
+  { name: "El Maleficio de la Mariposa", city: "CDMX", venue: "Foro Shakespeare", price: 350, image: "/perfil-dulos.png", date: "7 Feb 2026", sold: 1022 },
 ];
 
 export default function Events() {
@@ -26,7 +26,7 @@ export default function Events() {
           <h2 className="text-4xl md:text-6xl font-bold text-white">Eventos</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {events.map((event, i) => (
             <motion.div
               key={event.name}
