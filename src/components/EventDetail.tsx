@@ -141,7 +141,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           <Link href="/" style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
           </Link>
-          <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
+          <div className="ed-nav-links">
             {[
               { label: "Inicio", href: "/" },
               { label: "Comprar", href: "#comprar" },
@@ -152,6 +152,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               </Link>
             ))}
           </div>
+          <button className="ed-hamburger" aria-label="Menu">☰</button>
         </div>
       </nav>
 
@@ -180,13 +181,13 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
       {/* ═══ EVENT DETAIL ═══ */}
       <section className="container-page" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "5rem", alignItems: "start" }}>
+        <div className="ed-hero-grid">
           {/* Left — Info */}
           <div>
             <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>
               {event.venue}
             </p>
-            <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.75rem" }}>
+            <h1 className="ed-hero-title" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.75rem" }}>
               {event.name}
             </h1>
             <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.05rem", lineHeight: 1.9, marginBottom: "2.5rem", maxWidth: "540px" }}>
@@ -233,7 +234,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           </div>
 
           {/* Right — Poster */}
-          <div style={{ position: "relative", aspectRatio: "3/4", borderRadius: "1rem", overflow: "hidden", background: "#111", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}>
+          <div className="ed-hero-poster" style={{ position: "relative", aspectRatio: "3/4", borderRadius: "1rem", overflow: "hidden", background: "#111", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}>
             <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover" }} priority />
           </div>
         </div>
@@ -244,10 +245,10 @@ export default function EventDetailPage({ event }: { event: EventData }) {
         <div className="container-page">
           <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
             <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Selecciona tu zona</p>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900 }}>Comprar Boletos</h2>
+            <h2 className="ed-section-title" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900 }}>Comprar Boletos</h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "3rem", alignItems: "start" }}>
+          <div className="ed-zone-grid">
             {/* Left — Venue Map */}
             <div style={{
               background: "#111",
@@ -358,10 +359,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               </div>
 
               {/* Legend */}
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "1.5rem",
+              <div className="ed-zone-legend" style={{
                 marginTop: "1.5rem",
                 padding: "1rem",
                 borderTop: "1px solid rgba(255,255,255,0.04)",
@@ -376,13 +374,11 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             </div>
 
             {/* Right — Order Summary */}
-            <div style={{
+            <div className="ed-order-sticky" style={{
               background: "#111",
               borderRadius: "1.25rem",
               padding: "2rem",
               border: "1px solid rgba(255,255,255,0.06)",
-              position: "sticky",
-              top: "100px",
             }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "1.5rem", paddingBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 Resumen de Orden
@@ -592,7 +588,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               </p>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "3rem", alignItems: "start" }}>
+            <div className="ed-checkout-grid">
               {/* Left — Contact Form */}
               <div style={{
                 background: "#111",
@@ -705,9 +701,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               </div>
 
               {/* Right — Order Summary (Checkout) */}
-              <div style={{
-                position: "sticky",
-                top: "100px",
+              <div className="ed-order-sticky" style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
@@ -846,9 +840,9 @@ export default function EventDetailPage({ event }: { event: EventData }) {
         <div className="container-page">
           <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Próximos Eventos</p>
-            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900 }}>Elige Tu Momento</h2>
+            <h2 className="ed-section-title" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900 }}>Elige Tu Momento</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.5rem" }}>
+          <div className="ed-events-grid">
             {otherEvents.map((ev) => (
               <Link key={ev.name} href={ev.slug} className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
                 <div style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#111111", border: "1px solid rgba(255,255,255,0.05)", transition: "transform 0.4s ease" }}>
@@ -882,7 +876,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
       {/* ═══ FOOTER ═══ */}
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0" }}>
-        <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div className="container-page ed-footer">
           <Link href="/" style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
           </Link>

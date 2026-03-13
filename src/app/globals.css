@@ -64,6 +64,140 @@ body {
   color: #E63946 !important;
 }
 
+/* ═══ Event Detail — Mobile Responsive ═══ */
+
+/* Navbar desktop links */
+.ed-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* Event hero grid */
+.ed-hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+/* Zone selection grid */
+.ed-zone-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Checkout grid */
+.ed-checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Other events grid */
+.ed-events-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* Footer layout */
+.ed-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Order summary sticky */
+.ed-order-sticky {
+  position: sticky;
+  top: 100px;
+}
+
+/* Zone legend */
+.ed-zone-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Hamburger icon (hidden on desktop) */
+.ed-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .ed-nav-links {
+    display: none;
+  }
+  .ed-hamburger {
+    display: block;
+  }
+  .ed-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .ed-hero-poster {
+    order: -1;
+    max-height: 360px;
+  }
+  .ed-zone-grid {
+    grid-template-columns: 1fr;
+  }
+  .ed-checkout-grid {
+    grid-template-columns: 1fr;
+  }
+  .ed-events-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .ed-footer {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  .ed-order-sticky {
+    position: static;
+  }
+  .ed-section-title {
+    font-size: 1.75rem !important;
+  }
+  .ed-hero-title {
+    font-size: 2rem !important;
+  }
+  .ed-zone-legend {
+    gap: 0.75rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .ed-hero-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  .ed-zone-grid {
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+  }
+  .ed-checkout-grid {
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+  }
+  .ed-events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
 }
