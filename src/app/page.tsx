@@ -137,14 +137,14 @@ export default function Home() {
       </section>
 
       {/* ═══ FEATURED EVENT — MIJARES ═══ */}
-      <section className="relative h-[80vh] flex items-end overflow-hidden">
+      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <Image src="/event2.jpg" alt="Mijares Sinfónico" fill className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent" />
-        <FadeIn className="relative z-10 w-full max-w-[1400px] mx-auto px-12 lg:px-16 pb-20">
+        <FadeIn className="relative z-10 w-full max-w-[900px] mx-auto px-12 lg:px-16 text-center">
           <p className="text-[#E63946] text-[11px] tracking-[0.4em] uppercase mb-4">Evento Destacado</p>
           <h2 className="text-5xl md:text-7xl font-black">Mijares Sinfónico</h2>
           <p className="text-white/40 text-lg mt-3">Teatro Morelos • Toluca • 13 Marzo 2026</p>
-          <div className="flex items-center gap-6 mt-8">
+          <div className="flex items-center justify-center gap-6 mt-8">
             <span className="text-3xl font-black text-[#E63946]">$1,249</span>
             <a href="#" className="bg-white/10 backdrop-blur-sm border border-white/10 text-white px-8 py-3 rounded-full text-sm hover:bg-[#E63946] hover:border-[#E63946] transition-all duration-500">
               Comprar Boletos
@@ -264,8 +264,8 @@ export default function Home() {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="py-32 px-12 text-center">
-        <FadeIn className="w-full max-w-[700px] mx-auto">
+      <section className="py-32 px-12 lg:px-16">
+        <FadeIn className="w-full max-w-[700px] mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-black leading-tight">
             Tu próximo momento <span className="text-[#E63946]">te espera.</span>
           </h2>
