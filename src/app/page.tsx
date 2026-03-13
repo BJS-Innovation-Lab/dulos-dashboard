@@ -1,15 +1,14 @@
 "use client";
-import { motion, useScroll, useTransform, useInView, useMotionTemplate } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 
 const events = [
-  { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar", url: "/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" },
-  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, image: "/event2.jpg", date: "13 Marzo 2026", url: "/mijares-sinfonico/teatro-morelos-toluca" },
-  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026", url: "/infierno/teatro-enrique-lizalde-cdmx" },
-  { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026", url: "/oh-karen/teatro-xola-cdmx" },
-  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, image: "/event5.png", date: "28 Marzo 2026", url: "/lucero/auditorio-explanada-puebla" },
+  { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar", url: "https://dulos.io/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" },
+  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, image: "/event2.jpg", date: "13 Marzo 2026", url: "https://dulos.io/mijares-sinfonico/teatro-morelos-toluca" },
+  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026", url: "https://dulos.io/infierno/teatro-enrique-lizalde-cdmx" },
+  { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026", url: "https://dulos.io/oh-karen/teatro-xola-cdmx" },
+  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, image: "/event5.png", date: "28 Marzo 2026", url: "https://dulos.io/lucero/auditorio-explanada-puebla" },
 ];
 
 const testimonials = [
@@ -33,51 +32,14 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
-function CountUp({ target, suffix = "", prefix = "", duration = 2 }: { target: number; suffix?: string; prefix?: string; duration?: number }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    const start = Date.now();
-    const ms = duration * 1000;
-    const step = () => {
-      const progress = Math.min((Date.now() - start) / ms, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.round(target * eased));
-      if (progress < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [isInView, target, duration]);
-
-  return <span ref={ref}>{prefix}{count.toLocaleString()}{suffix}</span>;
-}
-
 export default function Home() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  // Navbar glassmorphism on scroll
-  const { scrollY } = useScroll();
-  const navOpacity = useTransform(scrollY, [0, 200], [0.6, 0.95]);
-  const navBg = useMotionTemplate`rgba(10,10,10,${navOpacity})`;
-  const navBorderOpacity = useTransform(scrollY, [0, 200], [0.04, 0.08]);
-  const navBorder = useMotionTemplate`1px solid rgba(255,255,255,${navBorderOpacity})`;
-
-  // Featured sections parallax
-  const mijaresRef = useRef(null);
-  const { scrollYProgress: mijaresProgress } = useScroll({ target: mijaresRef, offset: ["start end", "end start"] });
-  const mijaresY = useTransform(mijaresProgress, [0, 1], [-30, 30]);
-
-  const asiRef = useRef(null);
-  const { scrollYProgress: asiProgress } = useScroll({ target: asiRef, offset: ["start end", "end start"] });
-  const asiY = useTransform(asiProgress, [0, 1], [-30, 30]);
-
   return (
-    <main style={{ background: "#0a0a0a", color: "#fff", overflowX: "hidden" }}>
+    <main style={{ background: "#050505", color: "#fff", overflowX: "hidden" }}>
 
       {/* ═══ NAVBAR ═══ */}
       <motion.nav
@@ -86,8 +48,8 @@ export default function Home() {
         transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-          background: navBg, backdropFilter: "blur(24px)",
-          borderBottom: navBorder,
+          background: "rgba(5,5,5,0.6)", backdropFilter: "blur(24px)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
           display: "flex", justifyContent: "center"
         }}
       >
@@ -97,10 +59,10 @@ export default function Home() {
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
             {["Eventos", "Experiencia", "Testimonios"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s ease", cursor: "pointer" }}>{item}</a>
+              <a key={item} href={`#${item.toLowerCase()}`} className="nav-link" style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>{item}</a>
             ))}
           </div>
-          <a href="#eventos" className="nav-link" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s ease", cursor: "pointer" }}>
+          <a href="#eventos" className="nav-link" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s" }}>
             Ver Eventos
           </a>
         </div>
@@ -110,7 +72,7 @@ export default function Home() {
       <section ref={heroRef} style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
         <motion.div style={{ y: heroY, position: "absolute", inset: 0 }}>
           <Image src="/hero.jpg" alt="Hero" fill style={{ objectFit: "cover" }} priority />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(10,10,10,0.5), rgba(10,10,10,0.2), #0a0a0a)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(5,5,5,0.5), rgba(5,5,5,0.2), #050505)" }} />
         </motion.div>
         <motion.div style={{ opacity: heroOpacity, position: "relative", zIndex: 10, textAlign: "center", width: "100%", maxWidth: "900px", margin: "0 auto", padding: "0 2rem" }}>
           <motion.p
@@ -121,27 +83,19 @@ export default function Home() {
           >
             Tu acceso directo al entretenimiento
           </motion.p>
-          <h1 style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8, ease: "easeOut" }}
-            >
-              MOMENTOS
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.3, duration: 0.8, ease: "easeOut" }}
-              style={{ background: "linear-gradient(to right, #E63946, #ff6b6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
-            >
-              INOLVIDABLES
-            </motion.div>
-          </h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 1 }}
+            style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}
+          >
+            MOMENTOS<br />
+            <span style={{ background: "linear-gradient(to right, #E63946, #ff6b6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>INOLVIDABLES</span>
+          </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
             style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.1rem", marginTop: "2rem", lineHeight: 1.7 }}
           >
             Música, teatro y entretenimiento.<br />Sin las comisiones de siempre.
@@ -149,10 +103,10 @@ export default function Home() {
           <motion.a
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.9, duration: 0.8 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
             href="#eventos"
             className="btn-primary"
-            style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", fontSize: "14px", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, textDecoration: "none", transition: "all 0.3s ease", cursor: "pointer" }}
+            style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", fontSize: "14px", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, textDecoration: "none", transition: "all 0.3s" }}
           >
             Explorar Eventos
           </motion.a>
@@ -176,15 +130,13 @@ export default function Home() {
           </FadeIn>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "5rem", marginTop: "4rem" }}>
             {[
-              { target: 0, suffix: "%", label: "Comisiones" },
-              { target: 12847, suffix: "", label: "Boletos vendidos" },
-              { target: 34, suffix: "K+", label: "Usuarios" },
+              { number: "0%", label: "Comisiones" },
+              { number: "12,847", label: "Boletos vendidos" },
+              { number: "34K+", label: "Usuarios" },
             ].map((s, i) => (
               <FadeIn key={s.label} delay={i * 0.15}>
                 <div style={{ textAlign: "center" }}>
-                  <p style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontWeight: 900, color: "#E63946" }}>
-                    <CountUp target={s.target} suffix={s.suffix} />
-                  </p>
+                  <p style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", fontWeight: 900, color: "#E63946" }}>{s.number}</p>
                   <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", marginTop: "0.5rem", letterSpacing: "0.15em", textTransform: "uppercase" }}>{s.label}</p>
                 </div>
               </FadeIn>
@@ -194,11 +146,9 @@ export default function Home() {
       </section>
 
       {/* ═══ FEATURED — MIJARES ═══ */}
-      <section ref={mijaresRef} style={{ position: "relative", height: "80vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-        <motion.div style={{ y: mijaresY, position: "absolute", inset: "-30px 0", height: "calc(100% + 60px)" }}>
-          <Image src="/event2.jpg" alt="Mijares Sinfónico" fill style={{ objectFit: "cover" }} />
-        </motion.div>
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, rgba(10,10,10,0.4), transparent)" }} />
+      <section style={{ position: "relative", height: "80vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <Image src="/event2.jpg" alt="Mijares Sinfónico" fill style={{ objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, rgba(5,5,5,0.4), transparent)" }} />
         <FadeIn className="section-centered">
           <div style={{ position: "relative", zIndex: 10, maxWidth: "900px", margin: "0 auto", padding: "0 2rem", textAlign: "center" }}>
           <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>Evento Destacado</p>
@@ -206,9 +156,9 @@ export default function Home() {
           <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.1rem", marginTop: "0.75rem", textAlign: "center" }}>Teatro Morelos • Toluca • 13 Marzo 2026</p>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.5rem", marginTop: "2rem" }}>
             <span style={{ fontSize: "1.8rem", fontWeight: 900, color: "#E63946" }}>$1,249</span>
-            <Link href="/mijares-sinfonico/teatro-morelos-toluca" className="btn-secondary" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", padding: "0.75rem 2rem", borderRadius: "9999px", fontSize: "14px", textDecoration: "none", transition: "all 0.3s ease", cursor: "pointer" }}>
+            <a href="https://dulos.io/mijares-sinfonico/teatro-morelos-toluca" target="_blank" rel="noopener noreferrer" className="btn-secondary" style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", padding: "0.75rem 2rem", borderRadius: "9999px", fontSize: "14px", textDecoration: "none", transition: "all 0.3s" }}>
               Comprar Boletos
-            </Link>
+            </a>
           </div>
           </div>
         </FadeIn>
@@ -226,16 +176,16 @@ export default function Home() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem" }}>
             {events.map((event, i) => (
-              <FadeIn key={event.name} delay={i * 0.1}>
-                <Link href={event.url} className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+              <FadeIn key={event.name} delay={i * 0.08}>
+                <a href={event.url} target="_blank" rel="noopener noreferrer" className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
                   <motion.div
                     whileHover={{ y: -6 }}
                     transition={{ duration: 0.4 }}
-                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#111111", border: "1px solid rgba(255,255,255,0.05)" }}
+                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#0a0a0a" }}
                   >
-                    <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#0a0a0a" }}>
-                      <Image src={event.image} alt={event.name} fill className="event-card-img" style={{ objectFit: "cover", transition: "transform 0.7s ease" }} />
-                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #111111, transparent, transparent)" }} />
+                    <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
+                      <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", transition: "transform 0.7s" }} />
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, transparent, transparent)" }} />
                       {event.original && (
                         <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
                           -{Math.round((1 - event.price / event.original) * 100)}% OFF
@@ -251,11 +201,11 @@ export default function Home() {
                           {event.original && <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
                           <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
                         </div>
-                        <span className="ver-mas" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", transition: "color 0.3s ease" }}>Ver más →</span>
+                        <span className="ver-mas" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", transition: "color 0.3s" }}>Ver más →</span>
                       </div>
                     </div>
                   </motion.div>
-                </Link>
+                </a>
               </FadeIn>
             ))}
           </div>
@@ -288,11 +238,9 @@ export default function Home() {
       </section>
 
       {/* ═══ FEATURED — ASÍ LO VEO YO ═══ */}
-      <section ref={asiRef} style={{ position: "relative", height: "70vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-        <motion.div style={{ y: asiY, position: "absolute", inset: "-30px 0", height: "calc(100% + 60px)" }}>
-          <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill style={{ objectFit: "cover" }} />
-        </motion.div>
-        <div style={{ position: "absolute", inset: 0, background: "rgba(10,10,10,0.7)" }} />
+      <section style={{ position: "relative", height: "70vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+        <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill style={{ objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "rgba(5,5,5,0.7)" }} />
         <FadeIn>
           <div style={{ position: "relative", zIndex: 10, textAlign: "center", maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
             <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}>En Cartelera</p>
@@ -304,9 +252,9 @@ export default function Home() {
               <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "1.1rem" }}>$600</span>
               <span style={{ color: "#E63946", fontSize: "2.5rem", fontWeight: 900 }}>$299</span>
             </div>
-            <Link href="/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" className="btn-primary" style={{ display: "inline-block", marginTop: "2rem", background: "#E63946", color: "#fff", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, fontSize: "14px", textDecoration: "none", transition: "all 0.3s ease", cursor: "pointer" }}>
+            <a href="https://dulos.io/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ display: "inline-block", marginTop: "2rem", background: "#E63946", color: "#fff", padding: "1rem 2.5rem", borderRadius: "9999px", fontWeight: 500, fontSize: "14px", textDecoration: "none", transition: "all 0.3s" }}>
               Comprar Boletos
-            </Link>
+            </a>
           </div>
         </FadeIn>
       </section>
@@ -323,9 +271,7 @@ export default function Home() {
               <FadeIn key={t.name} delay={i * 0.12}>
                 <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "2rem", textAlign: "center" }}>
                   <div style={{ display: "flex", gap: "0.25rem", marginBottom: "1.25rem", justifyContent: "center" }}>
-                    {[...Array(5)].map((_, j) => (
-                      <span key={j} className="star-twinkle" style={{ color: "#E63946", fontSize: "12px", animationDelay: `${j * 0.2}s` }}>★</span>
-                    ))}
+                    {[...Array(5)].map((_, j) => <span key={j} style={{ color: "#E63946", fontSize: "12px" }}>★</span>)}
                   </div>
                   <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.875rem", lineHeight: 1.7, marginBottom: "1.5rem" }}>&ldquo;{t.text}&rdquo;</p>
                   <p style={{ color: "#fff", fontSize: "0.875rem", fontWeight: 500 }}>{t.name}</p>
@@ -344,7 +290,7 @@ export default function Home() {
               Tu próximo momento{" "}
               <span style={{ color: "#E63946" }}>te espera.</span>
             </h2>
-            <a href="#eventos" className="btn-primary" style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", padding: "1.25rem 3rem", borderRadius: "9999px", fontWeight: 500, fontSize: "1rem", textDecoration: "none", transition: "all 0.3s ease", cursor: "pointer" }}>
+            <a href="#eventos" className="btn-primary" style={{ display: "inline-block", marginTop: "2.5rem", background: "#E63946", color: "#fff", padding: "1.25rem 3rem", borderRadius: "9999px", fontWeight: 500, fontSize: "1rem", textDecoration: "none", transition: "all 0.3s" }}>
               Explorar Eventos
             </a>
           </FadeIn>
@@ -359,8 +305,8 @@ export default function Home() {
           </a>
           <p style={{ color: "rgba(255,255,255,0.15)", fontSize: "12px" }}>© 2026 Dulos. Sin comisiones, sin excusas.</p>
           <div style={{ display: "flex", gap: "2rem" }}>
-            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none", transition: "color 0.3s ease", cursor: "pointer" }}>Términos</a>
-            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none", transition: "color 0.3s ease", cursor: "pointer" }}>Privacidad</a>
+            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Términos</a>
+            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Privacidad</a>
           </div>
         </div>
       </footer>
