@@ -169,7 +169,7 @@ export default function Home() {
                   transition={{ duration: 0.4 }}
                   className="group relative rounded-2xl overflow-hidden cursor-pointer bg-[#0a0a0a]"
                 >
-                  <div className="relative aspect-[3/4] overflow-hidden">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#050505]">
                     <Image src={event.image} alt={event.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
                     {event.original && (
@@ -221,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* ═══ SECOND FEATURED — ASÍ LO VEO YO ═══ */}
-      <section className="relative h-[70vh] flex items-center overflow-hidden">
+      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden">
         <Image src="/event1.jpg" alt="Así Lo Veo Yo" fill className="object-cover" />
         <div className="absolute inset-0 bg-[#050505]/60" />
         <FadeIn className="relative z-10 w-full max-w-[800px] mx-auto px-12 text-center">
