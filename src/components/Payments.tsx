@@ -14,7 +14,7 @@ export default function Payments() {
 
   return (
     <section id="pagos" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,13 +33,11 @@ export default function Payments() {
             viewport={{ once: true }}
             className="bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
           >
-            <h3 className="text-white font-semibold mb-6">Mapa del Venue</h3>
-            {/* Stage */}
+            <h3 className="text-white font-semibold mb-6 text-lg">Mapa del Venue</h3>
             <div className="relative">
               <div className="bg-gradient-to-b from-[#E63946]/20 to-transparent border border-[#E63946]/30 rounded-t-[100px] h-16 flex items-center justify-center mb-6">
                 <span className="text-[#E63946] text-sm font-medium tracking-wider">ESCENARIO</span>
               </div>
-              {/* Zones */}
               <div className="space-y-3">
                 {zones.map((zone) => (
                   <motion.button
@@ -50,7 +48,7 @@ export default function Payments() {
                     className={`w-full p-4 rounded-xl border transition-all duration-300 flex items-center justify-between ${
                       selectedZone === zone.name
                         ? "border-[#E63946] bg-[#E63946]/10"
-                        : "border-white/5 bg-white/2 hover:border-white/20"
+                        : "border-white/10 bg-white/[0.02] hover:border-white/20"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -72,7 +70,7 @@ export default function Payments() {
             viewport={{ once: true }}
             className="bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
           >
-            <h3 className="text-white font-semibold mb-6">Resumen de Compra</h3>
+            <h3 className="text-white font-semibold mb-6 text-lg">Resumen de Compra</h3>
             <div className="space-y-4 mb-8">
               <div className="flex justify-between text-sm">
                 <span className="text-white/50">Evento</span>
@@ -94,17 +92,16 @@ export default function Payments() {
                 <span className="text-white/50">Comisiones</span>
                 <span className="text-[#E63946] font-bold">$0 — ¡Sin comisiones!</span>
               </div>
-              <div className="border-t border-white/10 pt-4 flex justify-between">
-                <span className="text-white font-semibold">Total</span>
-                <span className="text-[#E63946] text-2xl font-black">${(selected.price * 2).toLocaleString()}</span>
+              <div className="border-t border-white/10 pt-4 flex justify-between items-center">
+                <span className="text-white font-semibold text-lg">Total</span>
+                <span className="text-[#E63946] text-3xl font-black">${(selected.price * 2).toLocaleString()}</span>
               </div>
             </div>
 
-            {/* Card mockup */}
             <div className="space-y-4 mb-6">
               <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                 <label className="text-white/30 text-xs block mb-2">Número de tarjeta</label>
-                <p className="text-white font-mono">•••• •••• •••• 4242</p>
+                <p className="text-white font-mono text-lg">•••• •••• •••• 4242</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white/5 border border-white/10 rounded-xl p-4">
@@ -125,7 +122,7 @@ export default function Payments() {
             >
               Pagar ${(selected.price * 2).toLocaleString()} MXN →
             </motion.button>
-            <p className="text-white/20 text-xs text-center mt-3 flex items-center justify-center gap-1">
+            <p className="text-white/30 text-xs text-center mt-3">
               🔒 Pago seguro con Stripe • SSL Encriptado
             </p>
           </motion.div>

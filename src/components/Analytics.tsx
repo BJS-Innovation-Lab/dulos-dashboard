@@ -31,18 +31,18 @@ function AnimatedCounter({ end, prefix = "", suffix = "", duration = 2 }: { end:
 }
 
 const stats = [
-  { label: "Total Ventas", value: 2400000, prefix: "$", suffix: "", format: true, icon: "💰" },
-  { label: "Boletos Vendidos", value: 12847, prefix: "", suffix: "", format: false, icon: "🎟️" },
-  { label: "Eventos Activos", value: 6, prefix: "", suffix: "", format: false, icon: "🎭" },
-  { label: "Usuarios", value: 34291, prefix: "", suffix: "", format: false, icon: "👥" },
-  { label: "Comisiones Ahorradas", value: 847000, prefix: "$", suffix: "", format: true, icon: "🎉" },
-  { label: "Rating Promedio", value: 4.8, prefix: "", suffix: "/5", format: false, icon: "⭐" },
+  { label: "Total Ventas", value: 2400, prefix: "$", suffix: "K", icon: "💰" },
+  { label: "Boletos Vendidos", value: 12847, prefix: "", suffix: "", icon: "🎟️" },
+  { label: "Eventos Activos", value: 6, prefix: "", suffix: "", icon: "🎭" },
+  { label: "Usuarios", value: 34291, prefix: "", suffix: "", icon: "👥" },
+  { label: "Comisiones Ahorradas", value: 847, prefix: "$", suffix: "K", icon: "🎉" },
+  { label: "Rating Promedio", value: 48, prefix: "", suffix: "", icon: "⭐" },
 ];
 
 export default function Analytics() {
   return (
     <section id="analytics" className="py-24 px-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ export default function Analytics() {
           <h2 className="text-4xl md:text-6xl font-bold text-white">Analytics</h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -70,8 +70,6 @@ export default function Analytics() {
                 <p className="text-3xl md:text-4xl font-black text-white mb-2">
                   {stat.label === "Rating Promedio" ? (
                     "4.8/5"
-                  ) : stat.format ? (
-                    <><AnimatedCounter end={stat.value / 1000} prefix={stat.prefix} suffix="K" /></>
                   ) : (
                     <AnimatedCounter end={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
                   )}
@@ -82,13 +80,13 @@ export default function Analytics() {
           ))}
         </div>
 
-        {/* Chart mockup */}
+        {/* Chart */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-12 bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8 max-w-5xl mx-auto overflow-hidden"
+          className="mt-12 bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-8"
         >
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-white font-semibold text-lg">Ventas Mensuales</h3>
@@ -97,12 +95,9 @@ export default function Analytics() {
               <span className="text-white/40">● Ingresos</span>
             </div>
           </div>
-          <div className="flex items-end gap-2 h-48 overflow-hidden">
+          <div className="flex items-end gap-2 h-48">
             {[35, 45, 30, 65, 50, 75, 60, 85, 70, 95, 80, 100].map((h, i) => (
               <div key={i} className="flex-1 flex flex-col justify-end h-full relative group cursor-pointer">
-                <div className="absolute -top-0 left-1/2 -translate-x-1/2 bg-[#E63946] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
-                  {["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"][i]}
-                </div>
                 <motion.div
                   initial={{ height: 0 }}
                   whileInView={{ height: `${h}%` }}
@@ -110,6 +105,9 @@ export default function Analytics() {
                   transition={{ duration: 0.8, delay: i * 0.05 }}
                   className="w-full bg-gradient-to-t from-[#E63946] to-[#E63946]/30 rounded-t-md"
                 />
+                <p className="text-white/30 text-[10px] text-center mt-2">
+                  {["E","F","M","A","M","J","J","A","S","O","N","D"][i]}
+                </p>
               </div>
             ))}
           </div>

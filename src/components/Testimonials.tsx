@@ -12,7 +12,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonios" className="py-24 px-6 bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
+    <section id="testimonios" className="py-24 px-6 bg-gradient-to-b from-[#050505] to-[#0a0a0a] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -24,36 +24,33 @@ export default function Testimonials() {
           <h2 className="text-4xl md:text-6xl font-bold text-white">Testimonios</h2>
         </motion.div>
 
-        {/* Scrolling row */}
-        <div className="relative overflow-hidden">
-          <motion.div
-            animate={{ x: [0, -1800] }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="flex gap-6"
-          >
-            {[...testimonials, ...testimonials].map((t, i) => (
-              <div
-                key={i}
-                className="min-w-[350px] bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-[#E63946]/20 transition-all duration-500"
-              >
-                <div className="flex gap-1 mb-4">
-                  {Array(t.rating).fill(0).map((_, j) => (
-                    <span key={j} className="text-[#E63946]">★</span>
-                  ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="bg-[#111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-[#E63946]/20 transition-all duration-500"
+            >
+              <div className="flex gap-1 mb-4">
+                {Array(t.rating).fill(0).map((_, j) => (
+                  <span key={j} className="text-[#E63946]">★</span>
+                ))}
+              </div>
+              <p className="text-white/70 text-sm leading-relaxed mb-4">&ldquo;{t.text}&rdquo;</p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E63946] to-[#ff6b6b] flex items-center justify-center text-white font-bold text-sm shrink-0">
+                  {t.name.split(' ').map(n => n[0]).join('')}
                 </div>
-                <p className="text-white/70 text-sm leading-relaxed mb-4">&ldquo;{t.text}&rdquo;</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E63946] to-[#ff6b6b] flex items-center justify-center text-white font-bold text-sm">
-                    {t.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <p className="text-white font-medium text-sm">{t.name}</p>
-                    <p className="text-white/30 text-xs">Cliente verificado</p>
-                  </div>
+                <div>
+                  <p className="text-white font-medium text-sm">{t.name}</p>
+                  <p className="text-white/30 text-xs">Cliente verificado</p>
                 </div>
               </div>
-            ))}
-          </motion.div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
