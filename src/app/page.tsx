@@ -107,14 +107,6 @@ export default function Home() {
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(5,5,5,0.5), rgba(5,5,5,0.2), #050505)" }} />
         </motion.div>
         <motion.div style={{ opacity: heroOpacity, position: "relative", zIndex: 10, textAlign: "center", width: "100%", maxWidth: "900px", margin: "0 auto", padding: "0 1.5rem" }}>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            style={{ color: "rgba(255,255,255,0.45)", fontSize: "11px", letterSpacing: "0.35em", textTransform: "uppercase", marginBottom: "1.25rem" }}
-          >
-            Tu acceso directo al entretenimiento
-          </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -138,7 +130,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
-            style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "2.5rem", maxWidth: "360px", marginLeft: "auto", marginRight: "auto", padding: "0 1rem" }}
+            style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "2.5rem", maxWidth: "320px", marginLeft: "auto", marginRight: "auto", padding: "0 1rem" }}
           >
             <a
               href="#eventos"
@@ -146,8 +138,8 @@ export default function Home() {
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
                 backgroundColor: "#E63946", color: "#fff",
-                fontSize: "16px", fontWeight: 800,
-                padding: "1.15rem 2.5rem", borderRadius: "9999px",
+                fontSize: "14px", fontWeight: 700,
+                padding: "0.9rem 2rem", borderRadius: "9999px",
                 textDecoration: "none",
                 letterSpacing: "0.1em", textTransform: "uppercase",
                 width: "100%",
@@ -162,8 +154,8 @@ export default function Home() {
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
                 backgroundColor: "transparent", color: "#fff",
-                fontSize: "16px", fontWeight: 800,
-                padding: "1.15rem 2.5rem", borderRadius: "9999px",
+                fontSize: "14px", fontWeight: 700,
+                padding: "0.9rem 2rem", borderRadius: "9999px",
                 textDecoration: "none",
                 letterSpacing: "0.1em", textTransform: "uppercase",
                 border: "2px solid #fff",
