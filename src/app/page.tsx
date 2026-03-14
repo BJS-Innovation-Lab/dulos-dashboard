@@ -139,7 +139,7 @@ export default function Home() {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 backgroundColor: "#E63946", color: "#fff",
                 fontSize: "14px", fontWeight: 700,
-                padding: "0.9rem 2rem", borderRadius: "9999px",
+                padding: "0.9rem 2rem", borderRadius: "8px",
                 textDecoration: "none",
                 letterSpacing: "0.1em", textTransform: "uppercase",
                 width: "100%",
@@ -155,7 +155,7 @@ export default function Home() {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 backgroundColor: "transparent", color: "#fff",
                 fontSize: "14px", fontWeight: 700,
-                padding: "0.9rem 2rem", borderRadius: "9999px",
+                padding: "0.9rem 2rem", borderRadius: "8px",
                 textDecoration: "none",
                 letterSpacing: "0.1em", textTransform: "uppercase",
                 border: "2px solid #fff",
@@ -196,7 +196,7 @@ export default function Home() {
                       <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.7s" }} />
                       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, transparent 60%)" }} />
                       {event.original && (
-                        <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
+                        <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "8px", letterSpacing: "0.1em" }}>
                           -{Math.round((1 - event.price / event.original) * 100)}% OFF
                         </div>
                       )}
