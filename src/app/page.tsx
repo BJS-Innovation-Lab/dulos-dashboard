@@ -153,11 +153,11 @@ export default function Home() {
                   <motion.div
                     whileHover={{ y: -6 }}
                     transition={{ duration: 0.4 }}
-                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#0a0a0a" }}
+                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#050505", border: "1px solid rgba(255,255,255,0.04)" }}
                   >
-                    <div className="event-card-image" style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#050505" }}>
+                    <div className="event-card-image" style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#000" }}>
                       <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.7s" }} />
-                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #0a0a0a, transparent, transparent)" }} />
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, transparent 60%)" }} />
                       {event.original && (
                         <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
                           -{Math.round((1 - event.price / event.original) * 100)}% OFF
@@ -181,6 +181,59 @@ export default function Home() {
               </FadeIn>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ═══ HELP CENTER ═══ */}
+      <section style={{ padding: "5rem 0", background: "#0a0a0a" }}>
+        <div className="container-page" style={{ maxWidth: "600px", margin: "0 auto" }}>
+          <FadeIn>
+            <h2 style={{ fontSize: "clamp(2rem, 5vw, 2.75rem)", fontWeight: 900, textAlign: "center", marginBottom: "2.5rem", lineHeight: 1.2 }}>
+              ¿Cómo te podemos ayudar?
+            </h2>
+          </FadeIn>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {[
+              { icon: "🛒", label: "Necesito ayuda con mi compra" },
+              { icon: "🎫", label: "Perdí mi boleto digital" },
+              { icon: "💳", label: "Quiero pedir un reembolso" },
+              { icon: "❓", label: "Tengo dudas sobre un evento" },
+            ].map((item, i) => (
+              <FadeIn key={item.label} delay={i * 0.08}>
+                <a
+                  href="#"
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    gap: "0.75rem",
+                    background: "#E63946", color: "#fff",
+                    fontSize: "1rem", fontWeight: 600,
+                    padding: "1.1rem 2rem", borderRadius: "9999px",
+                    textDecoration: "none", transition: "all 0.3s",
+                    width: "100%",
+                  }}
+                >
+                  <span>{item.icon}</span>
+                  {item.label}
+                </a>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ MANIFESTO ═══ */}
+      <section style={{ padding: "5rem 0 6rem", background: "#050505" }}>
+        <div className="container-page" style={{ maxWidth: "700px", margin: "0 auto" }}>
+          <FadeIn>
+            <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 900, lineHeight: 1.2, marginBottom: "1.5rem" }}>
+              No somos la boletera de <span style={{ color: "#E63946" }}>siempre.</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.05rem", lineHeight: 1.8 }}>
+              Nos cansamos de las letras chiquitas y los procesos de compra complicados. 
+              Dulos es tu acceso directo a la música, el teatro y el entretenimiento — sin comisiones ocultas, 
+              sin cargos sorpresa, sin excusas. El precio que ves es el precio que pagas. Así de simple.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
