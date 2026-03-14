@@ -121,17 +121,8 @@ export default function EventDetailPage({ event }: { event: EventData }) {
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   }, []);
 
-  const handleBuyClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const el = document.getElementById("comprar");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   const handlePagarClick = () => {
-    setShowCheckout(true);
-    setTimeout(() => {
-      checkoutRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    // Will proceed to checkout form
   };
 
   return (
@@ -233,18 +224,10 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           }}>
             {event.venue.split("•")[0].trim()}
           </h2>
-          <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "1rem" }}>
+          <a href={event.mapsUrl || "#"} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "1.5rem", textDecoration: "none" }}>
             <span style={{ color: "#E63946", fontSize: "14px", marginTop: "2px" }}>📍</span>
-            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1rem", lineHeight: 1.6 }}>{event.address}</p>
-          </div>
-          {event.mapsUrl && (
-            <a href={event.mapsUrl} target="_blank" rel="noopener noreferrer" style={{
-              display: "inline-flex", alignItems: "center", gap: "0.4rem",
-              color: "#E63946", fontSize: "0.95rem", fontWeight: 600, textDecoration: "none", marginBottom: "1.5rem",
-            }}>
-              ↗ Ver en Google Maps
-            </a>
-          )}
+            <p style={{ color: "#E63946", fontSize: "1rem", lineHeight: 1.6 }}>{event.address}</p>
+          </a>
           {event.mapsEmbed && (
             <div style={{ borderRadius: "1rem", overflow: "hidden", marginTop: "1rem" }}>
               <iframe
@@ -273,356 +256,179 @@ export default function EventDetailPage({ event }: { event: EventData }) {
       )}
 
       {/* ═══ STICKY BOTTOM BAR ═══ */}
-      <div style={{
-        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
-        background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        padding: "0.75rem 1rem",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        gap: "1rem",
-      }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: "0.4rem", minWidth: 0 }}>
-          {event.original && (
-            <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "0.85rem" }}>
-              ${event.original.toLocaleString()}
-            </span>
-          )}
-          <span style={{ color: "#E63946", fontSize: "1.4rem", fontWeight: 900 }}>
-            ${event.price.toLocaleString()}
-          </span>
+      {!showCheckout && (
+        <div style={{
+          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
+          background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          padding: "0.75rem 1rem",
+        }}>
+          <button
+            onClick={() => setShowCheckout(true)}
+            className="btn-hero-primary"
+            style={{
+              display: "flex", alignItems: "center", justifyContent: "center",
+              backgroundColor: "#E63946", color: "#fff",
+              fontSize: "15px", fontWeight: 700,
+              padding: "0.95rem 2rem", borderRadius: "8px",
+              cursor: "pointer", border: "none",
+              width: "100%", fontFamily: "inherit",
+            }}
+          >
+            Comprar Boletos
+          </button>
         </div>
-        <a
-          href="#comprar"
-          onClick={handleBuyClick}
-          className="btn-hero-primary"
-          style={{
-            display: "flex", alignItems: "center", justifyContent: "center",
-            backgroundColor: "#E63946", color: "#fff",
-            fontSize: "14px", fontWeight: 700,
-            padding: "0.85rem 1.5rem", borderRadius: "8px",
-            textDecoration: "none", cursor: "pointer",
-            border: "none", whiteSpace: "nowrap",
-            flexShrink: 0,
-          }}
-        >
-          Comprar Boletos
-        </a>
-      </div>
+      )}
 
-      {/* ═══ TICKET PURCHASE / ZONE SELECTION ═══ */}
-      <section id="comprar" style={{ padding: "5rem 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "#080808" }}>
-        <div className="container-page">
-          <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Selecciona tu zona</p>
-            <h2 className="ed-section-title" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900 }}>Comprar Boletos</h2>
-          </div>
+      {/* ═══ PURCHASE DRAWER (slides up) ═══ */}
+      {showCheckout && (
+        <>
+          {/* Backdrop */}
+          <div
+            onClick={() => { setShowCheckout(false); setSelectedZone(null); }}
+            style={{
+              position: "fixed", inset: 0, zIndex: 60,
+              background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
+            }}
+          />
+          {/* Drawer */}
+          <div style={{
+            position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 70,
+            background: "#111", borderRadius: "1.5rem 1.5rem 0 0",
+            maxHeight: "90vh", overflowY: "auto",
+            padding: "1.5rem 1.25rem 2rem",
+            boxShadow: "0 -10px 40px rgba(0,0,0,0.5)",
+          }}>
+            {/* Handle + Close */}
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.75rem" }}>
+              <div style={{ width: "40px", height: "4px", borderRadius: "2px", background: "rgba(255,255,255,0.15)" }} />
+            </div>
+            <button onClick={() => { setShowCheckout(false); setSelectedZone(null); }} style={{
+              position: "absolute", top: "1rem", right: "1rem",
+              background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: "1.25rem", cursor: "pointer",
+            }}>✕</button>
 
-          <div className="ed-zone-grid">
-            {/* Left — Venue Map */}
-            <div style={{
-              background: "#111",
-              borderRadius: "1.25rem",
-              padding: "2.5rem",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}>
-              {/* Stage */}
+            <h2 style={{ fontSize: "1.25rem", fontWeight: 800, textAlign: "center", marginBottom: "0.25rem" }}>
+              🎫 Boletos disponibles
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.85rem", textAlign: "center", marginBottom: "2rem" }}>
+              Selecciona fecha, horario y tipo de boleto para continuar
+            </p>
+
+            {/* 1. Fecha */}
+            <div style={{ marginBottom: "1.75rem" }}>
+              <p style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "0.75rem" }}>🎫 1. Selecciona fecha</p>
               <div style={{
-                background: "linear-gradient(135deg, #1a1a1a, #222)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "0.5rem 0.5rem 2rem 2rem",
-                padding: "1rem",
-                textAlign: "center",
-                marginBottom: "2rem",
-                position: "relative",
+                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "0.75rem", padding: "0.9rem 1rem",
+                display: "flex", alignItems: "center", gap: "0.5rem",
               }}>
-                <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "13px", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 600 }}>
-                  🎤 Escenario
-                </span>
-                <div style={{
-                  position: "absolute",
-                  bottom: "-8px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "60%",
-                  height: "4px",
-                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)",
-                  borderRadius: "2px",
-                }} />
+                <span style={{ fontSize: "14px" }}>📅</span>
+                <span style={{ fontSize: "0.95rem" }}>{event.dates}</span>
               </div>
+              <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.8rem", marginTop: "0.5rem" }}>
+                Fecha seleccionada: {event.dates}
+              </p>
+            </div>
 
-              {/* Zones */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {/* 2. Horario */}
+            <div style={{ marginBottom: "1.75rem" }}>
+              <p style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "0.75rem" }}>🕐 2. Selecciona horario</p>
+              <div style={{
+                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "0.75rem", padding: "0.9rem 1rem",
+                display: "flex", alignItems: "center", gap: "0.5rem",
+              }}>
+                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#E63946" }} />
+                <span style={{ fontSize: "0.95rem" }}>9:00 PM</span>
+              </div>
+            </div>
+
+            {/* 3. Zona */}
+            <div style={{ marginBottom: "1.75rem" }}>
+              <p style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "0.75rem" }}>🎫 3. Selecciona tu zona</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                 {zones.map((zone) => {
                   const isSelected = selectedZone === zone.name;
                   return (
                     <button
                       key={zone.name}
-                      onClick={() => {
-                        setSelectedZone(zone.name);
-                        setQuantity(1);
-                        setShowCheckout(false);
-                      }}
-                      className="zone-btn"
+                      onClick={() => { setSelectedZone(zone.name); setQuantity(1); }}
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        padding: "1.25rem 1.5rem",
-                        background: isSelected
-                          ? `linear-gradient(135deg, ${zone.color}22, ${zone.color}11)`
-                          : "rgba(255,255,255,0.02)",
-                        border: isSelected
-                          ? `2px solid ${zone.color}`
-                          : "1px solid rgba(255,255,255,0.06)",
-                        borderRadius: "0.75rem",
-                        cursor: "pointer",
-                        transition: "all 0.3s ease",
-                        position: "relative",
-                        overflow: "hidden",
-                        color: "#fff",
-                        fontFamily: "inherit",
-                        boxShadow: isSelected
-                          ? `0 0 30px ${zone.color}33, inset 0 0 30px ${zone.color}11`
-                          : "none",
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                        width: "100%", padding: "1rem 1.25rem",
+                        background: isSelected ? `${zone.color}15` : "rgba(255,255,255,0.03)",
+                        border: isSelected ? `2px solid ${zone.color}` : "1px solid rgba(255,255,255,0.08)",
+                        borderRadius: "0.75rem", cursor: "pointer",
+                        color: "#fff", fontFamily: "inherit", transition: "all 0.2s",
                       }}
                     >
-                      {/* Color indicator bar */}
-                      <div style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                        width: isSelected ? "6px" : "4px",
-                        background: zone.color,
-                        borderRadius: "4px 0 0 4px",
-                        transition: "width 0.3s ease",
-                      }} />
-
-                      <div style={{ display: "flex", alignItems: "center", gap: "1rem", paddingLeft: "0.75rem" }}>
-                        <div style={{
-                          width: "12px",
-                          height: "12px",
-                          borderRadius: "50%",
-                          background: zone.color,
-                          boxShadow: isSelected ? `0 0 12px ${zone.color}` : "none",
-                          transition: "box-shadow 0.3s ease",
-                        }} />
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                        <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: zone.color }} />
                         <div style={{ textAlign: "left" }}>
-                          <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "0.15rem" }}>{zone.name}</div>
-                          <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.8rem" }}>
-                            {zone.seats} lugares disponibles
-                          </div>
+                          <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>{zone.name}</div>
+                          <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.75rem" }}>{zone.seats} disponibles</div>
                         </div>
                       </div>
-
-                      <div style={{ textAlign: "right" }}>
-                        <div style={{ fontWeight: 900, fontSize: "1.25rem", color: isSelected ? zone.color : "#fff" }}>
-                          ${zone.price.toLocaleString()}
-                        </div>
-                        <div style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.75rem" }}>MXN</div>
-                      </div>
+                      <span style={{ fontWeight: 900, fontSize: "1.1rem", color: isSelected ? zone.color : "#fff" }}>
+                        ${zone.price.toLocaleString()}
+                      </span>
                     </button>
                   );
                 })}
               </div>
-
-              {/* Legend */}
-              <div className="ed-zone-legend" style={{
-                marginTop: "1.5rem",
-                padding: "1rem",
-                borderTop: "1px solid rgba(255,255,255,0.04)",
-              }}>
-                {zones.map((zone) => (
-                  <div key={zone.name} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: zone.color }} />
-                    <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.75rem" }}>{zone.name}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            {/* Right — Order Summary */}
-            <div className="ed-order-sticky" style={{
-              background: "#111",
-              borderRadius: "1.25rem",
-              padding: "2rem",
-              border: "1px solid rgba(255,255,255,0.06)",
-            }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "1.5rem", paddingBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                Resumen de Orden
-              </h3>
-
-              {/* Event info */}
+            {/* Quantity + Total */}
+            {selected && (
               <div style={{ marginBottom: "1.5rem" }}>
-                <p style={{ fontWeight: 600, fontSize: "1rem", marginBottom: "0.25rem" }}>{event.name}</p>
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>{event.venue}</p>
-                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.8rem", marginTop: "0.15rem" }}>{event.dates}</p>
-              </div>
-
-              {/* Selected zone */}
-              <div style={{
-                background: "rgba(255,255,255,0.03)",
-                borderRadius: "0.75rem",
-                padding: "1.25rem",
-                marginBottom: "1.25rem",
-                border: "1px solid rgba(255,255,255,0.04)",
-              }}>
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "0.5rem" }}>
-                  Zona
-                </p>
-                {selected ? (
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: selected.color }} />
-                    <span style={{ fontWeight: 600 }}>{selected.name}</span>
-                    <span style={{ color: "rgba(255,255,255,0.3)", marginLeft: "auto", fontSize: "0.9rem" }}>
-                      ${selected.price.toLocaleString()} c/u
-                    </span>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem" }}>Cantidad</span>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{
+                      width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
+                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "0.5rem 0 0 0.5rem", color: "#fff", cursor: "pointer", fontSize: "1.1rem", fontFamily: "inherit",
+                    }}>−</button>
+                    <div style={{
+                      width: "48px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
+                      background: "rgba(255,255,255,0.04)", borderTop: "1px solid rgba(255,255,255,0.08)",
+                      borderBottom: "1px solid rgba(255,255,255,0.08)", fontWeight: 700,
+                    }}>{quantity}</div>
+                    <button onClick={() => setQuantity(Math.min(selected.seats, quantity + 1))} style={{
+                      width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
+                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "0 0.5rem 0.5rem 0", color: "#fff", cursor: "pointer", fontSize: "1.1rem", fontFamily: "inherit",
+                    }}>+</button>
                   </div>
-                ) : (
-                  <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.9rem" }}>Selecciona una zona del mapa</p>
-                )}
-              </div>
-
-              {/* Quantity */}
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: "1.5rem",
-              }}>
-                <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>Cantidad</span>
-                <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={!selected}
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "0.5rem 0 0 0.5rem",
-                      color: selected ? "#fff" : "rgba(255,255,255,0.15)",
-                      cursor: selected ? "pointer" : "not-allowed",
-                      fontSize: "1.1rem",
-                      fontFamily: "inherit",
-                      transition: "background 0.2s ease",
-                    }}
-                  >
-                    −
-                  </button>
-                  <div style={{
-                    width: "48px",
-                    height: "36px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "rgba(255,255,255,0.04)",
-                    borderTop: "1px solid rgba(255,255,255,0.08)",
-                    borderBottom: "1px solid rgba(255,255,255,0.08)",
-                    fontWeight: 700,
-                    fontSize: "1rem",
-                    color: selected ? "#fff" : "rgba(255,255,255,0.15)",
-                  }}>
-                    {quantity}
-                  </div>
-                  <button
-                    onClick={() => setQuantity(Math.min(selected ? selected.seats : 10, quantity + 1))}
-                    disabled={!selected}
-                    style={{
-                      width: "36px",
-                      height: "36px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: "0 0.5rem 0.5rem 0",
-                      color: selected ? "#fff" : "rgba(255,255,255,0.15)",
-                      cursor: selected ? "pointer" : "not-allowed",
-                      fontSize: "1.1rem",
-                      fontFamily: "inherit",
-                      transition: "background 0.2s ease",
-                    }}
-                  >
-                    +
-                  </button>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                  <span style={{ fontWeight: 600 }}>Total</span>
+                  <span style={{ fontWeight: 900, fontSize: "1.5rem", color: "#E63946" }}>${subtotal.toLocaleString()}.00</span>
                 </div>
               </div>
+            )}
 
-              {/* Divider */}
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: "1.25rem" }} />
-
-              {/* Subtotal */}
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>Subtotal</span>
-                <span style={{ fontSize: "0.95rem" }}>${subtotal.toLocaleString()}.00</span>
-              </div>
-
-              {/* No fees badge */}
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                background: "rgba(46,204,113,0.08)",
-                border: "1px solid rgba(46,204,113,0.15)",
-                borderRadius: "0.5rem",
-                padding: "0.6rem 0.75rem",
-                marginBottom: "1.25rem",
-              }}>
-                <span style={{ fontSize: "14px" }}>✓</span>
-                <span style={{ color: "#2ECC71", fontSize: "0.85rem", fontWeight: 600 }}>¡Sin comisiones!</span>
-              </div>
-
-              {/* Total */}
-              <div style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "baseline",
-                marginBottom: "1.5rem",
-                paddingTop: "1rem",
-                borderTop: "1px solid rgba(255,255,255,0.06)",
-              }}>
-                <span style={{ fontWeight: 600, fontSize: "1rem" }}>Total</span>
-                <span style={{ fontWeight: 900, fontSize: "1.5rem", color: "#E63946" }}>
-                  ${subtotal.toLocaleString()}.00
-                </span>
-              </div>
-
-              {/* Pay button */}
-              <button
-                disabled={!selected}
-                onClick={handlePagarClick}
-                style={{
-                  width: "100%",
-                  padding: "1rem",
-                  background: selected ? "#E63946" : "rgba(255,255,255,0.06)",
-                  color: selected ? "#fff" : "rgba(255,255,255,0.2)",
-                  border: "none",
-                  borderRadius: "9999px",
-                  fontSize: "1rem",
-                  fontWeight: 700,
-                  cursor: selected ? "pointer" : "not-allowed",
-                  transition: "all 0.3s ease",
-                  fontFamily: "inherit",
-                  letterSpacing: "0.02em",
-                  boxShadow: selected ? "0 4px 24px rgba(230,57,70,0.3)" : "none",
-                }}
-              >
-                {selected ? `Pagar $${subtotal.toLocaleString()}.00` : "Selecciona una zona"}
-              </button>
-
-              {/* Security note */}
-              <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.75rem", textAlign: "center", marginTop: "1rem" }}>
-                🔒 Pago seguro · Boletos digitales al instante
-              </p>
-            </div>
+            {/* Pay button */}
+            <button
+              disabled={!selected}
+              onClick={handlePagarClick}
+              style={{
+                width: "100%", padding: "1rem",
+                background: selected ? "#E63946" : "rgba(255,255,255,0.06)",
+                color: selected ? "#fff" : "rgba(255,255,255,0.2)",
+                border: "none", borderRadius: "8px",
+                fontSize: "1rem", fontWeight: 700,
+                cursor: selected ? "pointer" : "not-allowed",
+                fontFamily: "inherit",
+                boxShadow: selected ? "0 4px 24px rgba(230,57,70,0.3)" : "none",
+              }}
+            >
+              {selected ? `Pagar $${subtotal.toLocaleString()}.00` : "Selecciona una zona"}
+            </button>
           </div>
-        </div>
-      </section>
+        </>
+      )}
 
       {/* ═══ CHECKOUT FLOW ═══ */}
       {showCheckout && selected && (
