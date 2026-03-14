@@ -190,7 +190,7 @@ export default function Home() {
                   <motion.div
                     whileHover={{ y: -6 }}
                     transition={{ duration: 0.4 }}
-                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#050505", border: "1px solid rgba(255,255,255,0.04)" }}
+                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#111", border: "1px solid rgba(255,255,255,0.12)" }}
                   >
                     <div className="event-card-image" style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#000" }}>
                       <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.7s" }} />
@@ -202,15 +202,15 @@ export default function Home() {
                       )}
                     </div>
                     <div className="event-card-text" style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
-                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
+                      <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
                       <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginTop: "0.5rem" }}>{event.name}</h3>
-                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>
+                      <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem" }}>
                         <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-                          {event.original && <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
+                          {event.original && <span style={{ color: "rgba(255,255,255,0.5)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
                           <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
                         </div>
-                        <span className="ver-mas" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", transition: "color 0.3s" }}>Ver más →</span>
+                        <span className="ver-mas" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px", transition: "color 0.3s" }}>Ver más →</span>
                       </div>
                     </div>
                   </motion.div>
