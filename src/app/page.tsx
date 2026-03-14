@@ -71,7 +71,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}
+            style={{ color: "rgba(255,255,255,0.45)", fontSize: "11px", letterSpacing: "0.35em", textTransform: "uppercase", marginBottom: "1.25rem" }}
           >
             Tu acceso directo al entretenimiento
           </motion.p>
@@ -88,7 +88,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 1 }}
-            style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.1rem", marginTop: "2rem", lineHeight: 1.7 }}
+            style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", marginTop: "1.5rem", lineHeight: 1.6 }}
           >
             Música, teatro y entretenimiento.<br />Sin las comisiones de siempre.
           </motion.p>
@@ -98,18 +98,19 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
-            style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "2.5rem", maxWidth: "420px", marginLeft: "auto", marginRight: "auto" }}
+            style={{ display: "flex", flexDirection: "column", gap: "0.875rem", marginTop: "2.5rem", maxWidth: "460px", marginLeft: "auto", marginRight: "auto", padding: "0 1rem" }}
           >
             <a
               href="#eventos"
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
-                background: "#E63946", color: "#fff",
-                fontSize: "14px", fontWeight: 700,
-                padding: "1rem 2.5rem", borderRadius: "9999px",
+                background: "linear-gradient(135deg, #E63946, #d63240)", color: "#fff",
+                fontSize: "15px", fontWeight: 700,
+                padding: "1.1rem 2.5rem", borderRadius: "9999px",
                 textDecoration: "none", transition: "all 0.3s",
-                letterSpacing: "0.15em", textTransform: "uppercase",
+                letterSpacing: "0.12em", textTransform: "uppercase",
                 width: "100%",
+                boxShadow: "0 4px 24px rgba(230,57,70,0.35)",
               }}
             >
               VER EVENTOS
@@ -119,11 +120,11 @@ export default function Home() {
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
                 background: "transparent", color: "#fff",
-                fontSize: "14px", fontWeight: 700,
-                padding: "1rem 2.5rem", borderRadius: "9999px",
+                fontSize: "15px", fontWeight: 700,
+                padding: "1.1rem 2.5rem", borderRadius: "9999px",
                 textDecoration: "none", transition: "all 0.3s",
-                letterSpacing: "0.15em", textTransform: "uppercase",
-                border: "2px solid rgba(255,255,255,0.8)",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                border: "2px solid rgba(255,255,255,0.9)",
                 width: "100%",
               }}
             >
