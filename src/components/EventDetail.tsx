@@ -160,24 +160,16 @@ export default function EventDetailPage({ event }: { event: EventData }) {
       {event.original && (
         <div style={{
           background: "linear-gradient(135deg, #E63946, #c0212e)",
-          padding: "0.85rem 0",
+          padding: "0.45rem 0",
           textAlign: "center",
-          fontSize: "1rem",
-          fontWeight: 700,
+          fontSize: "0.8rem",
+          fontWeight: 600,
           color: "#fff",
           letterSpacing: "0.03em",
-          textShadow: "0 1px 2px rgba(0,0,0,0.2)",
         }}>
-          🎉 Oferta: De ${event.original.toLocaleString()}.00 a ${event.price.toLocaleString()}.00
+          Oferta: De ${event.original.toLocaleString()}.00 a ${event.price.toLocaleString()}.00
         </div>
       )}
-
-      {/* ═══ BACK LINK ═══ */}
-      <div className="container-page" style={{ paddingTop: "2rem" }}>
-        <Link href="/" style={{ color: "rgba(255,255,255,0.4)", textDecoration: "none", fontSize: "14px", transition: "color 0.3s ease" }} className="nav-link">
-          ← Volver
-        </Link>
-      </div>
 
       {/* ═══ EVENT DETAIL ═══ */}
       <section className="container-page" style={{ paddingTop: "2rem", paddingBottom: "4rem" }}>
@@ -233,17 +225,17 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            background: "#E63946",
+            backgroundColor: "#E63946",
             color: "#fff",
             fontSize: "15px",
             fontWeight: 700,
             padding: "1rem 2.5rem",
             borderRadius: "8px",
             textDecoration: "none",
-            transition: "all 0.3s ease",
             cursor: "pointer",
             maxWidth: "400px",
             width: "100%",
+            border: "none",
           }}
         >
           Comprar Boletos
