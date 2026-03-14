@@ -205,12 +205,12 @@ export default function Home() {
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center",
                     gap: "0.75rem",
-                    background: "linear-gradient(135deg, #E63946, #d32f3c)", color: "#fff",
+                    background: "rgba(255,255,255,0.05)", color: "#fff",
                     fontSize: "1rem", fontWeight: 600,
                     padding: "1.15rem 2rem", borderRadius: "12px",
                     textDecoration: "none", transition: "all 0.3s",
                     width: "100%",
-                    boxShadow: "0 4px 20px rgba(230,57,70,0.25)",
+                    border: "1px solid rgba(255,255,255,0.12)",
                   }}
                 >
                   <span>{item.icon}</span>
