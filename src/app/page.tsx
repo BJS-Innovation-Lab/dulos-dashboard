@@ -113,8 +113,8 @@ export default function Home() {
             transition={{ delay: 0.7, duration: 1 }}
             style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}
           >
-            <span style={{ color: "#E63946" }}>MOMENTOS</span><br />
-            INOLVIDABLES
+            <span className="hero-title-momentos">MOMENTOS</span><br />
+            <span className="hero-title-inolvidables">INOLVIDABLES</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}

@@ -75,7 +75,7 @@ body {
 }
 
 .btn-hero-primary {
-  animation: hero-glow 2.5s ease-in-out infinite !important;
+  animation: hero-glow 1.2s ease-in-out infinite !important;
   position: relative !important;
   overflow: hidden !important;
 }
@@ -86,7 +86,7 @@ body {
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
-  animation: shimmer 3s ease-in-out infinite;
+  animation: shimmer 1.5s ease-in-out infinite;
   pointer-events: none;
 }
 
@@ -414,6 +414,33 @@ body {
   .ed-events-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Hero title fire effect */
+@keyframes text-glow-pulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(230,57,70,0.3), 0 0 60px rgba(230,57,70,0.1); }
+  50% { text-shadow: 0 0 30px rgba(230,57,70,0.6), 0 0 80px rgba(230,57,70,0.2), 0 0 120px rgba(230,57,70,0.1); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.hero-title-momentos {
+  background: linear-gradient(90deg, #E63946, #ff6b6b, #ff2d2d, #E63946) !important;
+  background-size: 300% 100% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: gradient-shift 3s ease-in-out infinite, text-glow-pulse 2s ease-in-out infinite !important;
+  filter: drop-shadow(0 0 30px rgba(230,57,70,0.3));
+}
+
+.hero-title-inolvidables {
+  animation: text-glow-pulse 2.5s ease-in-out infinite;
+  text-shadow: 0 0 40px rgba(255,255,255,0.1);
 }
 
 ::-webkit-scrollbar {
