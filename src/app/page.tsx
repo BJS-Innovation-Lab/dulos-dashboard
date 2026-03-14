@@ -227,7 +227,7 @@ export default function Home() {
         <div className="container-page" style={{ maxWidth: "700px", margin: "0 auto", paddingBottom: "3rem" }}>
           <FadeIn>
             <h2 style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 900, lineHeight: 1.2, marginBottom: "1.5rem" }}>
-              No somos la boletera de <span style={{ color: "#E63946" }}>siempre.</span>
+              No somos la boletera de <span style={{ color: "#E63946", textDecoration: "underline", textDecorationThickness: "3px", textUnderlineOffset: "6px" }}>siempre.</span>
             </h2>
             <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", lineHeight: 1.8 }}>
               Nos cansamos de las letras chiquitas y los procesos de compra complicados. 
