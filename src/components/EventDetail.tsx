@@ -57,6 +57,12 @@ interface EventData {
   image: string;
   description: string;
   slug: string;
+  quote?: string;
+  longDescription?: string;
+  address?: string;
+  mapsUrl?: string;
+  mapsEmbed?: string;
+  gallery?: string[];
 }
 
 const inputStyle: React.CSSProperties = {
@@ -171,53 +177,100 @@ export default function EventDetailPage({ event }: { event: EventData }) {
         </div>
       )}
 
-      {/* ═══ EVENT DETAIL ═══ */}
-      <section className="container-page" style={{ paddingTop: "2rem", paddingBottom: "4rem" }}>
-        {/* Venue label */}
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>
-          {event.venue}
+      {/* ═══ ACERCA DE ═══ */}
+      <section className="container-page" style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: "1.25rem", fontWeight: 600 }}>
+          ACERCA DE
         </p>
 
-        {/* Title */}
-        <h1 className="ed-hero-title" style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.5rem" }}>
+        <h1 className="ed-hero-title" style={{
+          fontSize: "clamp(2rem, 6vw, 3rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.75rem",
+          textDecoration: "underline", textDecorationColor: "#E63946", textUnderlineOffset: "6px", textDecorationThickness: "3px",
+        }}>
           {event.name}
         </h1>
 
+        {/* Quote */}
+        {event.quote && (
+          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "1.75rem", fontStyle: "italic" }}>
+            &ldquo;{event.quote}&rdquo;
+          </p>
+        )}
+
         {/* Description */}
-        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem", lineHeight: 1.8, marginBottom: "2rem", maxWidth: "600px" }}>
+        <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem", lineHeight: 1.85, marginBottom: "1.5rem" }}>
           {event.description}
         </p>
 
-        {/* Dates & Location */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "2rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-            <span style={{ fontSize: "14px" }}>📅</span>
-            <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem" }}>Fechas disponibles:</span>
+        {/* Long description */}
+        {event.longDescription && (
+          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem", lineHeight: 1.85 }}>
+            {event.longDescription.split("\n\n").map((p, i) => (
+              <p key={i} style={{ marginBottom: "1.25rem" }}>{p}</p>
+            ))}
           </div>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem", paddingLeft: "1.75rem" }}>{event.dates}</p>
-        </div>
+        )}
+      </section>
 
-        {/* Poster — full width on mobile */}
-        <div style={{ position: "relative", width: "100%", borderRadius: "1rem", overflow: "hidden", marginBottom: "2rem", background: "#111" }}>
-          <div className="ed-hero-poster-container" style={{ position: "relative", width: "100%", aspectRatio: "3/4", maxHeight: "500px" }}>
+      {/* ═══ POSTER ═══ */}
+      <section className="container-page" style={{ paddingBottom: "3rem" }}>
+        <div style={{ position: "relative", width: "100%", borderRadius: "1rem", overflow: "hidden", background: "#111" }}>
+          <div className="ed-hero-poster-container" style={{ position: "relative", width: "100%", aspectRatio: "3/4", maxHeight: "600px" }}>
             <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center" }} priority />
           </div>
         </div>
-
-        {/* Price + CTA */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
-          {event.original && (
-            <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "1.1rem" }}>
-              ${event.original.toLocaleString()}
-            </span>
-          )}
-          <span style={{ color: "#E63946", fontSize: "2.25rem", fontWeight: 900 }}>
-            ${event.price.toLocaleString()}
-          </span>
-          <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.85rem" }}>MXN</span>
-        </div>
-
       </section>
+
+      {/* ═══ UBICACIÓN ═══ */}
+      {event.address && (
+        <section className="container-page" style={{ paddingBottom: "3rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: "1.25rem", fontWeight: 600 }}>
+            UBICACIÓN
+          </p>
+          <h2 style={{
+            fontSize: "clamp(1.5rem, 4vw, 2.25rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem",
+            textDecoration: "underline", textDecorationColor: "#E63946", textUnderlineOffset: "6px", textDecorationThickness: "3px",
+          }}>
+            {event.venue.split("•")[0].trim()}
+          </h2>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem", marginBottom: "1rem" }}>
+            <span style={{ color: "#E63946", fontSize: "14px", marginTop: "2px" }}>📍</span>
+            <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1rem", lineHeight: 1.6 }}>{event.address}</p>
+          </div>
+          {event.mapsUrl && (
+            <a href={event.mapsUrl} target="_blank" rel="noopener noreferrer" style={{
+              display: "inline-flex", alignItems: "center", gap: "0.4rem",
+              color: "#E63946", fontSize: "0.95rem", fontWeight: 600, textDecoration: "none", marginBottom: "1.5rem",
+            }}>
+              ↗ Ver en Google Maps
+            </a>
+          )}
+          {event.mapsEmbed && (
+            <div style={{ borderRadius: "1rem", overflow: "hidden", marginTop: "1rem" }}>
+              <iframe
+                src={event.mapsEmbed}
+                width="100%" height="300"
+                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
+                allowFullScreen loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* ═══ GALLERY ═══ */}
+      {event.gallery && event.gallery.length > 0 && (
+        <section className="container-page" style={{ paddingBottom: "3rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1rem" }}>
+            {event.gallery.map((img, i) => (
+              <div key={i} style={{ position: "relative", width: "100%", aspectRatio: "16/10", borderRadius: "1rem", overflow: "hidden" }}>
+                <Image src={img} alt={`${event.name} ${i + 1}`} fill style={{ objectFit: "cover" }} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ═══ STICKY BOTTOM BAR ═══ */}
       <div style={{
