@@ -1,8 +1,8 @@
 "use client";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const events = [
   { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar", url: "/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" },
@@ -32,6 +32,7 @@ export default function Home() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <main style={{ background: "#050505", color: "#fff", overflowX: "hidden" }}>
@@ -52,13 +53,52 @@ export default function Home() {
           <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
           </a>
-          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-            <a href="#eventos" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s", whiteSpace: "nowrap", fontWeight: 600 }}>
-              VER EVENTOS
-            </a>
+          {/* Desktop nav links */}
+          <div className="hp-nav-links" style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
+            <a href="#eventos" style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", textDecoration: "none", letterSpacing: "0.12em", textTransform: "uppercase", transition: "color 0.3s", fontWeight: 500 }}>Ver Eventos</a>
+            <a href="#ayuda" style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", textDecoration: "none", letterSpacing: "0.12em", textTransform: "uppercase", transition: "color 0.3s", fontWeight: 500 }}>Ayuda</a>
+            <Link href="/perdi-mi-boleto" style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", textDecoration: "none", letterSpacing: "0.12em", textTransform: "uppercase", transition: "color 0.3s", fontWeight: 500 }}>Mis Boletos</Link>
+            <a href="#nosotros" style={{ fontSize: "13px", color: "rgba(255,255,255,0.6)", textDecoration: "none", letterSpacing: "0.12em", textTransform: "uppercase", transition: "color 0.3s", fontWeight: 500 }}>Nosotros</a>
           </div>
+          {/* Hamburger (mobile) */}
+          <button
+            className="ed-hamburger"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
+            style={{ display: "none", background: "none", border: "none", color: "rgba(255,255,255,0.7)", fontSize: "1.5rem", cursor: "pointer", padding: "0.25rem" }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
         </div>
       </motion.nav>
+
+      {/* ═══ MOBILE MENU ═══ */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: "fixed", top: 0, right: 0, bottom: 0, width: "280px", zIndex: 100,
+              background: "rgba(5,5,5,0.95)", backdropFilter: "blur(24px)",
+              padding: "5rem 2rem 2rem",
+              display: "flex", flexDirection: "column", gap: "1.5rem",
+            }}
+          >
+            <button onClick={() => setMenuOpen(false)} style={{ position: "absolute", top: "1.25rem", right: "1.25rem", background: "none", border: "none", color: "#fff", fontSize: "1.5rem", cursor: "pointer" }}>✕</button>
+            <a href="#eventos" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#fff", textDecoration: "none", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>Ver Eventos</a>
+            <a href="#ayuda" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#fff", textDecoration: "none", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>Ayuda</a>
+            <Link href="/perdi-mi-boleto" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#fff", textDecoration: "none", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>Mis Boletos</Link>
+            <a href="#nosotros" onClick={() => setMenuOpen(false)} style={{ fontSize: "15px", color: "#fff", textDecoration: "none", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 600 }}>Nosotros</a>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ═══ HERO ═══ */}
       <section ref={heroRef} style={{ position: "relative", height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
@@ -81,7 +121,7 @@ export default function Home() {
             transition={{ delay: 0.7, duration: 1 }}
             style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}
           >
-            <span style={{ color: "#E63946" }}>MOMENTOS</span><br />
+            MOMENTOS<br />
             INOLVIDABLES
           </motion.h1>
           <motion.p
@@ -90,7 +130,7 @@ export default function Home() {
             transition={{ delay: 1.2, duration: 1 }}
             style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", marginTop: "1.5rem", lineHeight: 1.6 }}
           >
-            Música, teatro y entretenimiento.<br />Sin las comisiones de siempre.
+            Tu acceso directo a la música, el teatro y el entretenimiento. Sin las comisiones de siempre.
           </motion.p>
 
           {/* Two CTA buttons */}
@@ -98,7 +138,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
-            style={{ display: "flex", flexDirection: "column", gap: "0.875rem", marginTop: "2.5rem", maxWidth: "460px", marginLeft: "auto", marginRight: "auto", padding: "0 1rem" }}
+            style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "2.5rem", maxWidth: "360px", marginLeft: "auto", marginRight: "auto", padding: "0 1rem" }}
           >
             <a
               href="#eventos"

@@ -158,6 +158,9 @@ body {
   .hp-nav-links {
     display: none !important;
   }
+  .ed-hamburger {
+    display: block !important;
+  }
   .hp-nav-cta {
     font-size: 11px !important;
     letter-spacing: 0.1em !important;
