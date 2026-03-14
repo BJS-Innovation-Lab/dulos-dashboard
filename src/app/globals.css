@@ -176,6 +176,9 @@ body {
   .event-card-wrapper {
     border-radius: 12px !important;
   }
+  .event-card-wrapper > div:first-child {
+    aspect-ratio: 3/2 !important;
+  }
   .hp-featured-section {
     height: auto !important;
     min-height: 60vh;
