@@ -195,7 +195,7 @@ export default function Home() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {[
               { icon: "🛒", label: "Necesito ayuda con mi compra" },
-              { icon: "🎫", label: "Perdí mi boleto digital" },
+              { icon: "✉️", label: "Perdí mi boleto digital" },
               { icon: "💳", label: "Quiero pedir un reembolso" },
               { icon: "❓", label: "Tengo dudas sobre un evento" },
             ].map((item, i) => (
@@ -205,11 +205,12 @@ export default function Home() {
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "center",
                     gap: "0.75rem",
-                    background: "#E63946", color: "#fff",
+                    background: "linear-gradient(135deg, #E63946, #d32f3c)", color: "#fff",
                     fontSize: "1rem", fontWeight: 600,
-                    padding: "1.1rem 2rem", borderRadius: "9999px",
+                    padding: "1.15rem 2rem", borderRadius: "12px",
                     textDecoration: "none", transition: "all 0.3s",
                     width: "100%",
+                    boxShadow: "0 4px 20px rgba(230,57,70,0.25)",
                   }}
                 >
                   <span>{item.icon}</span>
@@ -238,15 +239,49 @@ export default function Home() {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0" }}>
-        <div className="container-page hp-footer" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
-            <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
-          </a>
-          <p style={{ color: "rgba(255,255,255,0.15)", fontSize: "12px" }}>© 2026 Dulos. Sin comisiones, sin excusas.</p>
-          <div style={{ display: "flex", gap: "2rem" }}>
-            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Términos</a>
-            <a href="#" style={{ color: "rgba(255,255,255,0.2)", fontSize: "12px", textDecoration: "none" }}>Privacidad</a>
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.08)", padding: "4rem 0 2rem", background: "#050505" }}>
+        <div className="container-page">
+          {/* Logo */}
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
+              <Image src="/dulos-logo.svg" alt="Dulos" width={120} height={40} />
+            </a>
+          </div>
+
+          {/* Footer columns */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "2.5rem", textAlign: "center", marginBottom: "3rem" }}>
+            {/* Información */}
+            <div>
+              <h4 style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1.25rem", color: "#fff" }}>Información</h4>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", textDecoration: "none", transition: "color 0.3s" }}>Términos y Condiciones</a>
+                <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", textDecoration: "none", transition: "color 0.3s" }}>Aviso de Privacidad</a>
+                <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", textDecoration: "none", transition: "color 0.3s" }}>Política de Cancelación</a>
+              </div>
+            </div>
+
+            {/* Contáctanos */}
+            <div>
+              <h4 style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1.25rem", color: "#fff" }}>Contáctanos</h4>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <a href="mailto:ayuda@dulos.io" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", textDecoration: "none", transition: "color 0.3s" }}>✉️ ayuda@dulos.io</a>
+                <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", textDecoration: "none", transition: "color 0.3s" }}>💬 WhatsApp</a>
+              </div>
+            </div>
+
+            {/* Síguenos */}
+            <div>
+              <h4 style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1.25rem", color: "#fff" }}>Síguenos</h4>
+              <div style={{ display: "flex", justifyContent: "center", gap: "1.5rem" }}>
+                <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.5rem", textDecoration: "none", transition: "color 0.3s" }}>📷</a>
+                <a href="#" style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.5rem", textDecoration: "none", transition: "color 0.3s" }}>👤</a>
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "1.5rem", textAlign: "center" }}>
+            <p style={{ color: "rgba(255,255,255,0.25)", fontSize: "13px" }}>© 2025 Dulos. Todos los derechos reservados.</p>
           </div>
         </div>
       </footer>
