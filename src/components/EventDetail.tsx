@@ -217,30 +217,44 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.85rem" }}>MXN</span>
         </div>
 
+      </section>
+
+      {/* ═══ STICKY BOTTOM BAR ═══ */}
+      <div style={{
+        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
+        background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
+        padding: "0.75rem 1rem",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        gap: "1rem",
+      }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.4rem", minWidth: 0 }}>
+          {event.original && (
+            <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "0.85rem" }}>
+              ${event.original.toLocaleString()}
+            </span>
+          )}
+          <span style={{ color: "#E63946", fontSize: "1.4rem", fontWeight: 900 }}>
+            ${event.price.toLocaleString()}
+          </span>
+        </div>
         <a
           href="#comprar"
           onClick={handleBuyClick}
           className="btn-hero-primary"
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#E63946",
-            color: "#fff",
-            fontSize: "15px",
-            fontWeight: 700,
-            padding: "1rem 2.5rem",
-            borderRadius: "8px",
-            textDecoration: "none",
-            cursor: "pointer",
-            maxWidth: "400px",
-            width: "100%",
-            border: "none",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            backgroundColor: "#E63946", color: "#fff",
+            fontSize: "14px", fontWeight: 700,
+            padding: "0.85rem 1.5rem", borderRadius: "8px",
+            textDecoration: "none", cursor: "pointer",
+            border: "none", whiteSpace: "nowrap",
+            flexShrink: 0,
           }}
         >
           Comprar Boletos
         </a>
-      </section>
+      </div>
 
       {/* ═══ TICKET PURCHASE / ZONE SELECTION ═══ */}
       <section id="comprar" style={{ padding: "5rem 0", borderTop: "1px solid rgba(255,255,255,0.06)", background: "#080808" }}>
@@ -877,7 +891,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
       </section>
 
       {/* ═══ FOOTER ═══ */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0" }}>
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "2.5rem 0 5rem" }}>
         <div className="container-page ed-footer">
           <Link href="/" style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={80} height={26} style={{ opacity: 0.4 }} />
