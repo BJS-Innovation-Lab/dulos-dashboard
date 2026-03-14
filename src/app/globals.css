@@ -167,10 +167,14 @@ body {
   }
   .grid-events {
     overflow: hidden;
+    gap: 1.25rem !important;
   }
   .grid-events > * {
     min-width: 0;
     width: 100%;
+  }
+  .event-card-wrapper {
+    border-radius: 12px !important;
   }
   .hp-featured-section {
     height: auto !important;

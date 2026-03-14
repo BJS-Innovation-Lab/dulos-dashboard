@@ -173,44 +173,52 @@ export default function Home() {
         />
       </section>
 
-      {/* ═══ EVENTS GRID ═══ */}
-      <section id="eventos" className="section-centered" style={{ padding: "5rem 0 6rem" }}>
+      {/* ═══ EVENTS ═══ */}
+      <section id="eventos" style={{ padding: "4rem 0 5rem" }}>
         <div className="container-page">
           <FadeIn>
-            <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-              <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Próximos Eventos</p>
-              <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900 }}>Elige Tu Momento</h2>
+            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+              <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem", fontWeight: 600 }}>PRÓXIMOS EVENTOS</p>
+              <h2 style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 900, textTransform: "uppercase", letterSpacing: "-0.01em" }}>Elige Tu Momento</h2>
             </div>
           </FadeIn>
 
           <div className="grid-events">
             {events.map((event, i) => (
-              <FadeIn key={event.name} delay={i * 0.08}>
-                <Link href={event.url} className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+              <FadeIn key={event.name} delay={i * 0.06}>
+                <Link href={event.url} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
                   <motion.div
-                    whileHover={{ y: -6 }}
-                    transition={{ duration: 0.4 }}
-                    style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#111", border: "1px solid rgba(255,255,255,0.12)" }}
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.3 }}
+                    className="event-card-wrapper"
+                    style={{ position: "relative", borderRadius: "16px", overflow: "hidden", cursor: "pointer" }}
                   >
-                    <div className="event-card-image" style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#000" }}>
-                      <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.7s" }} />
-                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #050505, transparent 60%)" }} />
-                      {event.original && (
-                        <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.375rem 0.75rem", borderRadius: "8px", letterSpacing: "0.1em" }}>
-                          -{Math.round((1 - event.price / event.original) * 100)}% OFF
-                        </div>
-                      )}
+                    {/* Full image background */}
+                    <div style={{ position: "relative", aspectRatio: "4/5", overflow: "hidden" }}>
+                      <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center", transition: "transform 0.6s" }} />
+                      {/* Strong gradient from bottom */}
+                      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, transparent 70%)" }} />
                     </div>
-                    <div className="event-card-text" style={{ padding: "1.5rem", marginTop: "-5rem", position: "relative", zIndex: 10 }}>
-                      <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "11px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{event.date}</p>
-                      <h3 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginTop: "0.5rem" }}>{event.name}</h3>
-                      <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.875rem", marginTop: "0.25rem" }}>{event.venue} • {event.city}</p>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem" }}>
+
+                    {/* Discount badge */}
+                    {event.original && (
+                      <div style={{ position: "absolute", top: "1rem", right: "1rem", background: "#E63946", color: "#fff", fontSize: "11px", fontWeight: 700, padding: "0.4rem 0.85rem", borderRadius: "6px", letterSpacing: "0.05em", zIndex: 5 }}>
+                        -{Math.round((1 - event.price / event.original) * 100)}% OFF
+                      </div>
+                    )}
+
+                    {/* Text overlay at bottom */}
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "1.5rem", zIndex: 5 }}>
+                      <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "12px", letterSpacing: "0.08em", textTransform: "uppercase", fontWeight: 500 }}>{event.date}</p>
+                      <h3 style={{ fontSize: "1.4rem", fontWeight: 800, color: "#fff", marginTop: "0.35rem", lineHeight: 1.2 }}>{event.name}</h3>
+                      <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", marginTop: "0.35rem" }}>{event.venue} • {event.city}</p>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1rem", paddingTop: "0.75rem", borderTop: "1px solid rgba(255,255,255,0.15)" }}>
                         <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-                          {event.original && <span style={{ color: "rgba(255,255,255,0.5)", textDecoration: "line-through", fontSize: "0.875rem" }}>${event.original}</span>}
-                          <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
+                          <span style={{ color: "rgba(255,255,255,0.9)", fontSize: "0.8rem", fontWeight: 500 }}>Desde</span>
+                          {event.original && <span style={{ color: "rgba(255,255,255,0.4)", textDecoration: "line-through", fontSize: "0.85rem" }}>${event.original}</span>}
+                          <span style={{ color: "#E63946", fontSize: "1.6rem", fontWeight: 900 }}>${event.price.toLocaleString()}</span>
                         </div>
-                        <span className="ver-mas" style={{ color: "rgba(255,255,255,0.6)", fontSize: "12px", transition: "color 0.3s" }}>Ver más →</span>
+                        <span style={{ color: "#fff", fontSize: "13px", fontWeight: 600, background: "rgba(255,255,255,0.1)", padding: "0.4rem 0.8rem", borderRadius: "6px" }}>Ver más →</span>
                       </div>
                     </div>
                   </motion.div>
