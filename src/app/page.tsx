@@ -52,9 +52,11 @@ export default function Home() {
           <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
             <Image src="/dulos-logo.svg" alt="Dulos" width={110} height={36} />
           </a>
-          <a href="#eventos" className="nav-link" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s", whiteSpace: "nowrap", fontWeight: 600 }}>
-            Ver Eventos
-          </a>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+            <a href="#eventos" style={{ fontSize: "13px", color: "#E63946", textDecoration: "none", letterSpacing: "0.15em", textTransform: "uppercase", transition: "color 0.3s", whiteSpace: "nowrap", fontWeight: 600 }}>
+              VER EVENTOS
+            </a>
+          </div>
         </div>
       </motion.nav>
 
@@ -69,7 +71,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            style={{ color: "#E63946", fontSize: "13px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}
+            style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1.5rem" }}
           >
             Tu acceso directo al entretenimiento
           </motion.p>
@@ -79,14 +81,14 @@ export default function Home() {
             transition={{ delay: 0.7, duration: 1 }}
             style={{ fontSize: "clamp(3.5rem, 10vw, 9rem)", fontWeight: 900, lineHeight: 0.9, letterSpacing: "-0.02em" }}
           >
-            MOMENTOS<br />
-            <span style={{ background: "linear-gradient(to right, #E63946, #ff6b6b)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>INOLVIDABLES</span>
+            <span style={{ color: "#E63946" }}>MOMENTOS</span><br />
+            INOLVIDABLES
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 1 }}
-            style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.1rem", marginTop: "2rem", lineHeight: 1.7 }}
+            style={{ color: "rgba(255,255,255,0.75)", fontSize: "1.1rem", marginTop: "2rem", lineHeight: 1.7 }}
           >
             Música, teatro y entretenimiento.<br />Sin las comisiones de siempre.
           </motion.p>
