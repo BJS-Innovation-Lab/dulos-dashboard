@@ -102,29 +102,31 @@ export default function Home() {
           >
             <a
               href="#eventos"
+              className="btn-hero-primary"
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
-                background: "linear-gradient(135deg, #E63946, #d63240)", color: "#fff",
-                fontSize: "15px", fontWeight: 700,
-                padding: "1.1rem 2.5rem", borderRadius: "9999px",
-                textDecoration: "none", transition: "all 0.3s",
-                letterSpacing: "0.12em", textTransform: "uppercase",
+                backgroundColor: "#E63946", color: "#fff",
+                fontSize: "16px", fontWeight: 800,
+                padding: "1.15rem 2.5rem", borderRadius: "9999px",
+                textDecoration: "none",
+                letterSpacing: "0.1em", textTransform: "uppercase",
                 width: "100%",
-                boxShadow: "0 4px 24px rgba(230,57,70,0.35)",
+                border: "none",
               }}
             >
               VER EVENTOS
             </a>
             <a
               href="#"
+              className="btn-hero-secondary"
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center",
-                background: "transparent", color: "#fff",
-                fontSize: "15px", fontWeight: 700,
-                padding: "1.1rem 2.5rem", borderRadius: "9999px",
-                textDecoration: "none", transition: "all 0.3s",
-                letterSpacing: "0.12em", textTransform: "uppercase",
-                border: "2px solid rgba(255,255,255,0.9)",
+                backgroundColor: "transparent", color: "#fff",
+                fontSize: "16px", fontWeight: 800,
+                padding: "1.15rem 2.5rem", borderRadius: "9999px",
+                textDecoration: "none",
+                letterSpacing: "0.1em", textTransform: "uppercase",
+                border: "2px solid #fff",
                 width: "100%",
               }}
             >
