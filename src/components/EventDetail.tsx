@@ -180,64 +180,74 @@ export default function EventDetailPage({ event }: { event: EventData }) {
       </div>
 
       {/* ═══ EVENT DETAIL ═══ */}
-      <section className="container-page" style={{ paddingTop: "3rem", paddingBottom: "5rem" }}>
-        <div className="ed-hero-grid">
-          {/* Left — Info */}
-          <div>
-            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>
-              {event.venue}
-            </p>
-            <h1 className="ed-hero-title" style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.75rem" }}>
-              {event.name}
-            </h1>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1.05rem", lineHeight: 1.9, marginBottom: "2.5rem", maxWidth: "540px" }}>
-              {event.description}
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-              <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "14px" }}>📅</span>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem" }}>{event.dates}</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "2.5rem" }}>
-              <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "14px" }}>📍</span>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem" }}>{event.venue}</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", marginBottom: "2.5rem" }}>
-              {event.original && (
-                <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "1.1rem" }}>
-                  ${event.original.toLocaleString()}
-                </span>
-              )}
-              <span style={{ color: "#E63946", fontSize: "2.5rem", fontWeight: 900 }}>
-                ${event.price.toLocaleString()}
-              </span>
-              <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.9rem" }}>MXN</span>
-            </div>
-            <a
-              href="#comprar"
-              onClick={handleBuyClick}
-              className="btn-primary"
-              style={{
-                display: "inline-block",
-                background: "#E63946",
-                color: "#fff",
-                fontSize: "15px",
-                fontWeight: 600,
-                padding: "1rem 2.5rem",
-                borderRadius: "9999px",
-                textDecoration: "none",
-                transition: "all 0.3s ease",
-                cursor: "pointer",
-              }}
-            >
-              🎫 Comprar Boletos
-            </a>
-          </div>
+      <section className="container-page" style={{ paddingTop: "2rem", paddingBottom: "4rem" }}>
+        {/* Venue label */}
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem" }}>
+          {event.venue}
+        </p>
 
-          {/* Right — Poster */}
-          <div className="ed-hero-poster" style={{ position: "relative", aspectRatio: "3/4", borderRadius: "1rem", overflow: "hidden", background: "#111", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}>
-            <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover" }} priority />
+        {/* Title */}
+        <h1 className="ed-hero-title" style={{ fontSize: "clamp(2rem, 6vw, 3.5rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "1.5rem" }}>
+          {event.name}
+        </h1>
+
+        {/* Description */}
+        <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1rem", lineHeight: 1.8, marginBottom: "2rem", maxWidth: "600px" }}>
+          {event.description}
+        </p>
+
+        {/* Dates & Location */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginBottom: "2rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            <span style={{ fontSize: "14px" }}>📅</span>
+            <span style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.95rem" }}>Fechas disponibles:</span>
+          </div>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem", paddingLeft: "1.75rem" }}>{event.dates}</p>
+        </div>
+
+        {/* Poster — full width on mobile */}
+        <div style={{ position: "relative", width: "100%", borderRadius: "1rem", overflow: "hidden", marginBottom: "2rem", background: "#111" }}>
+          <div className="ed-hero-poster-container" style={{ position: "relative", width: "100%", aspectRatio: "3/4", maxHeight: "500px" }}>
+            <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center" }} priority />
           </div>
         </div>
+
+        {/* Price + CTA */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
+          {event.original && (
+            <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "1.1rem" }}>
+              ${event.original.toLocaleString()}
+            </span>
+          )}
+          <span style={{ color: "#E63946", fontSize: "2.25rem", fontWeight: 900 }}>
+            ${event.price.toLocaleString()}
+          </span>
+          <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.85rem" }}>MXN</span>
+        </div>
+
+        <a
+          href="#comprar"
+          onClick={handleBuyClick}
+          className="btn-hero-primary"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#E63946",
+            color: "#fff",
+            fontSize: "15px",
+            fontWeight: 700,
+            padding: "1rem 2.5rem",
+            borderRadius: "8px",
+            textDecoration: "none",
+            transition: "all 0.3s ease",
+            cursor: "pointer",
+            maxWidth: "400px",
+            width: "100%",
+          }}
+        >
+          Comprar Boletos
+        </a>
       </section>
 
       {/* ═══ TICKET PURCHASE / ZONE SELECTION ═══ */}

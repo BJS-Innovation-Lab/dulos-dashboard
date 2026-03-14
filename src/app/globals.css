@@ -361,13 +361,9 @@ body {
   .ed-hamburger {
     display: block;
   }
-  .ed-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  .ed-hero-poster {
-    order: -1;
-    max-height: 360px;
+  .ed-hero-poster-container {
+    aspect-ratio: 16/10 !important;
+    max-height: 400px !important;
   }
   .ed-zone-grid {
     grid-template-columns: 1fr;
