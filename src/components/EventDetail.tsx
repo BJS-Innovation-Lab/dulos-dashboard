@@ -407,64 +407,94 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
 
-                <svg viewBox="0 0 400 460" style={{ width: "100%", height: "auto", display: "block" }}>
-                  {/* Single gray background — same width top to bottom */}
-                  <rect x="0" y="0" width="400" height="460" fill="#aaa" />
+                <svg viewBox="0 0 400 500" style={{ width: "100%", height: "auto", display: "block" }}>
+                  {/* Gray background */}
+                  <rect x="0" y="0" width="400" height="500" fill="#aaa" />
 
-                  {/* 3 dark rows — full width with small margin */}
-                  <rect x="30" y="15" width="340" height="40" rx="3" fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
-                  <rect x="30" y="63" width="340" height="40" rx="3" fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
-                  <rect x="30" y="111" width="340" height="40" rx="3" fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
+                  {/* 3 dark NARROW rows at top */}
+                  <rect x="105" y="15" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
+                  <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
+                  <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — trapezoid with ear-tabs, smallest */}
+                  {/* LILA — wider than dark rows, trapezoid with ear-tabs */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d="M105,165 L115,165 L118,172 L282,172 L285,165 L295,165 L288,215 L112,215 Z"
+                        <path d={[
+                          "M90,160",   // left ear top
+                          "L102,160",  // ear right edge
+                          "L105,168",  // step down
+                          "L295,168",  // across top
+                          "L298,160",  // right ear step
+                          "L310,160",  // right ear top
+                          "L304,210",  // right side slopes in
+                          "L96,210",   // bottom
+                          "Z"          // close
+                        ].join(" ")}
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="198" textAnchor="middle" fill="#fff"
+                        <text x="200" y="194" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
                       </g>
                     );
                   })()}
 
-                  {/* BLANCA — wider trapezoid with ear-tabs */}
+                  {/* BLANCA — wider than LILA, trapezoid with ear-tabs */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d="M70,222 L82,222 L85,229 L315,229 L318,222 L330,222 L322,275 L78,275 Z"
+                        <path d={[
+                          "M60,218",
+                          "L74,218",
+                          "L77,226",
+                          "L323,226",
+                          "L326,218",
+                          "L340,218",
+                          "L333,272",
+                          "L67,272",
+                          "Z"
+                        ].join(" ")}
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="258" textAnchor="middle" fill="#fff"
+                        <text x="200" y="256" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
                     );
                   })()}
 
-                  {/* DORADA — full width rect */}
+                  {/* DORADA — widest, full rect */}
                   {(() => {
                     const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="30" y="282" width="340" height="58" rx="3"
+                        <rect x="25" y="280" width="350" height="60" rx="3"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="320" textAnchor="middle" fill="#fff"
+                        <text x="200" y="318" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "26px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
 
-                  {/* Dark notch */}
-                  <path d="M140,346 L152,346 L155,352 L245,352 L248,346 L260,346 L254,375 L146,375 Z"
-                    fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
+                  {/* Dark notch between DORADA and ESCENARIO */}
+                  <path d={[
+                    "M135,348",
+                    "L148,348",
+                    "L151,354",
+                    "L249,354",
+                    "L252,348",
+                    "L265,348",
+                    "L258,385",
+                    "L142,385",
+                    "Z"
+                  ].join(" ")}
+                    fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* Escenario */}
-                  <rect x="110" y="385" width="180" height="28" rx="4" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
-                  <text x="200" y="404" textAnchor="middle" fill="#fff"
+                  {/* ESCENARIO */}
+                  <rect x="110" y="395" width="180" height="30" rx="4" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <text x="200" y="416" textAnchor="middle" fill="#fff"
                     style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.12em" }}>ESCENARIO</text>
                 </svg>
 
