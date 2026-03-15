@@ -416,17 +416,34 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — inverted trapezoid: wide top, narrow bottom */}
+                  {/* LILA — 3-tier stepped shape: narrow top, wide bottom */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     const fill = s ? "#b00d1c" : "#E63946";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
                         <path d={[
-                          "M105,158",   // top-left
-                          "L295,158",   // top-right
-                          "L280,196",   // bottom-right (narrower)
-                          "L120,196",   // bottom-left (narrower)
+                          // Top tier (narrowest)
+                          "M135,158",   // top-left
+                          "L265,158",   // top-right
+                          // Right step 1
+                          "L270,163",   // diagonal down-right
+                          "L275,163",   // small ledge
+                          // Right step 2
+                          "L280,168",   // diagonal down-right
+                          "L285,168",   // small ledge
+                          // Right side down to bottom
+                          "L295,196",   // diagonal to bottom-right
+                          // Bottom (widest)
+                          "L105,196",   // across bottom
+                          // Left side up with steps
+                          "L115,168",   // diagonal up-left
+                          "L120,168",   // small ledge
+                          // Left step 2
+                          "L125,163",   // diagonal up-left
+                          "L130,163",   // small ledge
+                          // Back to top
+                          "L135,158",   // diagonal to top-left
                           "Z"
                         ].join(" ")}
                           fill={fill} stroke="#fff" strokeWidth="2"
