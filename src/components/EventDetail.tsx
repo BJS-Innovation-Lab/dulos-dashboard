@@ -344,36 +344,47 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                       fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
                   ))}
 
-                  {/* Clickable zones — wide notched trapezoids */}
-                  {zones.map((zone, i) => {
-                    const isSelected = selectedZone === zone.name;
-                    const yBase = 138 + i * 48;
-                    const shrink = i * 14;
+                  {/* LILA — notched trapezoid with tabs */}
+                  {(() => {
+                    const isSelected = selectedZone === "Lila";
                     return (
-                      <g key={zone.name} onClick={() => { setSelectedZone(zone.name); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path
-                          d={`M${35 + shrink},${yBase}
-                              L${55 + shrink},${yBase}
-                              L${60 + shrink},${yBase + 8}
-                              L${240 - shrink},${yBase + 8}
-                              L${245 - shrink},${yBase}
-                              L${265 - shrink},${yBase}
-                              L${255 - shrink},${yBase + 40}
-                              L${45 + shrink},${yBase + 40} Z`}
-                          fill={isSelected ? "#b00d1c" : "#E63946"}
-                          stroke="#fff" strokeWidth="2.5"
-                          style={{
-                            transition: "all 0.15s",
-                            filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none",
-                          }}
-                        />
-                        <text x="150" y={yBase + 30} textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>
-                          {zone.name.toUpperCase()}
-                        </text>
+                      <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        <path d="M70,138 L82,138 L85,145 L215,145 L218,138 L230,138 L225,178 L75,178 Z"
+                          fill={isSelected ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.15s", filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none" }} />
+                        <text x="150" y="166" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>LILA</text>
                       </g>
                     );
-                  })}
+                  })()}
+
+                  {/* BLANCA — slightly wider notched trapezoid */}
+                  {(() => {
+                    const isSelected = selectedZone === "Blanca";
+                    return (
+                      <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        <path d="M55,182 L68,182 L72,189 L228,189 L232,182 L245,182 L240,222 L60,222 Z"
+                          fill={isSelected ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.15s", filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none" }} />
+                        <text x="150" y="210" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>BLANCA</text>
+                      </g>
+                    );
+                  })()}
+
+                  {/* DORADA — full width rectangle, no notches */}
+                  {(() => {
+                    const isSelected = selectedZone === "Dorada";
+                    return (
+                      <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        <rect x="30" y="226" width="240" height="44" rx="2"
+                          fill={isSelected ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.15s", filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none" }} />
+                        <text x="150" y="254" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>DORADA</text>
+                      </g>
+                    );
+                  })()}
 
                   {/* Dark notch below last zone */}
                   <path d="M105,282 L115,282 L118,287 L182,287 L185,282 L195,282 L190,296 L110,296 Z"
