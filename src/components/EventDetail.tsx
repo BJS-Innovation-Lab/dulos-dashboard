@@ -407,90 +407,65 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
 
-                <svg viewBox="0 0 400 480" style={{ width: "100%", height: "auto", display: "block", background: "transparent" }}>
-                  {/* === VENUE SILHOUETTE === */}
-                  {/* Upper narrow column — darker gray */}
-                  <rect x="90" y="0" width="220" height="175" fill="#777" />
-                  {/* Lower wide section — lighter gray */}
-                  <path d="M20,175 L380,175 L380,420 L20,420 Z" fill="#aaa" />
+                <svg viewBox="0 0 400 460" style={{ width: "100%", height: "auto", display: "block" }}>
+                  {/* Single gray background — same width top to bottom */}
+                  <rect x="0" y="0" width="400" height="460" fill="#aaa" />
 
-                  {/* === UPPER DARK ROWS (unavailable) === */}
-                  <rect x="100" y="10" width="200" height="45" rx="3" fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
-                  <rect x="100" y="62" width="200" height="45" rx="3" fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
-                  <rect x="100" y="114" width="200" height="45" rx="3" fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
+                  {/* 3 dark rows — full width with small margin */}
+                  <rect x="30" y="15" width="340" height="40" rx="3" fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
+                  <rect x="30" y="63" width="340" height="40" rx="3" fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
+                  <rect x="30" y="111" width="340" height="40" rx="3" fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
 
-                  {/* === LILA — narrowest, stepped ear-tabs === */}
+                  {/* LILA — trapezoid with ear-tabs, smallest */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        {/* Main body */}
-                        <path d={`
-                          M130,185 L135,185 L135,190
-                          L265,190 L265,185 L270,185
-                          L270,195 L275,195
-                          L268,235 L132,235
-                          L125,195 L130,195 Z
-                        `}
+                        <path d="M105,165 L115,165 L118,172 L282,172 L285,165 L295,165 L288,215 L112,215 Z"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="220" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
-                        {s && <text x="200" y="233" textAnchor="middle" fill="rgba(255,255,255,0.7)"
-                          style={{ fontSize: "10px", fontWeight: 600, pointerEvents: "none" }}>$2,699 MXN</text>}
+                        <text x="200" y="198" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
                       </g>
                     );
                   })()}
 
-                  {/* === BLANCA — wider, stepped ear-tabs === */}
+                  {/* BLANCA — wider trapezoid with ear-tabs */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d={`
-                          M90,240 L95,240 L95,245
-                          L305,245 L305,240 L310,240
-                          L310,250 L318,250
-                          L310,295 L90,295
-                          L82,250 L90,250 Z
-                        `}
+                        <path d="M70,222 L82,222 L85,229 L315,229 L318,222 L330,222 L322,275 L78,275 Z"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="278" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
-                        {s && <text x="200" y="291" textAnchor="middle" fill="rgba(255,255,255,0.7)"
-                          style={{ fontSize: "10px", fontWeight: 600, pointerEvents: "none" }}>$1,999 MXN</text>}
+                        <text x="200" y="258" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
                     );
                   })()}
 
-                  {/* === DORADA — full width rectangle === */}
+                  {/* DORADA — full width rect */}
                   {(() => {
                     const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="30" y="300" width="340" height="55" rx="3"
+                        <rect x="30" y="282" width="340" height="58" rx="3"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="335" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
-                        {s && <text x="200" y="350" textAnchor="middle" fill="rgba(255,255,255,0.7)"
-                          style={{ fontSize: "10px", fontWeight: 600, pointerEvents: "none" }}>$1,499 MXN</text>}
+                        <text x="200" y="320" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "26px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
 
-                  {/* === DARK NOTCH below Dorada === */}
-                  <path d={`
-                    M145,360 L155,360 L155,362 L160,365
-                    L240,365 L245,362 L245,360 L255,360
-                    L250,382 L150,382 Z
-                  `} fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
+                  {/* Dark notch */}
+                  <path d="M140,346 L152,346 L155,352 L245,352 L248,346 L260,346 L254,375 L146,375 Z"
+                    fill="#2a2a2a" stroke="#ddd" strokeWidth="1.5" />
 
-                  {/* === ESCENARIO === */}
-                  <rect x="120" y="390" width="160" height="28" rx="4" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
-                  <text x="200" y="409" textAnchor="middle" fill="#fff"
-                    style={{ fontSize: "13px", fontWeight: 900, letterSpacing: "0.15em" }}>ESCENARIO</text>
+                  {/* Escenario */}
+                  <rect x="110" y="385" width="180" height="28" rx="4" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <text x="200" y="404" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.12em" }}>ESCENARIO</text>
                 </svg>
 
                 {/* Price legend as buttons */}
