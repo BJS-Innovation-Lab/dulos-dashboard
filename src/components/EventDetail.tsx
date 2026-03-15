@@ -326,21 +326,23 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
             <div style={{ padding: "1.5rem" }}>
               {/* Venue Map — matches dulos.io layout */}
-              <div style={{ marginBottom: "1.5rem" }}>
-                <svg viewBox="0 0 300 340" style={{ width: "100%", height: "auto", background: "#888", borderRadius: "8px" }}>
-                  {/* Upper section — dark unavailable rows, tighter spacing */}
+              <div style={{ marginBottom: "1.5rem", borderRadius: "8px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
+                {/* White header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.6rem 0.75rem", background: "#fff" }}>
+                  <span style={{ fontSize: "0.8rem", fontWeight: 900, color: "#E63946" }}>🎵 Dulos</span>
+                  <span style={{ fontSize: "0.55rem", fontWeight: 800, color: "#222", letterSpacing: "0.06em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
+                </div>
+                <svg viewBox="0 0 300 310" style={{ width: "100%", height: "auto", background: "#888", display: "block" }}>
+                  {/* Upper section — dark unavailable rows, compact */}
                   {[0, 1, 2].map((i) => (
-                    <rect key={`upper-${i}`} x="45" y={10 + i * 42} width="210" height="32" rx="2"
+                    <rect key={`upper-${i}`} x="50" y={8 + i * 36} width="200" height="28" rx="2"
                       fill="#333" stroke="#555" strokeWidth="1" />
                   ))}
-
-                  {/* Small dark row between upper and zones */}
-                  <rect x="70" y="136" width="160" height="16" rx="2" fill="#333" stroke="#555" strokeWidth="1" />
 
                   {/* Clickable zones — notched trapezoid shapes */}
                   {zones.map((zone, i) => {
                     const isSelected = selectedZone === zone.name;
-                    const yBase = 162 + i * 46;
+                    const yBase = 125 + i * 46;
                     const shrink = i * 10;
                     // Notched edges like dulos.io
                     return (
@@ -370,13 +372,13 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   })}
 
                   {/* Small dark notch below last zone */}
-                  <path d="M100,300 L110,300 L113,305 L187,305 L190,300 L200,300 L195,315 L105,315 Z"
+                  <path d="M110,263 L118,263 L121,267 L179,267 L182,263 L190,263 L186,276 L114,276 Z"
                     fill="#333" stroke="#555" strokeWidth="1" />
 
                   {/* Escenario */}
-                  <rect x="90" y="322" width="120" height="22" rx="3" fill="#E63946" />
-                  <text x="150" y="337" textAnchor="middle" fill="#fff"
-                    style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.15em" }}>
+                  <rect x="95" y="282" width="110" height="20" rx="3" fill="#E63946" />
+                  <text x="150" y="296" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "9px", fontWeight: 900, letterSpacing: "0.15em" }}>
                     ESCENARIO
                   </text>
                 </svg>
