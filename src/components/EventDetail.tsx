@@ -485,7 +485,25 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   })()}
 
                   {/* Dark notch between DORADA and ESCENARIO */}
-                  <rect x="105" y="336" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
+                  {/* Dark shape with 3 crenellation notches at top */}
+                  <path d={[
+                    "M105,336",     // top-left corner
+                    "L105,344",     // down into left notch
+                    "L125,344",     // across left notch bottom
+                    "L125,336",     // back up
+                    "L160,336",     // across to center notch
+                    "L160,347",     // down into center notch (deeper)
+                    "L240,347",     // across center notch bottom
+                    "L240,336",     // back up
+                    "L275,336",     // across to right notch
+                    "L275,344",     // down into right notch
+                    "L295,344",     // across right notch bottom
+                    "L295,336",     // back up to top-right
+                    "L295,374",     // down right side
+                    "L105,374",     // across bottom
+                    "Z"
+                  ].join(" ")}
+                    fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
                   {/* ESCENARIO */}
                   <rect x="105" y="386" width="190" height="30" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
