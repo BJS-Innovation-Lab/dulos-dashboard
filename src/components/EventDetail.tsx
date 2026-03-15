@@ -18,9 +18,16 @@ interface Zone {
 }
 
 // Zones loaded dynamically from events-data.ts
+// Lucero keeps its multi-zone map; all others get "General" only
 const eventZones: Record<string, Zone[]> = Object.fromEntries(
-  EVENTS.map(e => [e.name, e.zones as Zone[]])
+  EVENTS.map(e => {
+    if (e.name === "Lucero") return [e.name, e.zones as Zone[]];
+    // Non-Lucero: single General zone at the event's base price
+    return [e.name, [{ name: "General", color: "#E63946", price: e.price, available: 200 }]];
+  })
 );
+
+const isLucero = (name: string) => name === "Lucero";
 
 interface EventData {
   name: string;
@@ -457,7 +464,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               <h2 style={{ fontSize: "1.05rem", fontWeight: 800, textAlign: "center" }}>
                 Boletos disponibles
               </h2>
-              {!mapCollapsed && (
+              {isLucero(event.name) && !mapCollapsed && (
                 <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem", textAlign: "center", marginTop: "0.15rem" }}>
                   Selecciona tu zona en el mapa
                 </p>
@@ -465,6 +472,61 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             </div>
 
             <div style={{ padding: "1rem 1.5rem 1.5rem" }}>
+              {/* General ticket selector — for non-Lucero events */}
+              {!isLucero(event.name) && (
+                <div style={{
+                  marginBottom: "1rem", borderRadius: "0.75rem", overflow: "hidden",
+                  border: selectedZone === "General" ? "1px solid rgba(230,57,70,0.4)" : "1px solid rgba(255,255,255,0.08)",
+                  background: selectedZone === "General" ? "linear-gradient(135deg, rgba(230,57,70,0.08), rgba(0,0,0,0.3))" : "#111",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
+                  onClick={() => { setSelectedZone("General"); setQuantity(1); setMapCollapsed(true); }}
+                >
+                  <div style={{
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: "1.25rem",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                      <div style={{
+                        width: "48px", height: "48px", borderRadius: "10px",
+                        background: selectedZone === "General" ? "linear-gradient(135deg, #E63946, #c0392b)" : "rgba(230,57,70,0.15)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        transition: "all 0.3s",
+                        boxShadow: selectedZone === "General" ? "0 4px 20px rgba(230,57,70,0.4)" : "none",
+                      }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round">
+                          <rect x="2" y="6" width="20" height="12" rx="2" />
+                          <path d="M2 10h20" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: "1rem", fontWeight: 800, color: "#fff" }}>Boleto General</div>
+                        <div style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.4)", marginTop: "0.15rem" }}>
+                          {event.venue} · Acceso general
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <div style={{ fontSize: "1.35rem", fontWeight: 900, color: "#E63946" }}>
+                        ${zones[0]?.price.toLocaleString()}
+                      </div>
+                      <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.3)" }}>por persona</div>
+                    </div>
+                  </div>
+                  {selectedZone === "General" && (
+                    <div style={{
+                      padding: "0.6rem 1.25rem",
+                      borderTop: "1px solid rgba(230,57,70,0.2)",
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem",
+                    }}>
+                      <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#4CAF50" }} />
+                      <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "#4CAF50", letterSpacing: "0.05em" }}>SELECCIONADO</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {/* Date & Time selector — premium */}
               <div style={{
                 marginBottom: "1rem", borderRadius: "0.75rem", overflow: "hidden",
@@ -516,8 +578,8 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                 </div>
               </div>
 
-              {/* Venue Map — collapsible */}
-              <div style={{
+              {/* Venue Map — collapsible (Lucero only) */}
+              {isLucero(event.name) && <div style={{
                 marginBottom: "1rem", borderRadius: "8px", overflow: "hidden",
                 border: "1px solid rgba(255,255,255,0.08)",
                 transition: "all 0.3s ease",
@@ -688,7 +750,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   ))}
                 </div>
                 </div>
-              </div>
+              </div>}
 
               {/* ═══ ZONE SELECTED: Quantity + Forms ═══ */}
               {selected && mapCollapsed && (
@@ -972,7 +1034,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               )}
 
               {/* Initial state — no zone selected yet */}
-              {!mapCollapsed && !selected && (
+              {isLucero(event.name) && !mapCollapsed && !selected && (
                 <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem", textAlign: "center", marginTop: "0.5rem" }}>
                   Toca una zona en el mapa para continuar
                 </p>
