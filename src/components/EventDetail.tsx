@@ -407,9 +407,9 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
 
-                <svg viewBox="0 0 400 400" style={{ width: "100%", height: "auto", display: "block" }}>
+                <svg viewBox="0 0 400 440" style={{ width: "100%", height: "auto", display: "block" }}>
                   {/* Gray background */}
-                  <rect x="0" y="0" width="400" height="400" fill="#aaa" />
+                  <rect x="0" y="0" width="400" height="440" fill="#aaa" />
 
                   {/* 3 dark NARROW rows at top */}
                   <rect x="105" y="15" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
@@ -475,21 +475,21 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="105" y="248" width="190" height="38" rx="3"
+                        <rect x="105" y="248" width="190" height="76" rx="3"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="274" textAnchor="middle" fill="#fff"
+                        <text x="200" y="294" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
 
                   {/* Dark notch between DORADA and ESCENARIO */}
-                  <rect x="105" y="298" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
+                  <rect x="105" y="336" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
                   {/* ESCENARIO */}
-                  <rect x="105" y="348" width="190" height="30" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
-                  <text x="200" y="369" textAnchor="middle" fill="#fff"
+                  <rect x="105" y="386" width="190" height="30" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <text x="200" y="407" textAnchor="middle" fill="#fff"
                     style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.12em" }}>ESCENARIO</text>
                 </svg>
 
