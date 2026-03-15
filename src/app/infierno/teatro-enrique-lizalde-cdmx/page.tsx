@@ -8,6 +8,7 @@ export default function Page() {
         name: "Infierno",
         venue: "TEATRO ENRIQUE LIZALDE • COYOACÁN",
         price: 299,
+        original: 710,
         dates: "6 mar 2026",
         image: "/event3.jpg",
         slug: "/infierno/teatro-enrique-lizalde-cdmx",

@@ -8,7 +8,7 @@ export default function Page() {
         name: "Lucero",
         venue: "AUDITORIO AREMA EXPLANADA • CHOLULA DE RIVADAVIA",
         price: 1499,
-        original: 2700,
+        original: 2300,
         dates: "28 de marzo de 2026 al 28 de marzo de 2026",
         image: "/event5.png",
         slug: "/lucero/auditorio-explanada-puebla",

@@ -552,7 +552,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA */}
+                  {/* DORADA */}
                   {(() => {
                     const s = selectedZone === "Dorada";
                     const fill = s ? "#b00d1c" : "#E63946";
@@ -579,7 +579,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                           filter="url(#zone-glow)"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="184" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
@@ -611,7 +611,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     );
                   })()}
 
-                  {/* DORADA */}
+                  {/* PREMIUM */}
                   {(() => {
                     const s = selectedZone === "Premium";
                     return (
@@ -621,7 +621,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                           filter="url(#zone-glow)"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="294" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>PREMIUM</text>
                       </g>
                     );
                   })()}
