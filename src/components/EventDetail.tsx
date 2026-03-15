@@ -2,45 +2,25 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { EVENTS, getZonesForEvent } from "@/lib/events-data";
 
-const allEvents = [
-  { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar", slug: "/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" },
-  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, original: 2500, image: "/event2.jpg", date: "13 Marzo 2026", slug: "/mijares-sinfonico/teatro-morelos-toluca" },
-  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026", slug: "/infierno/teatro-enrique-lizalde-cdmx" },
-  { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026", slug: "/oh-karen/teatro-xola-cdmx" },
-  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, original: 2300, image: "/event5.png", date: "28 Marzo 2026", slug: "/lucero/auditorio-explanada-puebla" },
-];
+// Events loaded from events-data.ts
+const allEvents = EVENTS.map(e => ({ name: e.name, city: e.city, venue: e.venue.split('•')[0].trim(), price: e.price, original: e.original, image: e.image, date: e.dates, url: e.slug, slug: e.slug }));
 
 interface Zone {
   name: string;
   color: string;
   price: number;
   originalPrice?: number;
-  seats: number;
+  available: number;
+  sold?: number;
+  seats?: number; // alias for available
 }
 
-const eventZones: Record<string, Zone[]> = {
-  // Datos reales de dulos.io — actualizado 14 mar 2026
-  "Así Lo Veo Yo": [
-    { name: "General", color: "#2A7AE8", price: 299, originalPrice: 600, seats: 434 },
-  ],
-  "Mijares Sinfónico": [
-    { name: "General", color: "#2A7AE8", price: 1249, originalPrice: 2500, seats: 180 },
-  ],
-  "Infierno": [
-    { name: "Preferente", color: "#E88D2A", price: 299, originalPrice: 710, seats: 37 },
-  ],
-  "¡Oh Karen!": [
-    { name: "Zona de Karen", color: "#E63946", price: 349, seats: 83 },
-    { name: "Preferente", color: "#E88D2A", price: 299, seats: 82 },
-    { name: "General", color: "#2A7AE8", price: 199, seats: 83 },
-  ],
-  "Lucero": [
-    { name: "Dorada", color: "#FFD700", price: 1499, originalPrice: 2300, seats: 49 },
-    { name: "Blanca", color: "#E0E0E0", price: 1725, originalPrice: 2700, seats: 40 },
-    { name: "Premium", color: "#C0A0FF", price: 1950, originalPrice: 3000, seats: 48 },
-  ],
-};
+// Zones loaded dynamically from events-data.ts
+const eventZones: Record<string, Zone[]> = Object.fromEntries(
+  EVENTS.map(e => [e.name, e.zones as Zone[]])
+);
 
 interface EventData {
   name: string;
@@ -109,7 +89,7 @@ function TestimonialCarousel({ testimonials, active }: { testimonials: { text: s
 }
 
 export default function EventDetailPage({ event }: { event: EventData }) {
-  const otherEvents = allEvents.filter((e) => e.slug !== event.slug);
+  const otherEvents = allEvents.filter((e) => e.url !== event.slug);
   const zones = eventZones[event.name] || eventZones["Así Lo Veo Yo"];
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -735,7 +715,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                           background: "rgba(255,255,255,0.04)", borderTop: "1px solid rgba(255,255,255,0.1)",
                           borderBottom: "1px solid rgba(255,255,255,0.1)", fontWeight: 800, fontSize: "1rem",
                         }}>{quantity}</div>
-                        <button onClick={() => setQuantity(Math.min(Math.min(selected.seats, 9), quantity + 1))} style={{
+                        <button onClick={() => setQuantity(Math.min(Math.min(selected.available, 9), quantity + 1))} style={{
                           width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
                           background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
                           borderRadius: "0 0.4rem 0.4rem 0", color: "#fff", cursor: "pointer", fontSize: "1.1rem", fontFamily: "inherit",
@@ -743,7 +723,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                       </div>
                     </div>
                     <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.7rem", marginTop: "0.5rem" }}>
-                      Máximo 9 boletos · {selected.seats} lugares disponibles
+                      Máximo 9 boletos · {selected.available} lugares disponibles
                     </p>
                   </div>
 
