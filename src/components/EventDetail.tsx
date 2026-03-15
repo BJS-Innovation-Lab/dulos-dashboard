@@ -408,6 +408,11 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                 </div>
 
                 <svg viewBox="0 0 400 440" style={{ width: "100%", height: "auto", display: "block" }}>
+                  <defs>
+                    <filter id="zone-glow">
+                      <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="#E63946" floodOpacity="0.6" />
+                    </filter>
+                  </defs>
                   {/* Gray background */}
                   <rect x="0" y="0" width="400" height="440" fill="#aaa" />
 
@@ -437,8 +442,9 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                           "L105,168",   // inward (step 1)
                           "Z"
                         ].join(" ")}
-                          fill={fill} stroke="#fff" strokeWidth="2"
-                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
+                          fill={fill} stroke="#fff" strokeWidth="2" strokeLinejoin="round"
+                          filter="url(#zone-glow)"
+                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="184" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
                       </g>
@@ -462,8 +468,9 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                           "L105,241",   // across bottom
                           "Z"
                         ].join(" ")}
-                          fill={fill} stroke="#fff" strokeWidth="2"
-                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
+                          fill={fill} stroke="#fff" strokeWidth="2" strokeLinejoin="round"
+                          filter="url(#zone-glow)"
+                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="229" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
@@ -475,9 +482,10 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="105" y="248" width="190" height="76" rx="3"
+                        <rect x="105" y="248" width="190" height="76" rx="5"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
-                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
+                          filter="url(#zone-glow)"
+                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="294" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
@@ -501,10 +509,11 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     "L105,346",     // outward (step 1)
                     "Z"
                   ].join(" ")}
-                    fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
+                    fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" strokeLinejoin="round" />
 
                   {/* ESCENARIO */}
-                  <rect x="105" y="386" width="190" height="30" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <rect x="105" y="386" width="190" height="30" rx="5" fill="#E63946" stroke="#fff" strokeWidth="1.5"
+                    filter="url(#zone-glow)" />
                   <text x="200" y="407" textAnchor="middle" fill="#fff"
                     style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.12em" }}>ESCENARIO</text>
                 </svg>
