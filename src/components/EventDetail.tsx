@@ -357,44 +357,79 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                 </div>
               </div>
 
-              {/* 3. Zona */}
+              {/* 3. Zona — Interactive Venue Map */}
               <div style={{ marginBottom: "1.5rem" }}>
-                <p style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <span style={{ color: "#E63946" }}>3.</span> Selecciona tu zona
+                <p style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <span style={{ color: "#E63946" }}>3.</span> Mapa del venue
                 </p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-                  {zones.map((zone) => {
-                    const isSelected = selectedZone === zone.name;
-                    return (
-                      <button
-                        key={zone.name}
-                        onClick={() => { setSelectedZone(zone.name); setQuantity(1); }}
-                        style={{
-                          display: "flex", alignItems: "center", justifyContent: "space-between",
-                          width: "100%", padding: "1.1rem 1.25rem",
-                          background: isSelected ? `${zone.color}12` : "rgba(255,255,255,0.03)",
-                          border: isSelected ? `2px solid ${zone.color}` : "2px solid rgba(255,255,255,0.08)",
-                          borderRadius: "0.75rem", cursor: "pointer",
-                          color: "#fff", fontFamily: "inherit", transition: "all 0.15s",
-                          boxShadow: isSelected ? `0 0 20px ${zone.color}22` : "none",
-                        }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                          <div style={{
-                            width: "12px", height: "12px", borderRadius: "50%", background: zone.color,
-                            boxShadow: isSelected ? `0 0 8px ${zone.color}` : "none",
-                          }} />
-                          <div style={{ textAlign: "left" }}>
-                            <div style={{ fontWeight: 700, fontSize: "1rem" }}>{zone.name}</div>
-                            <div style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.75rem" }}>{zone.seats} disponibles</div>
-                          </div>
-                        </div>
-                        <span style={{ fontWeight: 900, fontSize: "1.15rem", color: isSelected ? zone.color : "#fff" }}>
-                          ${zone.price.toLocaleString()}
+
+                {/* SVG Venue Map */}
+                <div style={{ background: "#1a1a1a", borderRadius: "1rem", padding: "1.25rem 1rem", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", padding: "0 0.25rem" }}>
+                    <span style={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.1em", color: "rgba(255,255,255,0.5)" }}>🎭 DULOS</span>
+                    <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
+                  </div>
+
+                  <svg viewBox="0 0 300 360" style={{ width: "100%", height: "auto" }}>
+                    {/* Background sections (upper = unavailable) */}
+                    {[0, 1, 2].map((i) => (
+                      <rect key={`upper-${i}`} x="60" y={20 + i * 52} width="180" height="40" rx="4"
+                        fill="#222" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+                    ))}
+
+                    {/* Venue shape — trapezoid sections */}
+                    {zones.map((zone, i) => {
+                      const isSelected = selectedZone === zone.name;
+                      const yBase = 195 + i * 42;
+                      const shrink = i * 8;
+                      return (
+                        <g key={zone.name} onClick={() => { setSelectedZone(zone.name); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                          {/* Zone shape */}
+                          <path
+                            d={`M${55 + shrink},${yBase} L${245 - shrink},${yBase} L${240 - shrink},${yBase + 36} L${60 + shrink},${yBase + 36} Z`}
+                            fill={isSelected ? zone.color : "#333"}
+                            stroke={isSelected ? zone.color : "rgba(255,255,255,0.15)"}
+                            strokeWidth={isSelected ? "2" : "1"}
+                            style={{ transition: "all 0.2s", filter: isSelected ? `drop-shadow(0 0 12px ${zone.color}66)` : "none" }}
+                          />
+                          {/* Zone label */}
+                          <text
+                            x="150" y={yBase + 23}
+                            textAnchor="middle" fill="#fff"
+                            style={{ fontSize: "13px", fontWeight: 800, letterSpacing: "0.1em", pointerEvents: "none", textTransform: "uppercase" }}
+                          >
+                            {zone.name}
+                          </text>
+                          {/* Price label */}
+                          {isSelected && (
+                            <text x="150" y={yBase + 35} textAnchor="middle" fill="rgba(255,255,255,0.7)"
+                              style={{ fontSize: "9px", fontWeight: 600, pointerEvents: "none" }}>
+                              ${zone.price.toLocaleString()} MXN
+                            </text>
+                          )}
+                        </g>
+                      );
+                    })}
+
+                    {/* Escenario */}
+                    <rect x="80" y="340" width="140" height="28" rx="4" fill="#E63946" />
+                    <text x="150" y="358" textAnchor="middle" fill="#fff"
+                      style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.15em" }}>
+                      ESCENARIO
+                    </text>
+                  </svg>
+
+                  {/* Legend */}
+                  <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
+                    {zones.map((zone) => (
+                      <div key={zone.name} style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                        <div style={{ width: "8px", height: "8px", borderRadius: "2px", background: selectedZone === zone.name ? zone.color : "#444" }} />
+                        <span style={{ fontSize: "0.65rem", color: selectedZone === zone.name ? "#fff" : "rgba(255,255,255,0.4)", fontWeight: selectedZone === zone.name ? 700 : 400 }}>
+                          {zone.name} · ${zone.price.toLocaleString()}
                         </span>
-                      </button>
-                    );
-                  })}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
