@@ -420,23 +420,27 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 cursor: "pointer", fontSize: "0.9rem",
               }}>✕</button>
-              {/* Timer — alarming */}
+              {/* Timer — alarming red banner */}
               <div style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
-                marginBottom: "0.5rem", padding: "0.4rem 0.75rem", borderRadius: "6px",
-                background: timeLeft < 120 ? "rgba(230,57,70,0.15)" : "rgba(255,255,255,0.03)",
-                border: timeLeft < 120 ? "1px solid rgba(230,57,70,0.4)" : "1px solid transparent",
-                animation: timeLeft < 120 ? "timer-pulse 1s ease-in-out infinite" : "none",
+                marginBottom: "0.5rem", padding: "0.5rem 0.75rem", borderRadius: "6px",
+                background: "linear-gradient(135deg, rgba(230,57,70,0.2), rgba(139,0,0,0.2))",
+                border: "1px solid rgba(230,57,70,0.4)",
+                animation: "timer-pulse 1.5s ease-in-out infinite",
               }}>
-                <span style={{ fontSize: "0.85rem" }}>{timeLeft < 120 ? "🔥" : "⏱"}</span>
-                <span style={{ fontSize: "0.75rem", color: timeLeft < 120 ? "#E63946" : "rgba(255,255,255,0.5)", fontWeight: 600 }}>
-                  {timeLeft < 120 ? "¡Tu reserva expira!" : "Tu reserva expira en"}
+                <span style={{
+                  fontSize: "0.6rem", fontWeight: 800, color: "#E63946",
+                  background: "rgba(230,57,70,0.2)", padding: "0.15rem 0.35rem", borderRadius: "3px",
+                  letterSpacing: "0.08em",
+                }}>URGENTE</span>
+                <span style={{ fontSize: "0.75rem", color: "#E63946", fontWeight: 600 }}>
+                  Reserva expira en
                 </span>
                 <span style={{
-                  fontFamily: "monospace", fontSize: "1rem", fontWeight: 900,
-                  color: timeLeft < 120 ? "#E63946" : "#fff",
-                  letterSpacing: "0.1em",
-                  textShadow: timeLeft < 60 ? "0 0 8px rgba(230,57,70,0.6)" : "none",
+                  fontFamily: "monospace", fontSize: "1.1rem", fontWeight: 900,
+                  color: "#fff", letterSpacing: "0.1em",
+                  background: "rgba(230,57,70,0.3)", padding: "0.1rem 0.4rem", borderRadius: "4px",
+                  textShadow: "0 0 8px rgba(230,57,70,0.5)",
                 }}>{formatTime(timeLeft)}</span>
               </div>
               <h2 style={{ fontSize: "1.05rem", fontWeight: 800, textAlign: "center" }}>
@@ -450,25 +454,55 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             </div>
 
             <div style={{ padding: "1rem 1.5rem 1.5rem" }}>
-              {/* Date & Time selector */}
+              {/* Date & Time selector — premium */}
               <div style={{
-                marginBottom: "1rem", padding: "0.75rem 1rem",
-                background: "rgba(255,255,255,0.03)", borderRadius: "0.75rem",
-                border: "1px solid rgba(255,255,255,0.08)",
+                marginBottom: "1rem", borderRadius: "0.75rem", overflow: "hidden",
+                border: "1px solid rgba(230,57,70,0.2)",
+                background: "linear-gradient(135deg, rgba(230,57,70,0.06), rgba(0,0,0,0.3))",
               }}>
-                <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.4rem", fontWeight: 600, letterSpacing: "0.05em" }}>
-                  FECHA Y HORA
-                </label>
-                <select style={{
-                  width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.9rem", fontWeight: 700,
-                  color: "#fff", outline: "none", fontFamily: "inherit",
-                  appearance: "none",
-                  backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E\")",
-                  backgroundRepeat: "no-repeat", backgroundPosition: "right 0.75rem center",
+                <div style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  padding: "0.6rem 1rem",
+                  borderBottom: "1px solid rgba(255,255,255,0.06)",
                 }}>
-                  <option>📅 28 de marzo, 2026 — 9:00 PM</option>
-                </select>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                    Fecha y hora
+                  </span>
+                  <span style={{
+                    fontSize: "0.55rem", fontWeight: 700, color: "#4CAF50",
+                    background: "rgba(76,175,80,0.1)", padding: "0.15rem 0.4rem", borderRadius: "3px",
+                    letterSpacing: "0.05em",
+                  }}>
+                    DISPONIBLE
+                  </span>
+                </div>
+                <div style={{
+                  display: "flex", alignItems: "center", padding: "0.75rem 1rem", gap: "0.75rem",
+                }}>
+                  <div style={{
+                    width: "42px", height: "42px", borderRadius: "8px",
+                    background: "linear-gradient(135deg, #E63946, #c0392b)",
+                    display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0, boxShadow: "0 2px 8px rgba(230,57,70,0.3)",
+                  }}>
+                    <span style={{ fontSize: "0.5rem", fontWeight: 700, color: "rgba(255,255,255,0.8)", lineHeight: 1, textTransform: "uppercase" }}>MAR</span>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 900, color: "#fff", lineHeight: 1 }}>28</span>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: "0.95rem", fontWeight: 800, color: "#fff" }}>
+                      Viernes, 28 de marzo
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.4)", marginTop: "0.1rem" }}>
+                      9:00 PM · Apertura de puertas 8:00 PM
+                    </div>
+                  </div>
+                  <div style={{
+                    width: "28px", height: "28px", borderRadius: "50%",
+                    border: "2px solid #E63946", display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <div style={{ width: "12px", height: "12px", borderRadius: "50%", background: "#E63946" }} />
+                  </div>
+                </div>
               </div>
 
               {/* Venue Map — collapsible */}
