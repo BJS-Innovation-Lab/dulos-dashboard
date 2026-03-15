@@ -416,7 +416,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — notched BOTTOM corners */}
+                  {/* LILA — inverted trapezoid: wide top, narrow bottom */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     const fill = s ? "#b00d1c" : "#E63946";
@@ -425,12 +425,8 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                         <path d={[
                           "M105,158",   // top-left
                           "L295,158",   // top-right
-                          "L295,189",   // down right side to notch
-                          "L285,189",   // left edge of right notch
-                          "L285,196",   // down to bottom
-                          "L115,196",   // across bottom
-                          "L115,189",   // up to left notch
-                          "L105,189",   // left edge
+                          "L280,196",   // bottom-right (narrower)
+                          "L120,196",   // bottom-left (narrower)
                           "Z"
                         ].join(" ")}
                           fill={fill} stroke="#fff" strokeWidth="2"
