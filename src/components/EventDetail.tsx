@@ -77,6 +77,42 @@ const inputStyle: React.CSSProperties = {
   transition: "border-color 0.2s ease",
 };
 
+function TestimonialCarousel({ testimonials, active }: { testimonials: { text: string; name: string; rating: number }[]; active: number }) {
+  const t = testimonials[active];
+  return (
+    <div style={{ position: "relative", minHeight: "180px" }}>
+      <div key={active} style={{
+        background: "#151515", borderRadius: "1rem", padding: "1.75rem",
+        border: "1px solid rgba(255,255,255,0.06)",
+        animation: "fadeIn 0.5s ease",
+      }}>
+        <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "1rem", lineHeight: 1.8, marginBottom: "1.25rem" }}>
+          &ldquo;{t.text}&rdquo;
+        </p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", fontStyle: "italic" }}>{t.name}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.2rem" }}>
+            {Array.from({ length: t.rating }).map((_, j) => (
+              <span key={j} style={{ color: "#E63946", fontSize: "16px" }}>★</span>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Dots */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", marginTop: "1rem" }}>
+        {testimonials.map((_, i) => (
+          <div key={i} style={{
+            width: i === active ? "24px" : "8px", height: "8px",
+            borderRadius: "4px",
+            background: i === active ? "#E63946" : "rgba(255,255,255,0.15)",
+            transition: "all 0.3s",
+          }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function EventDetailPage({ event }: { event: EventData }) {
   const otherEvents = allEvents.filter((e) => e.slug !== event.slug);
   const zones = eventZones[event.name] || eventZones["Así Lo Veo Yo"];
@@ -84,6 +120,12 @@ export default function EventDetailPage({ event }: { event: EventData }) {
   const [quantity, setQuantity] = useState(1);
   const [showCheckout, setShowCheckout] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const testimonials = [
+    { text: "Compré boletos para mi mamá porque es muy fan de Lucero. Nos hizo felices. Canta increíble y estuvo muy bonito, todos salimos contentos.", name: "María G.", rating: 5 },
+    { text: "Lucero en vivo es otro nivel. Voz impecable, conexión con el público y un show lleno de recuerdos.", name: "Luis Fernando", rating: 5 },
+    { text: "Primera vez usando Dulos y la experiencia fue increíble. Sin comisiones extras, todo transparente.", name: "Ana Sofía", rating: 5 },
+  ];
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
   const [discountCode, setDiscountCode] = useState("");
   const [countryCode, setCountryCode] = useState("+52");
@@ -120,6 +162,14 @@ export default function EventDetailPage({ event }: { event: EventData }) {
     const s = seconds % 60;
     return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   }, []);
+
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [testimonials.length]);
 
   const handlePagarClick = () => {
     // Will proceed to checkout form
@@ -763,32 +813,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               Testimonios reales de personas que han vivido la experiencia Dulos
             </p>
           </div>
-          <div style={{ display: "flex", gap: "1rem", overflowX: "auto", paddingBottom: "1rem", scrollSnapType: "x mandatory" }}>
-            {[
-              { text: "Compré boletos para mi mamá porque es muy fan de Lucero. Nos hizo felices. Canta increíble y estuvo muy bonito, todos salimos contentos.", name: "María G.", rating: 5 },
-              { text: "Lucero en vivo es otro nivel. Voz impecable, conexión con el público y un show lleno de recuerdos.", name: "Luis Fernando", rating: 5 },
-              { text: "Primera vez usando Dulos y la experiencia fue increíble. Sin comisiones extras, todo transparente.", name: "Ana Sofía", rating: 5 },
-            ].map((t, i) => (
-              <div key={i} style={{
-                minWidth: "280px", flex: "0 0 280px", scrollSnapAlign: "start",
-                background: "#151515", borderRadius: "1rem", padding: "1.5rem",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}>
-                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "1.25rem" }}>
-                  {t.text}
-                </p>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", fontStyle: "italic" }}>{t.name}</span>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
-                    {Array.from({ length: t.rating }).map((_, j) => (
-                      <span key={j} style={{ color: "#E63946", fontSize: "14px" }}>★</span>
-                    ))}
-                    <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem", marginLeft: "0.25rem", background: "rgba(255,255,255,0.08)", padding: "0.15rem 0.4rem", borderRadius: "4px" }}>{t.rating}/5</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TestimonialCarousel testimonials={testimonials} active={activeTestimonial} />
         </div>
       </section>
 
