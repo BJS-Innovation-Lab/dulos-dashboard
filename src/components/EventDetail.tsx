@@ -218,20 +218,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
   return (
     <main style={{ background: "#0a0a0a", color: "#fff", minHeight: "100vh" }}>
-      {/* Desktop: center everything in 480px like a mobile app */}
-      <style>{`
-        @media (min-width: 600px) {
-          .ed-page-wrapper {
-            max-width: 480px;
-            margin: 0 auto;
-            border-left: 1px solid rgba(255,255,255,0.06);
-            border-right: 1px solid rgba(255,255,255,0.06);
-            min-height: 100vh;
-            position: relative;
-          }
-        }
-      `}</style>
-      <div className="ed-page-wrapper">
+
       {/* ═══ NAVBAR ═══ */}
       <nav style={{
         position: "sticky", top: 0, zIndex: 50,
@@ -383,16 +370,24 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
       {/* ═══ STICKY BOTTOM BAR ═══ */}
       {!showCheckout && (
-        <div style={{
-          position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)",
-          width: "100%", maxWidth: "480px",
-          zIndex: 50,
+        <div className="ed-buy-bar" style={{
+          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50,
           background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
           borderTop: "1px solid rgba(255,255,255,0.08)",
-          borderLeft: "1px solid rgba(255,255,255,0.06)",
-          borderRight: "1px solid rgba(255,255,255,0.06)",
           padding: "0.75rem 1rem",
         }}>
+          <style>{`
+            @media (min-width: 600px) {
+              .ed-buy-bar {
+                left: 50% !important;
+                right: auto !important;
+                transform: translateX(-50%);
+                width: 480px;
+                border-left: 1px solid rgba(255,255,255,0.06);
+                border-right: 1px solid rgba(255,255,255,0.06);
+              }
+            }
+          `}</style>
           <button
             onClick={() => setShowCheckout(true)}
             className="btn-hero-primary"
@@ -422,16 +417,24 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             }}
           />
           {/* Drawer */}
-          <div style={{
-            position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)",
-            width: "100%", maxWidth: "480px",
-            zIndex: 70,
+          <div className="ed-drawer" style={{
+            position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 70,
             background: "#0a0a0a", borderRadius: "1.25rem 1.25rem 0 0",
             maxHeight: "92vh", overflowY: "auto",
             boxShadow: "0 -20px 60px rgba(0,0,0,0.8)",
             border: "1px solid rgba(255,255,255,0.06)",
             borderBottom: "none",
           }}>
+            <style>{`
+              @media (min-width: 600px) {
+                .ed-drawer {
+                  left: 50% !important;
+                  right: auto !important;
+                  transform: translateX(-50%);
+                  width: 480px;
+                }
+              }
+            `}</style>
             {/* Header with timer */}
             <div style={{
               position: "sticky", top: 0, zIndex: 5,
@@ -1119,7 +1122,6 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           </div>
         </div>
       </footer>
-      </div>
     </main>
   );
 }
