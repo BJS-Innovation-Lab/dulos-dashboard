@@ -84,6 +84,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
   const [discountCode, setDiscountCode] = useState("");
   const [countryCode, setCountryCode] = useState("+52");
@@ -710,36 +711,128 @@ export default function EventDetailPage({ event }: { event: EventData }) {
         </section>
       )}
 
-      {/* ═══ OTHER EVENTS ═══ */}
-      <section style={{ padding: "5rem 0", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+      {/* ═══ TESTIMONIOS ═══ */}
+      <section style={{ padding: "4rem 0", background: "#0a0a0a" }}>
         <div className="container-page">
-          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem" }}>Próximos Eventos</p>
-            <h2 className="ed-section-title" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900 }}>Elige Tu Momento</h2>
+          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+            <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)", fontWeight: 900, lineHeight: 1.1 }}>
+              LO QUE DICEN<br /><span style={{ color: "#E63946" }}>NUESTROS CLIENTES</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem", marginTop: "0.75rem" }}>
+              Testimonios reales de personas que han vivido la experiencia Dulos
+            </p>
           </div>
-          <div className="ed-events-grid">
+          <div style={{ display: "flex", gap: "1rem", overflowX: "auto", paddingBottom: "1rem", scrollSnapType: "x mandatory" }}>
+            {[
+              { text: "Compré boletos para mi mamá porque es muy fan de Lucero. Nos hizo felices. Canta increíble y estuvo muy bonito, todos salimos contentos.", name: "María G.", rating: 5 },
+              { text: "Lucero en vivo es otro nivel. Voz impecable, conexión con el público y un show lleno de recuerdos.", name: "Luis Fernando", rating: 5 },
+              { text: "Primera vez usando Dulos y la experiencia fue increíble. Sin comisiones extras, todo transparente.", name: "Ana Sofía", rating: 5 },
+            ].map((t, i) => (
+              <div key={i} style={{
+                minWidth: "280px", flex: "0 0 280px", scrollSnapAlign: "start",
+                background: "#151515", borderRadius: "1rem", padding: "1.5rem",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}>
+                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: "1.25rem" }}>
+                  {t.text}
+                </p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.85rem", fontStyle: "italic" }}>{t.name}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+                    {Array.from({ length: t.rating }).map((_, j) => (
+                      <span key={j} style={{ color: "#E63946", fontSize: "14px" }}>★</span>
+                    ))}
+                    <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem", marginLeft: "0.25rem", background: "rgba(255,255,255,0.08)", padding: "0.15rem 0.4rem", borderRadius: "4px" }}>{t.rating}/5</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ PREGUNTAS FRECUENTES ═══ */}
+      <section style={{ padding: "4rem 0" }}>
+        <div className="container-page">
+          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+            <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)", fontWeight: 900, lineHeight: 1.1 }}>
+              PREGUNTAS<br /><span style={{ color: "#E63946" }}>FRECUENTES</span>
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem", marginTop: "0.75rem" }}>
+              Encuentra respuestas a las dudas más comunes sobre nuestros eventos
+            </p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", maxWidth: "700px", margin: "0 auto" }}>
+            {[
+              { q: "¿Por qué no puedo elegir mi asiento?", a: "Los boletos se venden por zona (Dorada, Blanca, etc.), y los asientos se asignan al momento de tu compra dentro de la zona que seleccionaste." },
+              { q: "¿Mis boletos son oficiales?", a: "Sí. Los boletos son válidos y aceptados por el teatro y la producción del evento. Con ellos podrás acceder sin problema a la función." },
+              { q: "¿Cómo sabré cuáles son mis asientos?", a: "El número de asiento se asigna directamente en la entrada del teatro al momento de llegar, de acuerdo con la zona de tu boleto." },
+              { q: "¿Me sentarán junto a las personas con las que compré?", a: "Si. Al llegar juntos al teatro le asignarán los lugares juntos." },
+            ].map((faq, i) => (
+              <button
+                key={i}
+                onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                style={{
+                  width: "100%", textAlign: "left",
+                  background: "#151515", border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: "0.75rem", padding: "1.25rem",
+                  cursor: "pointer", color: "#fff", fontFamily: "inherit",
+                  transition: "border-color 0.2s",
+                  borderColor: openFaq === i ? "rgba(230,57,70,0.4)" : "rgba(255,255,255,0.08)",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontWeight: 700, fontSize: "0.95rem", paddingRight: "1rem" }}>{faq.q}</span>
+                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "1.25rem", flexShrink: 0, transition: "transform 0.2s", transform: openFaq === i ? "rotate(180deg)" : "rotate(0)" }}>⌄</span>
+                </div>
+                {openFaq === i && (
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", lineHeight: 1.7, marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                    {faq.a}
+                  </p>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ OTHER EVENTS ═══ */}
+      <section style={{ padding: "4rem 0", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <div className="container-page">
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <p style={{ color: "#E63946", fontSize: "11px", letterSpacing: "0.4em", textTransform: "uppercase", marginBottom: "1rem", fontWeight: 600 }}>PRÓXIMOS EVENTOS</p>
+            <h2 className="ed-section-title" style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 900 }}>Elige Tu Momento</h2>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             {otherEvents.map((ev) => (
-              <Link key={ev.name} href={ev.slug} className="event-card-link" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
-                <div style={{ borderRadius: "1rem", overflow: "hidden", cursor: "pointer", background: "#111111", border: "1px solid rgba(255,255,255,0.05)", transition: "transform 0.4s ease" }}>
-                  <div style={{ position: "relative", aspectRatio: "3/4", overflow: "hidden", background: "#0a0a0a" }}>
-                    <Image src={ev.image} alt={ev.name} fill className="event-card-img" style={{ objectFit: "cover", transition: "transform 0.7s ease" }} />
-                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, #111111, transparent, transparent)" }} />
+              <Link key={ev.name} href={ev.slug} style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+                <div style={{ borderRadius: "16px", overflow: "hidden", cursor: "pointer", background: "#111", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <div style={{ position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
+                    <Image src={ev.image} alt={ev.name} fill style={{ objectFit: "cover", objectPosition: "top center" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, #111 100%)" }} />
                     {ev.original && (
-                      <div style={{ position: "absolute", top: "0.75rem", right: "0.75rem", background: "#E63946", color: "#fff", fontSize: "10px", fontWeight: 700, padding: "0.3rem 0.6rem", borderRadius: "9999px", letterSpacing: "0.1em" }}>
-                        -{Math.round((1 - ev.price / ev.original) * 100)}% OFF
+                      <div style={{
+                        position: "absolute", top: "0.75rem", left: "0.75rem",
+                        background: "rgba(230,57,70,0.9)", backdropFilter: "blur(8px)",
+                        color: "#fff", fontSize: "11px", fontWeight: 800,
+                        padding: "0.3rem 0.7rem", borderRadius: "4px",
+                        letterSpacing: "0.06em", boxShadow: "0 2px 12px rgba(230,57,70,0.4)",
+                      }}>
+                        AHORRA {Math.round((1 - ev.price / ev.original) * 100)}%
                       </div>
                     )}
                   </div>
-                  <div style={{ padding: "1.25rem", marginTop: "-4rem", position: "relative", zIndex: 10 }}>
-                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "10px", letterSpacing: "0.1em", textTransform: "uppercase" }}>{ev.date}</p>
-                    <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#fff", marginTop: "0.4rem" }}>{ev.name}</h3>
-                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem", marginTop: "0.2rem" }}>{ev.venue} • {ev.city}</p>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1rem" }}>
+                  <div style={{ padding: "1.25rem 1.25rem 1.5rem" }}>
+                    <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "11px", letterSpacing: "0.12em", textTransform: "uppercase", fontWeight: 600 }}>{ev.date}</p>
+                    <h3 style={{ fontSize: "1.35rem", fontWeight: 800, color: "#fff", marginTop: "0.3rem", lineHeight: 1.2 }}>{ev.name}</h3>
+                    <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", marginTop: "0.3rem" }}>{ev.venue} • {ev.city}</p>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1.25rem" }}>
                       <div style={{ display: "flex", alignItems: "baseline", gap: "0.4rem" }}>
-                        {ev.original && <span style={{ color: "rgba(255,255,255,0.2)", textDecoration: "line-through", fontSize: "0.8rem" }}>${ev.original}</span>}
-                        <span style={{ color: "#E63946", fontSize: "1.25rem", fontWeight: 900 }}>${ev.price.toLocaleString()}</span>
+                        <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.75rem" }}>Desde</span>
+                        {ev.original && <span style={{ color: "rgba(255,255,255,0.3)", textDecoration: "line-through", fontSize: "0.8rem" }}>${ev.original}</span>}
+                        <span style={{ color: "#E63946", fontSize: "1.5rem", fontWeight: 900 }}>${ev.price.toLocaleString()}</span>
                       </div>
-                      <span className="ver-mas" style={{ color: "rgba(255,255,255,0.2)", fontSize: "11px", transition: "color 0.3s ease" }}>Ver más →</span>
+                      <span className="ver-mas" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", fontWeight: 500 }}>Ver más →</span>
                     </div>
                   </div>
                 </div>
