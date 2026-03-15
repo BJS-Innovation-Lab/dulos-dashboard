@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { EVENTS, getZonesForEvent } from "@/lib/events-data";
+import StripeCheckout from "@/components/StripeCheckout";
 
 // Events loaded from events-data.ts
 const allEvents = EVENTS.map(e => ({ name: e.name, city: e.city, venue: e.venue.split('•')[0].trim(), price: e.price, original: e.original, image: e.image, date: e.dates, url: e.slug, slug: e.slug }));
@@ -944,91 +945,21 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     )}
                   </div>
 
-                  {/* Stripe payment section — auto-appears when all forms complete */}
-                  {allFormsComplete && (
-                    <div style={{
-                      marginTop: "1rem", borderRadius: "0.75rem", overflow: "hidden",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      background: "#111",
-                    }}>
-                      {/* Stripe header */}
-                      <div style={{
-                        padding: "0.75rem 1rem",
-                        background: "linear-gradient(135deg, #635BFF, #7A73FF)",
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                      }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                            <rect width="24" height="24" rx="4" fill="rgba(255,255,255,0.15)"/>
-                            <path d="M13.976 9.15c-2.17-.5-3.057-.87-3.057-1.82 0-.78.69-1.24 1.856-1.24 1.826 0 3.057.72 3.057.72l.58-2.45s-1.24-.82-3.547-.82c-2.62 0-4.41 1.44-4.41 3.51 0 2.33 2.18 3.1 3.99 3.55 1.49.37 2.04.78 2.04 1.44 0 .78-.78 1.28-2.06 1.28-1.93 0-3.54-.92-3.54-.92l-.6 2.5s1.56.92 4.06.92c2.7 0 4.63-1.34 4.63-3.6 0-2.53-2.18-3.26-3.99-3.73z" fill="#fff"/>
-                          </svg>
-                          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#fff" }}>Pago con tarjeta</span>
-                        </div>
-                        <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)" }}>Powered by Stripe</span>
-                      </div>
-
-                      {/* Payment form */}
-                      <div style={{ padding: "1rem" }}>
-                        <div style={{ marginBottom: "0.75rem" }}>
-                          <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
-                            Número de tarjeta
-                          </label>
-                          <div style={{
-                            background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-                            borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem", color: "rgba(255,255,255,0.3)",
-                            display: "flex", alignItems: "center", justifyContent: "space-between",
-                          }}>
-                            <span>4242 4242 4242 4242</span>
-                            <span style={{ fontSize: "0.7rem" }}>💳</span>
-                          </div>
-                        </div>
-                        <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
-                          <div style={{ flex: 1 }}>
-                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
-                              Vencimiento
-                            </label>
-                            <input type="text" placeholder="MM / AA" style={{
-                              width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-                              borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem",
-                              color: "#fff", outline: "none", fontFamily: "inherit", boxSizing: "border-box",
-                            }} />
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
-                              CVC
-                            </label>
-                            <input type="text" placeholder="123" style={{
-                              width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-                              borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem",
-                              color: "#fff", outline: "none", fontFamily: "inherit", boxSizing: "border-box",
-                            }} />
-                          </div>
-                        </div>
-                        <div style={{ marginBottom: "1rem" }}>
-                          <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
-                            Titular de la tarjeta
-                          </label>
-                          <input type="text" defaultValue={formData[0] ? `${formData[0].name} ${formData[0].lastName}` : ""} style={{
-                            width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
-                            borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem",
-                            color: "#fff", outline: "none", fontFamily: "inherit", boxSizing: "border-box",
-                          }} />
-                        </div>
-                        <button className="btn-hero-primary" style={{
-                          width: "100%", padding: "1.1rem",
-                          background: "linear-gradient(135deg, #635BFF, #7A73FF)",
-                          color: "#fff", border: "none", borderRadius: "8px",
-                          fontSize: "1rem", fontWeight: 800, cursor: "pointer",
-                          fontFamily: "inherit",
-                          boxShadow: "0 4px 30px rgba(99,91,255,0.4)",
-                        }}>
-                          Pagar ${subtotal.toLocaleString()}.00 MXN
-                        </button>
-                        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.6rem", textAlign: "center", marginTop: "0.5rem" }}>
-                          🔒 Pago seguro con encriptación SSL · Sin comisiones
-                        </p>
-                      </div>
-                    </div>
+                  {/* Stripe payment — real checkout */}
+                  {allFormsComplete && selected && (
+                    <StripeCheckout
+                      eventName={event.name}
+                      zoneName={selected.name}
+                      quantity={quantity}
+                      unitPrice={selected.price}
+                      total={subtotal}
+                      tickets={formData.map(f => ({
+                        phone: f.phone,
+                        name: f.name,
+                        lastName: f.lastName,
+                        email: f.email,
+                      }))}
+                    />
                   )}
                 </>
               )}

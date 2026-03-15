@@ -25,8 +25,13 @@ export interface Event {
   slug: string;
   buyUrl: string;
   dashboardUrl: string;
-  zones: Zone[
-  {id: 'lucero',
+  zones: Zone[];
+  status: 'active' | 'low_stock' | 'sold_out';
+}
+
+export const EVENTS: Event[] = [
+    {
+    id: 'lucero',
     name: 'Lucero',
     city: 'Puebla',
     venue: 'Auditorio Arema Explanada',
@@ -45,8 +50,9 @@ export interface Event {
       { name: 'Blanca', price: 1725, originalPrice: 2700, available: 40, sold: 0, color: '#E0E0E0' },
       { name: 'Premium', price: 1950, originalPrice: 3000, available: 48, sold: 0, color: '#C0A0FF' },
     ],
-  },,
-  {id: 'mijares',
+  },
+    {
+    id: 'mijares',
     name: 'Mijares Sinfónico',
     city: 'Toluca',
     venue: 'Teatro Morelos',
@@ -65,18 +71,8 @@ export interface Event {
       { name: 'VIP', price: 1749, originalPrice: 4100, available: 78, sold: 0, color: '#E63946' },
     ],
   },
-];
-
-// Helper: get event by slug
-export function getEventBySlug(slug: string): Event | undefined {
-  return EVENTS.find(e => e.slug === slug || e.dashboardUrl.includes(slug));
-}
-
-// Helper: get zones for event name (for EventDetail component)
-export function getZonesForEvent(eventName: string): Zone[] {
-  const event = EVENTS.find(e => e.name === eventName);
-  return event?.zones || [,
-  {id: 'asi-lo-veo-yo-libanes',
+    {
+    id: 'asi-lo-veo-yo-libanes',
     name: 'Así Lo Veo Yo',
     city: 'CDMX',
     venue: 'Nuevo Teatro Libanés',
@@ -94,8 +90,9 @@ export function getZonesForEvent(eventName: string): Zone[] {
     zones: [
       { name: 'General', price: 299, originalPrice: 600, available: 434, sold: 97, color: '#2A7AE8' },
     ],
-  },,
-  {id: 'maleficio-mariposa',
+  },
+    {
+    id: 'maleficio-mariposa',
     name: 'El Maleficio de la Mariposa',
     city: 'CDMX',
     venue: 'Foro Shakespeare',
@@ -112,8 +109,9 @@ export function getZonesForEvent(eventName: string): Zone[] {
     zones: [
       { name: 'Preferente', price: 350, available: 149, sold: 35, color: '#E88D2A' },
     ],
-  },,
-  {id: 'infierno',
+  },
+    {
+    id: 'infierno',
     name: 'Infierno',
     city: 'CDMX',
     venue: 'Teatro Enrique Lizalde',
@@ -131,8 +129,9 @@ export function getZonesForEvent(eventName: string): Zone[] {
     zones: [
       { name: 'Preferente', price: 299, originalPrice: 710, available: 45, sold: 5, color: '#E88D2A' },
     ],
-  },,
-  {id: 'oh-karen',
+  },
+    {
+    id: 'oh-karen',
     name: '¡Oh Karen!',
     city: 'CDMX',
     venue: 'Teatro Xola',
@@ -153,4 +152,8 @@ export function getZonesForEvent(eventName: string): Zone[] {
     ],
   },
 ];
+
+export function getZonesForEvent(eventName: string): Zone[] {
+  const event = EVENTS.find(e => e.name === eventName);
+  return event?.zones || [];
 }
