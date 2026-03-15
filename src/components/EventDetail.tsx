@@ -114,6 +114,20 @@ export default function EventDetailPage({ event }: { event: EventData }) {
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [showCheckout, setShowCheckout] = useState(false);
+
+  // Auto-open drawer with preselected zone+qty from URL params
+  // e.g. ?zona=General&cantidad=2
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const zona = params.get("zona");
+    const cantidad = params.get("cantidad");
+    if (zona) {
+      setSelectedZone(zona);
+      if (cantidad) setQuantity(Math.min(parseInt(cantidad) || 1, 9));
+      setShowCheckout(true);
+    }
+  }, []);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
   const testimonials = [
