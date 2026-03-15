@@ -332,68 +332,68 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <span style={{ fontSize: "1rem", fontWeight: 900, color: "#E63946", fontStyle: "italic" }}>Dulos</span>
                   <span style={{ fontSize: "0.65rem", fontWeight: 900, color: "#111", letterSpacing: "0.06em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
-                <svg viewBox="0 0 300 330" style={{ width: "100%", height: "auto", display: "block" }}>
-                  {/* Upper section bg — darker gray */}
-                  <rect x="0" y="0" width="300" height="130" fill="#777" />
-                  {/* Lower section bg — lighter gray */}
-                  <rect x="0" y="130" width="300" height="200" fill="#aaa" />
+                <svg viewBox="0 0 340 380" style={{ width: "100%", height: "auto", display: "block" }}>
+                  {/* Venue silhouette — narrow top, wide bottom */}
+                  {/* Upper section — narrow darker gray */}
+                  <path d="M60,0 L280,0 L280,145 L60,145 Z" fill="#777" />
+                  {/* Lower section — wide lighter gray */}
+                  <path d="M20,145 L320,145 L320,340 L20,340 Z" fill="#aaa" />
 
-                  {/* Upper dark rows with white borders */}
-                  {[0, 1, 2].map((i) => (
-                    <rect key={`upper-${i}`} x="55" y={12 + i * 38} width="190" height="28" rx="2"
-                      fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
-                  ))}
+                  {/* Upper dark rows — fill the narrow section */}
+                  <rect x="70" y="10" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
+                  <rect x="70" y="52" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
+                  <rect x="70" y="94" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
 
-                  {/* LILA — notched trapezoid with tabs */}
+                  {/* LILA — notched with ear tabs, narrowest */}
                   {(() => {
-                    const isSelected = selectedZone === "Lila";
+                    const s = selectedZone === "Lila";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d="M70,138 L82,138 L85,145 L215,145 L218,138 L230,138 L225,178 L75,178 Z"
-                          fill={isSelected ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
-                          style={{ transition: "all 0.15s", filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none" }} />
-                        <text x="150" y="166" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>LILA</text>
+                        <path d="M85,152 L100,152 L104,160 L236,160 L240,152 L255,152 L248,195 L92,195 Z"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.15s", filter: s ? "brightness(0.8) drop-shadow(0 2px 8px rgba(0,0,0,0.5))" : "none" }} />
+                        <text x="170" y="181" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
                       </g>
                     );
                   })()}
 
-                  {/* BLANCA — slightly wider notched trapezoid */}
+                  {/* BLANCA — wider with ear tabs */}
                   {(() => {
-                    const isSelected = selectedZone === "Blanca";
+                    const s = selectedZone === "Blanca";
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d="M55,182 L68,182 L72,189 L228,189 L232,182 L245,182 L240,222 L60,222 Z"
-                          fill={isSelected ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
-                          style={{ transition: "all 0.15s", filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none" }} />
-                        <text x="150" y="210" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>BLANCA</text>
+                        <path d="M60,199 L78,199 L82,207 L258,207 L262,199 L280,199 L274,244 L66,244 Z"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.15s", filter: s ? "brightness(0.8) drop-shadow(0 2px 8px rgba(0,0,0,0.5))" : "none" }} />
+                        <text x="170" y="230" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
                     );
                   })()}
 
-                  {/* DORADA — full width rectangle, no notches */}
+                  {/* DORADA — full width rectangle */}
                   {(() => {
-                    const isSelected = selectedZone === "Dorada";
+                    const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="30" y="226" width="240" height="44" rx="2"
-                          fill={isSelected ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
-                          style={{ transition: "all 0.15s", filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none" }} />
-                        <text x="150" y="254" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>DORADA</text>
+                        <rect x="30" y="248" width="280" height="48" rx="2"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.15s", filter: s ? "brightness(0.8) drop-shadow(0 2px 8px rgba(0,0,0,0.5))" : "none" }} />
+                        <text x="170" y="279" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
 
-                  {/* Dark notch below last zone */}
-                  <path d="M105,282 L115,282 L118,287 L182,287 L185,282 L195,282 L190,296 L110,296 Z"
+                  {/* Dark notch piece */}
+                  <path d="M120,300 L132,300 L135,306 L205,306 L208,300 L220,300 L215,318 L125,318 Z"
                     fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
 
                   {/* Escenario */}
-                  <rect x="90" y="302" width="120" height="22" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1" />
-                  <text x="150" y="317" textAnchor="middle" fill="#fff"
-                    style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.15em" }}>
+                  <rect x="105" y="324" width="130" height="24" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1" />
+                  <text x="170" y="340" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "11px", fontWeight: 900, letterSpacing: "0.15em" }}>
                     ESCENARIO
                   </text>
                 </svg>
