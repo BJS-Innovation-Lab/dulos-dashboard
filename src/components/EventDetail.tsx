@@ -126,23 +126,19 @@ export default function EventDetailPage({ event }: { event: EventData }) {
     { text: "Lucero en vivo es otro nivel. Voz impecable, conexión con el público y un show lleno de recuerdos.", name: "Luis Fernando", rating: 5 },
     { text: "Primera vez usando Dulos y la experiencia fue increíble. Sin comisiones extras, todo transparente.", name: "Ana Sofía", rating: 5 },
   ];
-  const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
-  const [discountCode, setDiscountCode] = useState("");
-  const [countryCode, setCountryCode] = useState("+52");
-  const [phone, setPhone] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const [timeLeft, setTimeLeft] = useState(10 * 60);
+  const [mapCollapsed, setMapCollapsed] = useState(false);
+  const [formData, setFormData] = useState<Array<{phone: string, name: string, lastName: string, email: string}>>([]);
+  const [expandedForm, setExpandedForm] = useState<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const checkoutRef = useRef<HTMLDivElement>(null);
 
   const selected = zones.find((z) => z.name === selectedZone);
   const subtotal = selected ? selected.price * quantity : 0;
 
-  // Countdown timer
+  // Countdown timer — starts when drawer opens
   useEffect(() => {
     if (!showCheckout) return;
-    setTimeLeft(15 * 60);
+    setTimeLeft(10 * 60);
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -156,6 +152,41 @@ export default function EventDetailPage({ event }: { event: EventData }) {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [showCheckout]);
+
+  // Update formData array when quantity changes
+  useEffect(() => {
+    setFormData((prev) => {
+      const next = Array.from({ length: quantity }, (_, i) =>
+        prev[i] || { phone: "", name: "", lastName: "", email: "" }
+      );
+      return next;
+    });
+    setExpandedForm((prev) => Math.min(prev, quantity - 1));
+  }, [quantity]);
+
+  const isFormComplete = (f: { phone: string; name: string; lastName: string; email: string }) =>
+    f.phone.trim() !== "" && f.name.trim() !== "" && f.lastName.trim() !== "" && f.email.trim() !== "";
+
+  const allFormsComplete = formData.length === quantity && quantity > 0 && formData.every(isFormComplete);
+
+  const updateFormField = (index: number, field: string, value: string) => {
+    setFormData((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], [field]: value };
+      return next;
+    });
+  };
+
+  // Auto-collapse completed form and open next incomplete
+  const handleFormBlur = (index: number) => {
+    if (formData[index] && isFormComplete(formData[index])) {
+      // Find next incomplete form
+      const nextIncomplete = formData.findIndex((f, i) => i !== index && !isFormComplete(f));
+      if (nextIncomplete !== -1) {
+        setExpandedForm(nextIncomplete);
+      }
+    }
+  };
 
   const formatTime = useCallback((seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -171,8 +202,10 @@ export default function EventDetailPage({ event }: { event: EventData }) {
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
-  const handlePagarClick = () => {
-    // Will proceed to checkout form
+  const handleZoneSelect = (zoneName: string) => {
+    setSelectedZone(zoneName);
+    setQuantity(1);
+    setMapCollapsed(true);
   };
 
   return (
@@ -356,7 +389,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
         <>
           {/* Backdrop */}
           <div
-            onClick={() => { setShowCheckout(false); setSelectedZone(null); }}
+            onClick={() => { setShowCheckout(false); setSelectedZone(null); setMapCollapsed(false); }}
             style={{
               position: "fixed", inset: 0, zIndex: 60,
               background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)",
@@ -366,68 +399,107 @@ export default function EventDetailPage({ event }: { event: EventData }) {
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 70,
             background: "#0a0a0a", borderRadius: "1.25rem 1.25rem 0 0",
-            maxHeight: "85vh", overflowY: "auto",
+            maxHeight: "92vh", overflowY: "auto",
             boxShadow: "0 -20px 60px rgba(0,0,0,0.8)",
             border: "1px solid rgba(255,255,255,0.06)",
             borderBottom: "none",
           }}>
-            {/* Header */}
+            {/* Header with timer */}
             <div style={{
               position: "sticky", top: 0, zIndex: 5,
-              background: "#0a0a0a", padding: "1.25rem 1.5rem 1rem",
+              background: "#0a0a0a", padding: "0.75rem 1.5rem 0.75rem",
               borderBottom: "1px solid rgba(255,255,255,0.06)",
             }}>
-              <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.5rem" }}>
                 <div style={{ width: "36px", height: "4px", borderRadius: "2px", background: "rgba(255,255,255,0.2)" }} />
               </div>
-              <button onClick={() => { setShowCheckout(false); setSelectedZone(null); }} style={{
-                position: "absolute", top: "1.25rem", right: "1.25rem",
+              <button onClick={() => { setShowCheckout(false); setSelectedZone(null); setMapCollapsed(false); }} style={{
+                position: "absolute", top: "0.75rem", right: "1rem",
                 background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
                 color: "#fff", width: "32px", height: "32px", borderRadius: "50%",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 cursor: "pointer", fontSize: "0.9rem",
               }}>✕</button>
-              <h2 style={{ fontSize: "1.15rem", fontWeight: 800, textAlign: "center" }}>
+              {/* Timer */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", marginBottom: "0.4rem" }}>
+                <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Tu reserva expira en</span>
+                <span style={{
+                  fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 800,
+                  color: timeLeft < 120 ? "#E63946" : "#fff",
+                  letterSpacing: "0.08em",
+                }}>{formatTime(timeLeft)}</span>
+              </div>
+              <h2 style={{ fontSize: "1.05rem", fontWeight: 800, textAlign: "center" }}>
                 Boletos disponibles
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", textAlign: "center", marginTop: "0.25rem" }}>
-                Selecciona fecha, horario y tipo de boleto
-              </p>
+              {!mapCollapsed && (
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.75rem", textAlign: "center", marginTop: "0.15rem" }}>
+                  Selecciona tu zona en el mapa
+                </p>
+              )}
             </div>
 
-            <div style={{ padding: "1.5rem" }}>
-              {/* Venue Map — precise SVG matching real auditorio */}
-              <div style={{ marginBottom: "1.5rem", borderRadius: "8px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
-                {/* White header */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.6rem 0.75rem", background: "#fff" }}>
+            <div style={{ padding: "1rem 1.5rem 1.5rem" }}>
+              {/* Venue Map — collapsible */}
+              <div style={{
+                marginBottom: "1rem", borderRadius: "8px", overflow: "hidden",
+                border: "1px solid rgba(255,255,255,0.08)",
+                transition: "all 0.3s ease",
+              }}>
+                {/* White header — clickable when collapsed */}
+                <div
+                  onClick={() => mapCollapsed && setMapCollapsed(false)}
+                  style={{
+                    display: "flex", justifyContent: "space-between", alignItems: "center",
+                    padding: "0.6rem 0.75rem", background: "#fff",
+                    cursor: mapCollapsed ? "pointer" : "default",
+                  }}
+                >
                   <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-                    <span style={{ color: "#E63946", fontSize: "1.1rem", fontWeight: 900 }}>⟩</span>
+                    <span style={{
+                      color: "#E63946", fontSize: "1.1rem", fontWeight: 900,
+                      transition: "transform 0.3s", display: "inline-block",
+                      transform: mapCollapsed ? "rotate(90deg)" : "rotate(0deg)",
+                    }}>⟩</span>
                     <span style={{ fontSize: "1rem", fontWeight: 900, color: "#E63946", fontStyle: "italic" }}>Dulos</span>
                   </div>
-                  <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
+                  {mapCollapsed && selected ? (
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ fontSize: "0.7rem", fontWeight: 800, color: "#E63946", background: "rgba(230,57,70,0.1)", padding: "0.2rem 0.5rem", borderRadius: "4px" }}>
+                        Zona {selected.name}
+                      </span>
+                      <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "#333" }}>${selected.price.toLocaleString()}</span>
+                      <span style={{ fontSize: "0.6rem", color: "#888" }}>▼ cambiar</span>
+                    </div>
+                  ) : (
+                    <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
+                  )}
                 </div>
 
+                {/* SVG Map — hidden when collapsed */}
+                <div style={{
+                  maxHeight: mapCollapsed ? "0px" : "600px",
+                  overflow: "hidden",
+                  transition: "max-height 0.4s ease",
+                }}>
                 <svg viewBox="0 0 400 440" style={{ width: "100%", height: "auto", display: "block" }}>
                   <defs>
                     <filter id="zone-glow">
                       <feDropShadow dx="0" dy="0" stdDeviation="4" floodColor="#E63946" floodOpacity="0.6" />
                     </filter>
                   </defs>
-                  {/* Gray background */}
                   <rect x="0" y="0" width="400" height="440" fill="#aaa" />
-
-                  {/* 3 dark NARROW rows at top */}
                   <rect x="105" y="15" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — staircase: wide top, steps inward, narrow bottom — rounded corners */}
+                  {/* LILA */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     const fill = s ? "#b00d1c" : "#E63946";
                     const r = 4;
                     return (
-                      <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                      <g onClick={() => handleZoneSelect("Lila")} style={{ cursor: "pointer" }}>
                         <path d={[
                           `M${105+r},158`,
                           `L${295-r},158 Q295,158 295,${158+r}`,
@@ -453,13 +525,13 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     );
                   })()}
 
-                  {/* BLANCA — rect with top corner notches, rounded */}
+                  {/* BLANCA */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     const fill = s ? "#b00d1c" : "#E63946";
                     const r = 4;
                     return (
-                      <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                      <g onClick={() => handleZoneSelect("Blanca")} style={{ cursor: "pointer" }}>
                         <path d={[
                           `M105,${210+r} Q105,210 ${105+r},210`,
                           `L${115-r},210 Q115,210 115,${210-r}`,
@@ -484,7 +556,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   {(() => {
                     const s = selectedZone === "Dorada";
                     return (
-                      <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                      <g onClick={() => handleZoneSelect("Dorada")} style={{ cursor: "pointer" }}>
                         <rect x="105" y="248" width="190" height="76" rx="5"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
                           filter="url(#zone-glow)"
@@ -495,8 +567,7 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     );
                   })()}
 
-                  {/* Dark notch between DORADA and ESCENARIO */}
-                  {/* Dark shape — 3-tier staircase: wide top, steps inward, narrow bottom */}
+                  {/* Dark staircase */}
                   {(() => {
                     const r = 4;
                     return <path d={[
@@ -525,10 +596,10 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.12em" }}>ESCENARIO</text>
                 </svg>
 
-                {/* Price legend as buttons */}
+                {/* Price legend */}
                 <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", padding: "0.75rem 0.5rem", background: "#111", flexWrap: "wrap" }}>
                   {zones.map((z) => (
-                    <button key={z.name} onClick={() => { setSelectedZone(z.name); setQuantity(1); }}
+                    <button key={z.name} onClick={() => handleZoneSelect(z.name)}
                       style={{
                         background: selectedZone === z.name ? "rgba(230,57,70,0.2)" : "rgba(255,255,255,0.04)",
                         border: selectedZone === z.name ? "1.5px solid #E63946" : "1.5px solid rgba(255,255,255,0.1)",
@@ -540,360 +611,221 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     </button>
                   ))}
                 </div>
+                </div>
               </div>
 
-              {/* Selected zone info + price */}
-              {selected && (
-                <div style={{
-                  padding: "1rem 1.25rem", marginBottom: "1rem",
-                  background: "rgba(230,57,70,0.1)", border: "2px solid rgba(230,57,70,0.3)",
-                  borderRadius: "0.75rem",
-                }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
-                    <span style={{ fontSize: "1rem", fontWeight: 700 }}>Zona {selected.name}</span>
-                    <span style={{ fontSize: "1.25rem", fontWeight: 900, color: "#E63946" }}>${selected.price.toLocaleString()} MXN</span>
-                  </div>
-                  <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem" }}>{selected.seats} lugares disponibles</p>
-                </div>
-              )}
-
-              {/* Quantity + Total */}
-              {selected && (
-                <div style={{ marginBottom: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
-                    <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem" }}>Cantidad</span>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{
-                        width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center",
-                        background: "rgba(255,255,255,0.06)", border: "2px solid rgba(255,255,255,0.1)",
-                        borderRadius: "0.5rem 0 0 0.5rem", color: "#fff", cursor: "pointer", fontSize: "1.2rem", fontFamily: "inherit",
-                      }}>−</button>
-                      <div style={{
-                        width: "56px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center",
-                        background: "rgba(255,255,255,0.04)", borderTop: "2px solid rgba(255,255,255,0.1)",
-                        borderBottom: "2px solid rgba(255,255,255,0.1)", fontWeight: 800, fontSize: "1.1rem",
-                      }}>{quantity}</div>
-                      <button onClick={() => setQuantity(Math.min(selected.seats, quantity + 1))} style={{
-                        width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center",
-                        background: "rgba(255,255,255,0.06)", border: "2px solid rgba(255,255,255,0.1)",
-                        borderRadius: "0 0.5rem 0.5rem 0", color: "#fff", cursor: "pointer", fontSize: "1.2rem", fontFamily: "inherit",
-                      }}>+</button>
+              {/* ═══ ZONE SELECTED: Quantity + Forms ═══ */}
+              {selected && mapCollapsed && (
+                <>
+                  {/* Quantity selector */}
+                  <div style={{
+                    padding: "1rem", marginBottom: "1rem",
+                    background: "rgba(255,255,255,0.03)", borderRadius: "0.75rem",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <div>
+                        <span style={{ fontSize: "0.9rem", fontWeight: 700 }}>Zona {selected.name}</span>
+                        <span style={{ color: "#E63946", fontSize: "0.85rem", fontWeight: 700, marginLeft: "0.5rem" }}>${selected.price.toLocaleString()} c/u</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <button onClick={() => setQuantity(Math.max(1, quantity - 1))} style={{
+                          width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
+                          background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
+                          borderRadius: "0.4rem 0 0 0.4rem", color: "#fff", cursor: "pointer", fontSize: "1.1rem", fontFamily: "inherit",
+                        }}>−</button>
+                        <div style={{
+                          width: "44px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
+                          background: "rgba(255,255,255,0.04)", borderTop: "1px solid rgba(255,255,255,0.1)",
+                          borderBottom: "1px solid rgba(255,255,255,0.1)", fontWeight: 800, fontSize: "1rem",
+                        }}>{quantity}</div>
+                        <button onClick={() => setQuantity(Math.min(Math.min(selected.seats, 9), quantity + 1))} style={{
+                          width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center",
+                          background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)",
+                          borderRadius: "0 0.4rem 0.4rem 0", color: "#fff", cursor: "pointer", fontSize: "1.1rem", fontFamily: "inherit",
+                        }}>+</button>
+                      </div>
                     </div>
+                    <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.7rem", marginTop: "0.5rem" }}>
+                      Máximo 9 boletos · {selected.seats} lugares disponibles
+                    </p>
                   </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                    <span style={{ fontWeight: 700, fontSize: "1.05rem" }}>Total</span>
-                    <span style={{ fontWeight: 900, fontSize: "1.75rem", color: "#E63946" }}>${subtotal.toLocaleString()}.00</span>
+
+                  {/* Contact forms — accordion */}
+                  {formData.map((form, idx) => {
+                    const title = idx === 0 ? "Líder del pago" : `Invitado ${idx}`;
+                    const complete = isFormComplete(form);
+                    const isOpen = expandedForm === idx;
+
+                    return (
+                      <div key={idx} style={{
+                        marginBottom: "0.75rem", borderRadius: "0.75rem", overflow: "hidden",
+                        border: complete ? "1px solid rgba(76,175,80,0.3)" : "1px solid rgba(255,255,255,0.08)",
+                        background: "#111",
+                        transition: "all 0.3s ease",
+                      }}>
+                        {/* Accordion header */}
+                        <div
+                          onClick={() => setExpandedForm(isOpen ? -1 : idx)}
+                          style={{
+                            display: "flex", alignItems: "center", justifyContent: "space-between",
+                            padding: "0.85rem 1rem", cursor: "pointer",
+                            background: complete ? "rgba(76,175,80,0.08)" : "transparent",
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <span style={{
+                              width: "24px", height: "24px", borderRadius: "50%",
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                              fontSize: "0.7rem", fontWeight: 800,
+                              background: complete ? "#4CAF50" : "rgba(230,57,70,0.2)",
+                              color: "#fff",
+                            }}>
+                              {complete ? "✓" : idx + 1}
+                            </span>
+                            <div>
+                              <span style={{ fontSize: "0.85rem", fontWeight: 700 }}>{title}</span>
+                              {complete && !isOpen && (
+                                <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)", marginLeft: "0.5rem" }}>
+                                  {form.name} {form.lastName}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <span style={{
+                            fontSize: "0.7rem", color: "rgba(255,255,255,0.3)",
+                            transition: "transform 0.3s", display: "inline-block",
+                            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                          }}>▼</span>
+                        </div>
+
+                        {/* Form body */}
+                        <div style={{
+                          maxHeight: isOpen ? "400px" : "0px",
+                          overflow: "hidden",
+                          transition: "max-height 0.35s ease",
+                        }}>
+                          <div style={{ padding: "0 1rem 1rem" }}>
+                            {/* Phone */}
+                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.75rem", marginBottom: "0.3rem", marginTop: "0.5rem" }}>
+                              Teléfono *
+                            </label>
+                            <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.75rem" }}>
+                              <div style={{
+                                background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                                borderRadius: "0.5rem", padding: "0.6rem 0.75rem", fontSize: "0.85rem", color: "#fff",
+                                minWidth: "70px", textAlign: "center",
+                              }}>🇲🇽 +52</div>
+                              <input type="tel" placeholder="55 1234 5678"
+                                value={form.phone}
+                                onChange={(e) => updateFormField(idx, "phone", e.target.value)}
+                                onBlur={() => handleFormBlur(idx)}
+                                style={{
+                                  flex: 1, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                                  borderRadius: "0.5rem", padding: "0.6rem 0.75rem", fontSize: "0.85rem",
+                                  color: "#fff", outline: "none", fontFamily: "inherit",
+                                }}
+                              />
+                            </div>
+                            {/* Name */}
+                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.75rem", marginBottom: "0.3rem" }}>
+                              Nombre *
+                            </label>
+                            <input type="text" placeholder="Tu nombre"
+                              value={form.name}
+                              onChange={(e) => updateFormField(idx, "name", e.target.value)}
+                              onBlur={() => handleFormBlur(idx)}
+                              style={{
+                                width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                                borderRadius: "0.5rem", padding: "0.6rem 0.75rem", fontSize: "0.85rem",
+                                color: "#fff", outline: "none", fontFamily: "inherit", marginBottom: "0.75rem",
+                                boxSizing: "border-box",
+                              }}
+                            />
+                            {/* Last name */}
+                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.75rem", marginBottom: "0.3rem" }}>
+                              Apellido *
+                            </label>
+                            <input type="text" placeholder="Tu apellido"
+                              value={form.lastName}
+                              onChange={(e) => updateFormField(idx, "lastName", e.target.value)}
+                              onBlur={() => handleFormBlur(idx)}
+                              style={{
+                                width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                                borderRadius: "0.5rem", padding: "0.6rem 0.75rem", fontSize: "0.85rem",
+                                color: "#fff", outline: "none", fontFamily: "inherit", marginBottom: "0.75rem",
+                                boxSizing: "border-box",
+                              }}
+                            />
+                            {/* Email */}
+                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.75rem", marginBottom: "0.3rem" }}>
+                              Correo electrónico *
+                            </label>
+                            <input type="email" placeholder="tu@email.com"
+                              value={form.email}
+                              onChange={(e) => updateFormField(idx, "email", e.target.value)}
+                              onBlur={() => handleFormBlur(idx)}
+                              style={{
+                                width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                                borderRadius: "0.5rem", padding: "0.6rem 0.75rem", fontSize: "0.85rem",
+                                color: "#fff", outline: "none", fontFamily: "inherit",
+                                boxSizing: "border-box",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Total + Continue button */}
+                  <div style={{
+                    padding: "1rem", marginTop: "0.5rem",
+                    background: "rgba(255,255,255,0.03)", borderRadius: "0.75rem",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.75rem" }}>
+                      <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)" }}>
+                        {quantity}x Zona {selected.name}
+                      </span>
+                      <span style={{ fontWeight: 900, fontSize: "1.5rem", color: "#E63946" }}>
+                        ${subtotal.toLocaleString()}.00
+                      </span>
+                    </div>
+                    <button
+                      disabled={!allFormsComplete}
+                      className={allFormsComplete ? "btn-hero-primary" : ""}
+                      style={{
+                        width: "100%", padding: "1rem",
+                        background: allFormsComplete ? "#E63946" : "rgba(255,255,255,0.06)",
+                        color: allFormsComplete ? "#fff" : "rgba(255,255,255,0.2)",
+                        border: "none", borderRadius: "8px",
+                        fontSize: "1rem", fontWeight: 800,
+                        cursor: allFormsComplete ? "pointer" : "not-allowed",
+                        fontFamily: "inherit",
+                        boxShadow: allFormsComplete ? "0 4px 30px rgba(230,57,70,0.4)" : "none",
+                      }}
+                    >
+                      {allFormsComplete ? `Continuar al pago · $${subtotal.toLocaleString()}.00` : "Completa todos los datos"}
+                    </button>
+                    <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.65rem", textAlign: "center", marginTop: "0.5rem" }}>
+                      Pago seguro · Sin comisiones · Boletos al instante
+                    </p>
                   </div>
-                </div>
+                </>
               )}
 
-              {/* Pay button */}
-              <button
-                disabled={!selected}
-                onClick={handlePagarClick}
-                className={selected ? "btn-hero-primary" : ""}
-                style={{
-                  width: "100%", padding: "1.1rem",
-                  background: selected ? "#E63946" : "rgba(255,255,255,0.06)",
-                  color: selected ? "#fff" : "rgba(255,255,255,0.2)",
-                  border: "none", borderRadius: "8px",
-                  fontSize: "1.05rem", fontWeight: 800,
-                  cursor: selected ? "pointer" : "not-allowed",
-                  fontFamily: "inherit", letterSpacing: "0.02em",
-                  boxShadow: selected ? "0 4px 30px rgba(230,57,70,0.4)" : "none",
-                  marginTop: "0.5rem",
-                }}
-              >
-                {selected ? `Pagar $${subtotal.toLocaleString()}.00 MXN` : "Selecciona una zona"}
-              </button>
-
-              <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.7rem", textAlign: "center", marginTop: "0.75rem" }}>
-                🔒 Pago seguro · Sin comisiones · Boletos al instante
-              </p>
+              {/* Initial state — no zone selected yet */}
+              {!mapCollapsed && !selected && (
+                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.8rem", textAlign: "center", marginTop: "0.5rem" }}>
+                  Toca una zona en el mapa para continuar
+                </p>
+              )}
             </div>
           </div>
         </>
       )}
 
-      {/* ═══ CHECKOUT FLOW ═══ */}
-      {showCheckout && selected && (
-        <section ref={checkoutRef} style={{ padding: "0 0 5rem 0", background: "#080808" }}>
-          {/* Reservation Timer Banner */}
-          <div style={{
-            background: "linear-gradient(135deg, #8B0000, #E63946, #8B0000)",
-            padding: "1rem 0",
-            textAlign: "center",
-            marginBottom: "3rem",
-          }}>
-            <div className="container-page" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
-              <span style={{ fontSize: "1.1rem" }}>⏱️</span>
-              <span style={{ fontSize: "1rem", fontWeight: 700, color: "#fff", letterSpacing: "0.02em" }}>
-                Tu reserva expira en:{" "}
-                <span style={{ fontFamily: "monospace", fontSize: "1.15rem", letterSpacing: "0.1em" }}>
-                  {formatTime(timeLeft)}
-                </span>
-                {" "}min
-              </span>
-            </div>
-          </div>
-
-          <div className="container-page">
-            {/* Checkout Header */}
-            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-              <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, marginBottom: "0.75rem" }}>
-                ¡Estás a un paso de tus boletos!
-              </h2>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.05rem" }}>
-                Solo necesitamos unos datos para procesar tu compra.
-              </p>
-            </div>
-
-            <div className="ed-checkout-grid">
-              {/* Left — Contact Form */}
-              <div style={{
-                background: "#111",
-                borderRadius: "1.25rem",
-                padding: "2.5rem",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}>
-                <h3 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "0.5rem" }}>Datos de contacto</h3>
-                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.85rem", marginBottom: "2rem" }}>
-                  Te enviaremos tus boletos digitales a este correo.
-                </p>
-
-                {/* Phone */}
-                <div style={{ marginBottom: "1.25rem" }}>
-                  <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
-                    📱 Teléfono
-                  </label>
-                  <div style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: "0.75rem" }}>
-                    <select
-                      value={countryCode}
-                      onChange={(e) => setCountryCode(e.target.value)}
-                      style={{
-                        ...inputStyle,
-                        cursor: "pointer",
-                        appearance: "none",
-                        backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E\")",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "right 0.75rem center",
-                        paddingRight: "2rem",
-                      }}
-                    >
-                      <option value="+52">🇲🇽 +52</option>
-                      <option value="+1">🇺🇸 +1</option>
-                      <option value="+34">🇪🇸 +34</option>
-                      <option value="+57">🇨🇴 +57</option>
-                      <option value="+54">🇦🇷 +54</option>
-                    </select>
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="55 1234 5678"
-                      style={inputStyle}
-                    />
-                  </div>
-                </div>
-
-                {/* Name row */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "1.25rem" }}>
-                  <div>
-                    <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
-                      Nombre
-                    </label>
-                    <input
-                      type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="Tu nombre"
-                      style={inputStyle}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
-                      Apellido
-                    </label>
-                    <input
-                      type="text"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Tu apellido"
-                      style={inputStyle}
-                    />
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div style={{ marginBottom: "2rem" }}>
-                  <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.8rem", marginBottom: "0.5rem", letterSpacing: "0.05em" }}>
-                    Correo electrónico
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="tu@correo.com"
-                    style={inputStyle}
-                  />
-                </div>
-
-                {/* Submit */}
-                <button
-                  style={{
-                    width: "100%",
-                    padding: "1.1rem",
-                    background: "#E63946",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "9999px",
-                    fontSize: "1.05rem",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    letterSpacing: "0.02em",
-                    boxShadow: "0 4px 24px rgba(230,57,70,0.3)",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  Continuar al pago
-                </button>
-              </div>
-
-              {/* Right — Order Summary (Checkout) */}
-              <div className="ed-order-sticky" style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-              }}>
-                {/* Summary Card */}
-                <div style={{
-                  background: "#111",
-                  borderRadius: "1.25rem",
-                  padding: "2rem",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}>
-                  <h3 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "1.5rem", paddingBottom: "1rem", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-                    Resumen de tu pedido
-                  </h3>
-
-                  {/* Reserved badge */}
-                  <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    background: "rgba(46,204,113,0.1)",
-                    border: "1px solid rgba(46,204,113,0.2)",
-                    borderRadius: "0.5rem",
-                    padding: "0.75rem 1rem",
-                    marginBottom: "1.5rem",
-                  }}>
-                    <span style={{ fontSize: "14px" }}>✅</span>
-                    <span style={{ color: "#2ECC71", fontSize: "0.85rem", fontWeight: 600 }}>Boletos reservados temporalmente</span>
-                  </div>
-
-                  {/* Event details */}
-                  <div style={{ marginBottom: "1.25rem" }}>
-                    <p style={{ fontWeight: 700, fontSize: "1.05rem", marginBottom: "0.3rem" }}>{event.name}</p>
-                    <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>{event.venue}</p>
-                  </div>
-
-                  {/* Details grid */}
-                  <div style={{
-                    background: "rgba(255,255,255,0.03)",
-                    borderRadius: "0.75rem",
-                    padding: "1.25rem",
-                    marginBottom: "1.5rem",
-                    border: "1px solid rgba(255,255,255,0.04)",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.75rem",
-                  }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Zona</span>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                        <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: selected.color }} />
-                        <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>{selected.name}</span>
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Fecha</span>
-                      <span style={{ fontSize: "0.9rem" }}>{event.dates}</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Cantidad</span>
-                      <span style={{ fontSize: "0.9rem" }}>{quantity} boleto{quantity > 1 ? "s" : ""}</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>Precio unitario</span>
-                      <span style={{ fontSize: "0.9rem" }}>${selected.price.toLocaleString()}.00</span>
-                    </div>
-                  </div>
-
-                  {/* Discount code */}
-                  <div style={{ marginBottom: "1.5rem" }}>
-                    <label style={{ display: "block", color: "rgba(255,255,255,0.4)", fontSize: "0.8rem", marginBottom: "0.5rem" }}>
-                      Código de descuento
-                    </label>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "0.5rem" }}>
-                      <input
-                        type="text"
-                        value={discountCode}
-                        onChange={(e) => setDiscountCode(e.target.value)}
-                        placeholder="Ingresa tu código"
-                        style={{ ...inputStyle, fontSize: "0.9rem" }}
-                      />
-                      <button style={{
-                        padding: "0.9rem 1.25rem",
-                        background: "rgba(255,255,255,0.06)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: "0.5rem",
-                        color: "#fff",
-                        fontSize: "0.85rem",
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        fontFamily: "inherit",
-                        transition: "background 0.2s ease",
-                        whiteSpace: "nowrap",
-                      }}>
-                        Aplicar
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Divider */}
-                  <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginBottom: "1rem" }} />
-
-                  {/* Subtotal */}
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem" }}>Subtotal</span>
-                    <span style={{ fontSize: "0.95rem" }}>${subtotal.toLocaleString()}.00</span>
-                  </div>
-
-                  {/* Total */}
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "baseline",
-                    paddingTop: "1rem",
-                    borderTop: "1px solid rgba(255,255,255,0.06)",
-                  }}>
-                    <span style={{ fontWeight: 700, fontSize: "1.1rem" }}>Total</span>
-                    <span style={{ fontWeight: 900, fontSize: "1.75rem", color: "#E63946" }}>
-                      ${subtotal.toLocaleString()}.00
-                    </span>
-                  </div>
-                </div>
-
-                {/* SSL Note */}
-                <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.75rem", textAlign: "center" }}>
-                  🔒 Tu información está protegida con encriptación SSL
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ═══ TESTIMONIOS ═══ */}
       <section style={{ padding: "4rem 0", background: "#0a0a0a" }}>
