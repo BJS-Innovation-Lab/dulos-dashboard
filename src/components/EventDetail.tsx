@@ -325,118 +325,77 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             </div>
 
             <div style={{ padding: "1.5rem" }}>
-              {/* 1. Fecha */}
-              <div style={{ marginBottom: "2rem" }}>
-                <p style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <span style={{ color: "#E63946" }}>1.</span> Selecciona fecha
-                </p>
-                <div style={{
-                  background: "rgba(255,255,255,0.04)", border: "2px solid rgba(255,255,255,0.12)",
-                  borderRadius: "0.75rem", padding: "1rem 1.25rem",
-                }}>
-                  <span style={{ fontSize: "0.95rem" }}>📅 {event.dates}</span>
-                </div>
-                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.75rem", marginTop: "0.5rem" }}>
-                  Fecha seleccionada: {event.dates}
-                </p>
-              </div>
-
-              {/* 2. Horario */}
-              <div style={{ marginBottom: "2rem" }}>
-                <p style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <span style={{ color: "#E63946" }}>2.</span> Selecciona horario
-                </p>
-                <div style={{
-                  background: "rgba(255,255,255,0.04)", border: "2px solid rgba(255,255,255,0.12)",
-                  borderRadius: "0.75rem", padding: "1rem 1.25rem",
-                  display: "flex", alignItems: "center", gap: "0.6rem",
-                }}>
-                  <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#E63946", boxShadow: "0 0 6px rgba(230,57,70,0.5)" }} />
-                  <span style={{ fontSize: "0.95rem", fontWeight: 600 }}>9:00 PM</span>
-                </div>
-              </div>
-
-              {/* 3. Zona — Interactive Venue Map */}
+              {/* Venue Map — matches dulos.io layout */}
               <div style={{ marginBottom: "1.5rem" }}>
-                <p style={{ fontSize: "0.9rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <span style={{ color: "#E63946" }}>3.</span> Mapa del venue
-                </p>
+                <svg viewBox="0 0 300 340" style={{ width: "100%", height: "auto", background: "#888", borderRadius: "8px" }}>
+                  {/* Upper section — dark unavailable rows, tighter spacing */}
+                  {[0, 1, 2].map((i) => (
+                    <rect key={`upper-${i}`} x="45" y={10 + i * 42} width="210" height="32" rx="2"
+                      fill="#333" stroke="#555" strokeWidth="1" />
+                  ))}
 
-                {/* SVG Venue Map */}
-                <div style={{ borderRadius: "1rem", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
-                  {/* Header */}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.75rem 1rem", background: "#fff" }}>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 900, color: "#E63946", letterSpacing: "0.05em" }}>🎵 Dulos</span>
-                    <span style={{ fontSize: "0.6rem", fontWeight: 800, color: "#222", letterSpacing: "0.08em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
-                  </div>
+                  {/* Small dark row between upper and zones */}
+                  <rect x="70" y="136" width="160" height="16" rx="2" fill="#333" stroke="#555" strokeWidth="1" />
 
-                  <svg viewBox="0 0 300 380" style={{ width: "100%", height: "auto", background: "#bbb" }}>
-                    {/* Upper gray area */}
-                    <rect x="0" y="0" width="300" height="190" fill="#bbb" />
+                  {/* Clickable zones — notched trapezoid shapes */}
+                  {zones.map((zone, i) => {
+                    const isSelected = selectedZone === zone.name;
+                    const yBase = 162 + i * 46;
+                    const shrink = i * 10;
+                    // Notched edges like dulos.io
+                    return (
+                      <g key={zone.name} onClick={() => { setSelectedZone(zone.name); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        <path
+                          d={`M${40 + shrink},${yBase}
+                              L${55 + shrink},${yBase}
+                              L${58 + shrink},${yBase + 5}
+                              L${242 - shrink},${yBase + 5}
+                              L${245 - shrink},${yBase}
+                              L${260 - shrink},${yBase}
+                              L${252 - shrink},${yBase + 38}
+                              L${48 + shrink},${yBase + 38} Z`}
+                          fill={isSelected ? "#c0101e" : "#E63946"}
+                          stroke="#fff" strokeWidth="2.5"
+                          style={{
+                            transition: "all 0.15s",
+                            filter: isSelected ? "brightness(0.8) drop-shadow(0 0 8px rgba(0,0,0,0.5))" : "none",
+                          }}
+                        />
+                        <text x="150" y={yBase + 27} textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "16px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>
+                          {zone.name.toUpperCase()}
+                        </text>
+                      </g>
+                    );
+                  })}
 
-                    {/* Upper seats (unavailable — dark rows) */}
-                    {[0, 1, 2].map((i) => (
-                      <rect key={`upper-${i}`} x="50" y={15 + i * 58} width="200" height="44" rx="3"
-                        fill="#333" stroke="#555" strokeWidth="1.5" />
-                    ))}
+                  {/* Small dark notch below last zone */}
+                  <path d="M100,300 L110,300 L113,305 L187,305 L190,300 L200,300 L195,315 L105,315 Z"
+                    fill="#333" stroke="#555" strokeWidth="1" />
 
-                    {/* Lower venue section — lighter gray bg */}
-                    <rect x="0" y="190" width="300" height="190" fill="#999" />
-
-                    {/* Clickable zones with notched edges */}
-                    {zones.map((zone, i) => {
-                      const isSelected = selectedZone === zone.name;
-                      const yBase = 200 + i * 48;
-                      const inset = 10 + i * 12;
-                      const notch = 8;
-                      return (
-                        <g key={zone.name} onClick={() => { setSelectedZone(zone.name); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                          <path
-                            d={`M${45 + inset},${yBase}
-                                L${65 + inset},${yBase}
-                                L${68 + inset},${yBase + 4}
-                                L${232 - inset},${yBase + 4}
-                                L${235 - inset},${yBase}
-                                L${255 - inset},${yBase}
-                                L${250 - inset},${yBase + 40}
-                                L${50 + inset},${yBase + 40} Z`}
-                            fill={isSelected ? zone.color : "#E63946"}
-                            stroke="#fff" strokeWidth="2"
-                            style={{
-                              transition: "all 0.2s",
-                              filter: isSelected ? `drop-shadow(0 0 15px rgba(230,57,70,0.6))` : "none",
-                              opacity: isSelected ? 1 : 0.85,
-                            }}
-                          />
-                          <text x="150" y={yBase + 27} textAnchor="middle" fill="#fff"
-                            style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.1em", pointerEvents: "none" }}>
-                            {zone.name.toUpperCase()}
-                          </text>
-                        </g>
-                      );
-                    })}
-
-                    {/* Escenario */}
-                    <rect x="85" y="350" width="130" height="24" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
-                    <text x="150" y="366" textAnchor="middle" fill="#fff"
-                      style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.15em" }}>
-                      ESCENARIO
-                    </text>
-                  </svg>
-                </div>
-
-                {/* Selected zone info */}
-                {selected && (
-                  <div style={{
-                    marginTop: "0.75rem", padding: "0.75rem 1rem",
-                    background: "rgba(230,57,70,0.1)", border: "1px solid rgba(230,57,70,0.3)",
-                    borderRadius: "0.5rem", display: "flex", justifyContent: "space-between", alignItems: "center",
-                  }}>
-                    <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>Zona {selected.name} · {selected.seats} disponibles</span>
-                    <span style={{ fontSize: "1.1rem", fontWeight: 900, color: "#E63946" }}>${selected.price.toLocaleString()}</span>
-                  </div>
-                )}
+                  {/* Escenario */}
+                  <rect x="90" y="322" width="120" height="22" rx="3" fill="#E63946" />
+                  <text x="150" y="337" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.15em" }}>
+                    ESCENARIO
+                  </text>
+                </svg>
               </div>
+
+              {/* Selected zone info + price */}
+              {selected && (
+                <div style={{
+                  padding: "1rem 1.25rem", marginBottom: "1rem",
+                  background: "rgba(230,57,70,0.1)", border: "2px solid rgba(230,57,70,0.3)",
+                  borderRadius: "0.75rem",
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                    <span style={{ fontSize: "1rem", fontWeight: 700 }}>Zona {selected.name}</span>
+                    <span style={{ fontSize: "1.25rem", fontWeight: 900, color: "#E63946" }}>${selected.price.toLocaleString()} MXN</span>
+                  </div>
+                  <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.8rem" }}>{selected.seats} lugares disponibles</p>
+                </div>
+              )}
 
               {/* Quantity + Total */}
               {selected && (
