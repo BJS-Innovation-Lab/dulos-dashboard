@@ -218,30 +218,60 @@ export default function EventDetailPage({ event }: { event: EventData }) {
         </div>
       )}
 
-      {/* ═══ ACERCA DE ═══ */}
-      <section className="container-page" style={{ paddingTop: "3rem", paddingBottom: "3rem" }}>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: "1.25rem", fontWeight: 600 }}>
-          ACERCA DE
+      {/* ═══ VENUE + TITLE + POSTER (visible fast) ═══ */}
+      <section className="container-page" style={{ paddingTop: "2rem", paddingBottom: "1.5rem" }}>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: "1rem", fontWeight: 600 }}>
+          {event.venue}
         </p>
 
         <h1 className="ed-hero-title" style={{
-          fontSize: "clamp(2rem, 6vw, 3rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.75rem",
+          fontSize: "clamp(2rem, 6vw, 3rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.25rem",
           textDecoration: "underline", textDecorationColor: "#E63946", textUnderlineOffset: "6px", textDecorationThickness: "3px",
         }}>
           {event.name}
         </h1>
 
-        {/* Quote */}
-        {event.quote && (
-          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "1.75rem", fontStyle: "italic" }}>
-            &ldquo;{event.quote}&rdquo;
-          </p>
-        )}
-
-        {/* Description */}
+        {/* Short description */}
         <p style={{ color: "rgba(255,255,255,0.65)", fontSize: "1rem", lineHeight: 1.85, marginBottom: "1.5rem" }}>
           {event.description}
         </p>
+
+        {/* Dates */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.5rem" }}>
+          <span style={{ fontSize: "14px" }}>📅</span>
+          <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.95rem" }}>Fechas disponibles:</span>
+        </div>
+        <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.95rem", marginBottom: "1.5rem" }}>{event.dates}</p>
+      </section>
+
+      {/* ═══ POSTER — right after title, visible fast ═══ */}
+      <section className="container-page" style={{ paddingBottom: "2rem" }}>
+        <div style={{ position: "relative", width: "100%", borderRadius: "1rem", overflow: "hidden", background: "#111" }}>
+          <div className="ed-hero-poster-container" style={{ position: "relative", width: "100%", aspectRatio: "3/4", maxHeight: "600px" }}>
+            <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center" }} priority />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ ACERCA DE — detailed description below poster ═══ */}
+      <section className="container-page" style={{ paddingBottom: "3rem" }}>
+        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", letterSpacing: "0.25em", textTransform: "uppercase", marginBottom: "1.25rem", fontWeight: 600 }}>
+          ACERCA DE
+        </p>
+
+        <h2 style={{
+          fontSize: "clamp(1.75rem, 5vw, 2.5rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem",
+          textDecoration: "underline", textDecorationColor: "#E63946", textUnderlineOffset: "6px", textDecorationThickness: "3px",
+        }}>
+          {event.name}
+        </h2>
+
+        {/* Quote */}
+        {event.quote && (
+          <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "1.5rem", fontStyle: "italic" }}>
+            &ldquo;{event.quote}&rdquo;
+          </p>
+        )}
 
         {/* Long description */}
         {event.longDescription && (
@@ -251,15 +281,6 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             ))}
           </div>
         )}
-      </section>
-
-      {/* ═══ POSTER ═══ */}
-      <section className="container-page" style={{ paddingBottom: "3rem" }}>
-        <div style={{ position: "relative", width: "100%", borderRadius: "1rem", overflow: "hidden", background: "#111" }}>
-          <div className="ed-hero-poster-container" style={{ position: "relative", width: "100%", aspectRatio: "3/4", maxHeight: "600px" }}>
-            <Image src={event.image} alt={event.name} fill style={{ objectFit: "cover", objectPosition: "center" }} priority />
-          </div>
-        </div>
       </section>
 
       {/* ═══ UBICACIÓN ═══ */}
