@@ -416,21 +416,21 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — same notched top corners as BLANCA */}
+                  {/* LILA — notched BOTTOM corners */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     const fill = s ? "#b00d1c" : "#E63946";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
                         <path d={[
-                          "M105,165",   // left side, below notch
-                          "L115,165",   // right edge of left notch
-                          "L115,158",   // up to top
-                          "L285,158",   // across top
-                          "L285,165",   // down to right notch
-                          "L295,165",   // right edge
-                          "L295,196",   // down right side
-                          "L105,196",   // across bottom
+                          "M105,158",   // top-left
+                          "L295,158",   // top-right
+                          "L295,189",   // down right side to notch
+                          "L285,189",   // left edge of right notch
+                          "L285,196",   // down to bottom
+                          "L115,196",   // across bottom
+                          "L115,189",   // up to left notch
+                          "L105,189",   // left edge
                           "Z"
                         ].join(" ")}
                           fill={fill} stroke="#fff" strokeWidth="2"
