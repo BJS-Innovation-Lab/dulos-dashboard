@@ -485,22 +485,20 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   })()}
 
                   {/* Dark notch between DORADA and ESCENARIO */}
-                  {/* Dark shape with 3 crenellation notches at top */}
+                  {/* Dark shape — 3-tier staircase: wide top, steps inward, narrow bottom */}
                   <path d={[
-                    "M105,336",     // top-left corner
-                    "L105,344",     // down into left notch
-                    "L125,344",     // across left notch bottom
-                    "L125,336",     // back up
-                    "L160,336",     // across to center notch
-                    "L160,347",     // down into center notch (deeper)
-                    "L240,347",     // across center notch bottom
-                    "L240,336",     // back up
-                    "L275,336",     // across to right notch
-                    "L275,344",     // down into right notch
-                    "L295,344",     // across right notch bottom
-                    "L295,336",     // back up to top-right
-                    "L295,374",     // down right side
-                    "L105,374",     // across bottom
+                    "M105,336",     // top-left (widest)
+                    "L295,336",     // top-right
+                    "L295,346",     // down (step 1)
+                    "L275,346",     // inward
+                    "L275,356",     // down (step 2)
+                    "L255,356",     // inward
+                    "L255,380",     // down to bottom
+                    "L145,380",     // across bottom (narrowest)
+                    "L145,356",     // up
+                    "L125,356",     // outward (step 2)
+                    "L125,346",     // up
+                    "L105,346",     // outward (step 1)
                     "Z"
                   ].join(" ")}
                     fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
