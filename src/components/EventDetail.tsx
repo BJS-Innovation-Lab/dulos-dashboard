@@ -328,57 +328,61 @@ export default function EventDetailPage({ event }: { event: EventData }) {
               {/* Venue Map — matches dulos.io layout */}
               <div style={{ marginBottom: "1.5rem", borderRadius: "8px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
                 {/* White header */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.6rem 0.75rem", background: "#fff" }}>
-                  <span style={{ fontSize: "0.8rem", fontWeight: 900, color: "#E63946" }}>🎵 Dulos</span>
-                  <span style={{ fontSize: "0.55rem", fontWeight: 800, color: "#222", letterSpacing: "0.06em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.75rem 1rem", background: "#fff" }}>
+                  <span style={{ fontSize: "1rem", fontWeight: 900, color: "#E63946", fontStyle: "italic" }}>Dulos</span>
+                  <span style={{ fontSize: "0.65rem", fontWeight: 900, color: "#111", letterSpacing: "0.06em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
-                <svg viewBox="0 0 300 310" style={{ width: "100%", height: "auto", background: "#888", display: "block" }}>
-                  {/* Upper section — dark unavailable rows, compact */}
+                <svg viewBox="0 0 300 330" style={{ width: "100%", height: "auto", display: "block" }}>
+                  {/* Upper section bg — darker gray */}
+                  <rect x="0" y="0" width="300" height="130" fill="#777" />
+                  {/* Lower section bg — lighter gray */}
+                  <rect x="0" y="130" width="300" height="200" fill="#aaa" />
+
+                  {/* Upper dark rows with white borders */}
                   {[0, 1, 2].map((i) => (
-                    <rect key={`upper-${i}`} x="50" y={8 + i * 36} width="200" height="28" rx="2"
-                      fill="#333" stroke="#555" strokeWidth="1" />
+                    <rect key={`upper-${i}`} x="55" y={12 + i * 38} width="190" height="28" rx="2"
+                      fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
                   ))}
 
-                  {/* Clickable zones — notched trapezoid shapes */}
+                  {/* Clickable zones — wide notched trapezoids */}
                   {zones.map((zone, i) => {
                     const isSelected = selectedZone === zone.name;
-                    const yBase = 125 + i * 46;
-                    const shrink = i * 10;
-                    // Notched edges like dulos.io
+                    const yBase = 138 + i * 48;
+                    const shrink = i * 14;
                     return (
                       <g key={zone.name} onClick={() => { setSelectedZone(zone.name); setQuantity(1); }} style={{ cursor: "pointer" }}>
                         <path
-                          d={`M${40 + shrink},${yBase}
+                          d={`M${35 + shrink},${yBase}
                               L${55 + shrink},${yBase}
-                              L${58 + shrink},${yBase + 5}
-                              L${242 - shrink},${yBase + 5}
+                              L${60 + shrink},${yBase + 8}
+                              L${240 - shrink},${yBase + 8}
                               L${245 - shrink},${yBase}
-                              L${260 - shrink},${yBase}
-                              L${252 - shrink},${yBase + 38}
-                              L${48 + shrink},${yBase + 38} Z`}
-                          fill={isSelected ? "#c0101e" : "#E63946"}
+                              L${265 - shrink},${yBase}
+                              L${255 - shrink},${yBase + 40}
+                              L${45 + shrink},${yBase + 40} Z`}
+                          fill={isSelected ? "#b00d1c" : "#E63946"}
                           stroke="#fff" strokeWidth="2.5"
                           style={{
                             transition: "all 0.15s",
-                            filter: isSelected ? "brightness(0.8) drop-shadow(0 0 8px rgba(0,0,0,0.5))" : "none",
+                            filter: isSelected ? "brightness(0.85) drop-shadow(0 0 10px rgba(0,0,0,0.4))" : "none",
                           }}
                         />
-                        <text x="150" y={yBase + 27} textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "16px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>
+                        <text x="150" y={yBase + 30} textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>
                           {zone.name.toUpperCase()}
                         </text>
                       </g>
                     );
                   })}
 
-                  {/* Small dark notch below last zone */}
-                  <path d="M110,263 L118,263 L121,267 L179,267 L182,263 L190,263 L186,276 L114,276 Z"
-                    fill="#333" stroke="#555" strokeWidth="1" />
+                  {/* Dark notch below last zone */}
+                  <path d="M105,282 L115,282 L118,287 L182,287 L185,282 L195,282 L190,296 L110,296 Z"
+                    fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
 
                   {/* Escenario */}
-                  <rect x="95" y="282" width="110" height="20" rx="3" fill="#E63946" />
-                  <text x="150" y="296" textAnchor="middle" fill="#fff"
-                    style={{ fontSize: "9px", fontWeight: 900, letterSpacing: "0.15em" }}>
+                  <rect x="90" y="302" width="120" height="22" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1" />
+                  <text x="150" y="317" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.15em" }}>
                     ESCENARIO
                   </text>
                 </svg>
