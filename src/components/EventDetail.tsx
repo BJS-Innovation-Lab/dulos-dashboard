@@ -8,13 +8,14 @@ const allEvents = [
   { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, original: 2500, image: "/event2.jpg", date: "13 Marzo 2026", slug: "/mijares-sinfonico/teatro-morelos-toluca" },
   { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026", slug: "/infierno/teatro-enrique-lizalde-cdmx" },
   { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026", slug: "/oh-karen/teatro-xola-cdmx" },
-  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, original: 2700, image: "/event5.png", date: "28 Marzo 2026", slug: "/lucero/auditorio-explanada-puebla" },
+  { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, original: 2300, image: "/event5.png", date: "28 Marzo 2026", slug: "/lucero/auditorio-explanada-puebla" },
 ];
 
 interface Zone {
   name: string;
   color: string;
   price: number;
+  originalPrice?: number;
   seats: number;
 }
 
@@ -41,9 +42,9 @@ const eventZones: Record<string, Zone[]> = {
     { name: "General", color: "#2A7AE8", price: 199, seats: 160 },
   ],
   "Lucero": [
-    { name: "Lila", color: "#E63946", price: 2699, seats: 40 },
-    { name: "Blanca", color: "#E63946", price: 1999, seats: 80 },
-    { name: "Dorada", color: "#E63946", price: 1499, seats: 120 },
+    { name: "Lila", color: "#E63946", price: 1499, originalPrice: 2300, seats: 40 },
+    { name: "Blanca", color: "#E63946", price: 1725, originalPrice: 2700, seats: 80 },
+    { name: "Dorada", color: "#E63946", price: 1950, originalPrice: 3000, seats: 120 },
   ],
 };
 
