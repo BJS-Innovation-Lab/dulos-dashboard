@@ -179,13 +179,12 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
   // Auto-collapse completed form and open next incomplete
   const handleFormBlur = (index: number) => {
-    if (formData[index] && isFormComplete(formData[index])) {
-      // Find next incomplete form
-      const nextIncomplete = formData.findIndex((f, i) => i !== index && !isFormComplete(f));
-      if (nextIncomplete !== -1) {
-        setExpandedForm(nextIncomplete);
+    setTimeout(() => {
+      if (formData[index] && isFormComplete(formData[index])) {
+        const nextIncomplete = formData.findIndex((f, i) => i !== index && !isFormComplete(f));
+        setExpandedForm(nextIncomplete !== -1 ? nextIncomplete : -1);
       }
-    }
+    }, 150);
   };
 
   const formatTime = useCallback((seconds: number) => {
@@ -420,13 +419,23 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 cursor: "pointer", fontSize: "0.9rem",
               }}>✕</button>
-              {/* Timer */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.4rem", marginBottom: "0.4rem" }}>
-                <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.4)" }}>Tu reserva expira en</span>
+              {/* Timer — alarming */}
+              <div style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
+                marginBottom: "0.5rem", padding: "0.4rem 0.75rem", borderRadius: "6px",
+                background: timeLeft < 120 ? "rgba(230,57,70,0.15)" : "rgba(255,255,255,0.03)",
+                border: timeLeft < 120 ? "1px solid rgba(230,57,70,0.4)" : "1px solid transparent",
+                animation: timeLeft < 120 ? "timer-pulse 1s ease-in-out infinite" : "none",
+              }}>
+                <span style={{ fontSize: "0.85rem" }}>{timeLeft < 120 ? "🔥" : "⏱"}</span>
+                <span style={{ fontSize: "0.75rem", color: timeLeft < 120 ? "#E63946" : "rgba(255,255,255,0.5)", fontWeight: 600 }}>
+                  {timeLeft < 120 ? "¡Tu reserva expira!" : "Tu reserva expira en"}
+                </span>
                 <span style={{
-                  fontFamily: "monospace", fontSize: "0.8rem", fontWeight: 800,
+                  fontFamily: "monospace", fontSize: "1rem", fontWeight: 900,
                   color: timeLeft < 120 ? "#E63946" : "#fff",
-                  letterSpacing: "0.08em",
+                  letterSpacing: "0.1em",
+                  textShadow: timeLeft < 60 ? "0 0 8px rgba(230,57,70,0.6)" : "none",
                 }}>{formatTime(timeLeft)}</span>
               </div>
               <h2 style={{ fontSize: "1.05rem", fontWeight: 800, textAlign: "center" }}>
@@ -440,6 +449,27 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             </div>
 
             <div style={{ padding: "1rem 1.5rem 1.5rem" }}>
+              {/* Date & Time selector */}
+              <div style={{
+                marginBottom: "1rem", padding: "0.75rem 1rem",
+                background: "rgba(255,255,255,0.03)", borderRadius: "0.75rem",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}>
+                <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.4rem", fontWeight: 600, letterSpacing: "0.05em" }}>
+                  FECHA Y HORA
+                </label>
+                <select style={{
+                  width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.9rem", fontWeight: 700,
+                  color: "#fff", outline: "none", fontFamily: "inherit",
+                  appearance: "none",
+                  backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E\")",
+                  backgroundRepeat: "no-repeat", backgroundPosition: "right 0.75rem center",
+                }}>
+                  <option>📅 28 de marzo, 2026 — 9:00 PM</option>
+                </select>
+              </div>
+
               {/* Venue Map — collapsible */}
               <div style={{
                 marginBottom: "1rem", borderRadius: "8px", overflow: "hidden",
@@ -778,13 +808,13 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     );
                   })}
 
-                  {/* Total + Continue button */}
+                  {/* Total summary */}
                   <div style={{
                     padding: "1rem", marginTop: "0.5rem",
                     background: "rgba(255,255,255,0.03)", borderRadius: "0.75rem",
                     border: "1px solid rgba(255,255,255,0.06)",
                   }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.75rem" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: allFormsComplete ? "0" : "0.75rem" }}>
                       <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)" }}>
                         {quantity}x Zona {selected.name}
                       </span>
@@ -792,26 +822,106 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                         ${subtotal.toLocaleString()}.00
                       </span>
                     </div>
-                    <button
-                      disabled={!allFormsComplete}
-                      className={allFormsComplete ? "btn-hero-primary" : ""}
-                      style={{
+                    {!allFormsComplete && (
+                      <button disabled style={{
                         width: "100%", padding: "1rem",
-                        background: allFormsComplete ? "#E63946" : "rgba(255,255,255,0.06)",
-                        color: allFormsComplete ? "#fff" : "rgba(255,255,255,0.2)",
+                        background: "rgba(255,255,255,0.06)",
+                        color: "rgba(255,255,255,0.2)",
                         border: "none", borderRadius: "8px",
                         fontSize: "1rem", fontWeight: 800,
-                        cursor: allFormsComplete ? "pointer" : "not-allowed",
-                        fontFamily: "inherit",
-                        boxShadow: allFormsComplete ? "0 4px 30px rgba(230,57,70,0.4)" : "none",
-                      }}
-                    >
-                      {allFormsComplete ? `Continuar al pago · $${subtotal.toLocaleString()}.00` : "Completa todos los datos"}
-                    </button>
-                    <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.65rem", textAlign: "center", marginTop: "0.5rem" }}>
-                      Pago seguro · Sin comisiones · Boletos al instante
-                    </p>
+                        cursor: "not-allowed", fontFamily: "inherit",
+                      }}>
+                        Completa todos los datos
+                      </button>
+                    )}
                   </div>
+
+                  {/* Stripe payment section — auto-appears when all forms complete */}
+                  {allFormsComplete && (
+                    <div style={{
+                      marginTop: "1rem", borderRadius: "0.75rem", overflow: "hidden",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      background: "#111",
+                    }}>
+                      {/* Stripe header */}
+                      <div style={{
+                        padding: "0.75rem 1rem",
+                        background: "linear-gradient(135deg, #635BFF, #7A73FF)",
+                        display: "flex", alignItems: "center", justifyContent: "space-between",
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <rect width="24" height="24" rx="4" fill="rgba(255,255,255,0.15)"/>
+                            <path d="M13.976 9.15c-2.17-.5-3.057-.87-3.057-1.82 0-.78.69-1.24 1.856-1.24 1.826 0 3.057.72 3.057.72l.58-2.45s-1.24-.82-3.547-.82c-2.62 0-4.41 1.44-4.41 3.51 0 2.33 2.18 3.1 3.99 3.55 1.49.37 2.04.78 2.04 1.44 0 .78-.78 1.28-2.06 1.28-1.93 0-3.54-.92-3.54-.92l-.6 2.5s1.56.92 4.06.92c2.7 0 4.63-1.34 4.63-3.6 0-2.53-2.18-3.26-3.99-3.73z" fill="#fff"/>
+                          </svg>
+                          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#fff" }}>Pago con tarjeta</span>
+                        </div>
+                        <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.6)" }}>Powered by Stripe</span>
+                      </div>
+
+                      {/* Payment form */}
+                      <div style={{ padding: "1rem" }}>
+                        <div style={{ marginBottom: "0.75rem" }}>
+                          <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
+                            Número de tarjeta
+                          </label>
+                          <div style={{
+                            background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                            borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem", color: "rgba(255,255,255,0.3)",
+                            display: "flex", alignItems: "center", justifyContent: "space-between",
+                          }}>
+                            <span>4242 4242 4242 4242</span>
+                            <span style={{ fontSize: "0.7rem" }}>💳</span>
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", gap: "0.75rem", marginBottom: "0.75rem" }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
+                              Vencimiento
+                            </label>
+                            <input type="text" placeholder="MM / AA" style={{
+                              width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                              borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem",
+                              color: "#fff", outline: "none", fontFamily: "inherit", boxSizing: "border-box",
+                            }} />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
+                              CVC
+                            </label>
+                            <input type="text" placeholder="123" style={{
+                              width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                              borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem",
+                              color: "#fff", outline: "none", fontFamily: "inherit", boxSizing: "border-box",
+                            }} />
+                          </div>
+                        </div>
+                        <div style={{ marginBottom: "1rem" }}>
+                          <label style={{ display: "block", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", marginBottom: "0.3rem" }}>
+                            Titular de la tarjeta
+                          </label>
+                          <input type="text" defaultValue={formData[0] ? `${formData[0].name} ${formData[0].lastName}` : ""} style={{
+                            width: "100%", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
+                            borderRadius: "0.5rem", padding: "0.7rem 0.75rem", fontSize: "0.85rem",
+                            color: "#fff", outline: "none", fontFamily: "inherit", boxSizing: "border-box",
+                          }} />
+                        </div>
+                        <button className="btn-hero-primary" style={{
+                          width: "100%", padding: "1.1rem",
+                          background: "linear-gradient(135deg, #635BFF, #7A73FF)",
+                          color: "#fff", border: "none", borderRadius: "8px",
+                          fontSize: "1rem", fontWeight: 800, cursor: "pointer",
+                          fontFamily: "inherit",
+                          boxShadow: "0 4px 30px rgba(99,91,255,0.4)",
+                        }}>
+                          Pagar ${subtotal.toLocaleString()}.00 MXN
+                        </button>
+                        <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.6rem", textAlign: "center", marginTop: "0.5rem" }}>
+                          🔒 Pago seguro con encriptación SSL · Sin comisiones
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
 

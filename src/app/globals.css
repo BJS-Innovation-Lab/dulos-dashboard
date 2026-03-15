@@ -457,3 +457,8 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #E63946;
 }
+
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
