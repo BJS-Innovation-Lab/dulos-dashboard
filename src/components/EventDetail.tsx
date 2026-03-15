@@ -430,26 +430,26 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     );
                   })()}
 
-                  {/* BLANCA — rect with ear tabs on top */}
+                  {/* BLANCA — full width rect with top corner notches cut out */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     const fill = s ? "#b00d1c" : "#E63946";
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
                         <path d={[
-                          "M95,203",    // left ear top-left
-                          "L105,203",   // left ear top-right
-                          "L105,210",   // step down to main body
-                          "L295,210",   // across top of main body
-                          "L295,203",   // right ear top-left
-                          "L305,203",   // right ear top-right
-                          "L305,241",   // right side down
-                          "L95,241",    // bottom
+                          "M105,210",   // left side, below notch
+                          "L115,210",   // right edge of left notch
+                          "L115,203",   // up to top
+                          "L285,203",   // across top
+                          "L285,210",   // down to right notch
+                          "L295,210",   // right edge
+                          "L295,241",   // down right side
+                          "L105,241",   // across bottom
                           "Z"
                         ].join(" ")}
                           fill={fill} stroke="#fff" strokeWidth="2"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="232" textAnchor="middle" fill="#fff"
+                        <text x="200" y="229" textAnchor="middle" fill="#fff"
                           style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
                     );
