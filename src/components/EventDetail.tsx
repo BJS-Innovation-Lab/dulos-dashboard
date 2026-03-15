@@ -403,71 +403,87 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <span style={{ fontSize: "1rem", fontWeight: 900, color: "#E63946", fontStyle: "italic" }}>Dulos</span>
                   <span style={{ fontSize: "0.65rem", fontWeight: 900, color: "#111", letterSpacing: "0.06em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
-                <svg viewBox="0 0 340 380" style={{ width: "100%", height: "auto", display: "block" }}>
-                  {/* Venue silhouette — narrow top, wide bottom */}
-                  {/* Upper section — narrow darker gray */}
-                  <path d="M60,0 L280,0 L280,145 L60,145 Z" fill="#777" />
-                  {/* Lower section — wide lighter gray */}
-                  <path d="M20,145 L320,145 L320,340 L20,340 Z" fill="#aaa" />
+                <svg viewBox="0 0 400 420" style={{ width: "100%", height: "auto", display: "block" }}>
+                  {/* Upper section — narrow darker gray column */}
+                  <rect x="90" y="0" width="220" height="150" fill="#666" />
+                  {/* Lower section — wide lighter gray, full width */}
+                  <rect x="10" y="150" width="380" height="270" fill="#aaa" />
 
-                  {/* Upper dark rows — fill the narrow section */}
-                  <rect x="70" y="10" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
-                  <rect x="70" y="52" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
-                  <rect x="70" y="94" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
+                  {/* Upper dark rows — narrow, inside upper column */}
+                  <rect x="100" y="10" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
+                  <rect x="100" y="52" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
+                  <rect x="100" y="94" width="200" height="35" rx="2" fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
 
-                  {/* LILA — notched with ear tabs, narrowest */}
+                  {/* LILA — small trapezoid with ear tabs */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d="M85,152 L100,152 L104,160 L236,160 L240,152 L255,152 L248,195 L92,195 Z"
-                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
-                          style={{ transition: "all 0.15s", filter: s ? "brightness(0.8) drop-shadow(0 2px 8px rgba(0,0,0,0.5))" : "none" }} />
-                        <text x="170" y="181" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
+                        <path d="M115,158 L128,158 L132,166 L268,166 L272,158 L285,158 L278,200 L122,200 Z"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="3"
+                          style={{ cursor: "pointer", transition: "all 0.15s", filter: s ? "brightness(0.75) drop-shadow(0 4px 12px rgba(0,0,0,0.6))" : "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />
+                        <text x="200" y="188" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>LILA</text>
                       </g>
                     );
                   })()}
 
-                  {/* BLANCA — wider with ear tabs */}
+                  {/* BLANCA — wider trapezoid with ear tabs */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <path d="M60,199 L78,199 L82,207 L258,207 L262,199 L280,199 L274,244 L66,244 Z"
-                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
-                          style={{ transition: "all 0.15s", filter: s ? "brightness(0.8) drop-shadow(0 2px 8px rgba(0,0,0,0.5))" : "none" }} />
-                        <text x="170" y="230" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
+                        <path d="M75,206 L92,206 L96,214 L304,214 L308,206 L325,206 L318,250 L82,250 Z"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="3"
+                          style={{ cursor: "pointer", transition: "all 0.15s", filter: s ? "brightness(0.75) drop-shadow(0 4px 12px rgba(0,0,0,0.6))" : "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />
+                        <text x="200" y="240" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
                     );
                   })()}
 
-                  {/* DORADA — full width rectangle */}
+                  {/* DORADA — massive full width rectangle */}
                   {(() => {
                     const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="30" y="248" width="280" height="48" rx="2"
-                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
-                          style={{ transition: "all 0.15s", filter: s ? "brightness(0.8) drop-shadow(0 2px 8px rgba(0,0,0,0.5))" : "none" }} />
-                        <text x="170" y="279" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
+                        <rect x="22" y="256" width="356" height="55" rx="2"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="3"
+                          style={{ cursor: "pointer", transition: "all 0.15s", filter: s ? "brightness(0.75) drop-shadow(0 4px 12px rgba(0,0,0,0.6))" : "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />
+                        <text x="200" y="292" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.08em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
 
                   {/* Dark notch piece */}
-                  <path d="M120,300 L132,300 L135,306 L205,306 L208,300 L220,300 L215,318 L125,318 Z"
+                  <path d="M140,316 L155,316 L158,322 L242,322 L245,316 L260,316 L255,338 L145,338 Z"
                     fill="#2a2a2a" stroke="#fff" strokeWidth="1.5" />
 
                   {/* Escenario */}
-                  <rect x="105" y="324" width="130" height="24" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1" />
-                  <text x="170" y="340" textAnchor="middle" fill="#fff"
-                    style={{ fontSize: "11px", fontWeight: 900, letterSpacing: "0.15em" }}>
+                  <rect x="125" y="344" width="150" height="26" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <text x="200" y="362" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "12px", fontWeight: 900, letterSpacing: "0.15em" }}>
                     ESCENARIO
                   </text>
                 </svg>
+
+                {/* Price legend */}
+                <div style={{ display: "flex", justifyContent: "center", gap: "1.25rem", padding: "0.75rem", background: "#1a1a1a", flexWrap: "wrap" }}>
+                  {zones.map((z) => (
+                    <button key={z.name} onClick={() => { setSelectedZone(z.name); setQuantity(1); }}
+                      style={{
+                        background: selectedZone === z.name ? "rgba(230,57,70,0.15)" : "transparent",
+                        border: selectedZone === z.name ? "1px solid rgba(230,57,70,0.4)" : "1px solid transparent",
+                        borderRadius: "6px", padding: "0.3rem 0.6rem", cursor: "pointer",
+                        color: selectedZone === z.name ? "#fff" : "rgba(255,255,255,0.5)",
+                        fontSize: "0.7rem", fontWeight: 600, fontFamily: "inherit",
+                        transition: "all 0.15s",
+                      }}>
+                      {z.name} · <span style={{ color: "#E63946" }}>${z.price.toLocaleString()}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Selected zone info + price */}
