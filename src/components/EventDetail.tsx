@@ -396,61 +396,115 @@ export default function EventDetailPage({ event }: { event: EventData }) {
             </div>
 
             <div style={{ padding: "1.5rem" }}>
-              {/* Venue Map — real image from dulos.io with clickable overlay zones */}
-              <div style={{ marginBottom: "1.5rem", borderRadius: "8px", overflow: "hidden" }}>
-                <div style={{ position: "relative", width: "100%" }}>
-                  {/* Real venue map image */}
-                  <Image src="/venue-map-arema.jpg" alt="Mapa del venue" width={800} height={900}
-                    style={{ width: "100%", height: "auto", display: "block" }} />
-
-                  {/* Clickable overlay zones — positioned over the red areas */}
-                  {/* LILA — top red zone ~38-48% from top, 28-65% from left */}
-                  <div onClick={() => { setSelectedZone("Lila"); setQuantity(1); }}
-                    style={{
-                      position: "absolute", top: "38%", left: "28%", width: "44%", height: "10%",
-                      cursor: "pointer", borderRadius: "4px",
-                      background: selectedZone === "Lila" ? "rgba(0,0,0,0.4)" : "transparent",
-                      border: selectedZone === "Lila" ? "3px solid #fff" : "3px solid transparent",
-                      transition: "all 0.15s",
-                      boxShadow: selectedZone === "Lila" ? "0 0 20px rgba(255,255,255,0.3)" : "none",
-                    }} />
-
-                  {/* BLANCA — middle red zone ~49-60% from top, 20-72% from left */}
-                  <div onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }}
-                    style={{
-                      position: "absolute", top: "49%", left: "20%", width: "52%", height: "11%",
-                      cursor: "pointer", borderRadius: "4px",
-                      background: selectedZone === "Blanca" ? "rgba(0,0,0,0.4)" : "transparent",
-                      border: selectedZone === "Blanca" ? "3px solid #fff" : "3px solid transparent",
-                      transition: "all 0.15s",
-                      boxShadow: selectedZone === "Blanca" ? "0 0 20px rgba(255,255,255,0.3)" : "none",
-                    }} />
-
-                  {/* DORADA — bottom red zone ~61-75% from top, 12-80% from left */}
-                  <div onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }}
-                    style={{
-                      position: "absolute", top: "61%", left: "12%", width: "68%", height: "12%",
-                      cursor: "pointer", borderRadius: "4px",
-                      background: selectedZone === "Dorada" ? "rgba(0,0,0,0.4)" : "transparent",
-                      border: selectedZone === "Dorada" ? "3px solid #fff" : "3px solid transparent",
-                      transition: "all 0.15s",
-                      boxShadow: selectedZone === "Dorada" ? "0 0 20px rgba(255,255,255,0.3)" : "none",
-                    }} />
+              {/* Venue Map — precise SVG matching real auditorio */}
+              <div style={{ marginBottom: "1.5rem", borderRadius: "8px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
+                {/* White header */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.6rem 0.75rem", background: "#fff" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                    <span style={{ color: "#E63946", fontSize: "1.1rem", fontWeight: 900 }}>⟩</span>
+                    <span style={{ fontSize: "1rem", fontWeight: 900, color: "#E63946", fontStyle: "italic" }}>Dulos</span>
+                  </div>
+                  <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
 
-                {/* Price legend */}
-                <div style={{ display: "flex", justifyContent: "center", gap: "1rem", padding: "0.75rem", background: "#1a1a1a", flexWrap: "wrap" }}>
+                <svg viewBox="0 0 400 480" style={{ width: "100%", height: "auto", display: "block", background: "transparent" }}>
+                  {/* === VENUE SILHOUETTE === */}
+                  {/* Upper narrow column — darker gray */}
+                  <rect x="90" y="0" width="220" height="175" fill="#777" />
+                  {/* Lower wide section — lighter gray */}
+                  <path d="M20,175 L380,175 L380,420 L20,420 Z" fill="#aaa" />
+
+                  {/* === UPPER DARK ROWS (unavailable) === */}
+                  <rect x="100" y="10" width="200" height="45" rx="3" fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
+                  <rect x="100" y="62" width="200" height="45" rx="3" fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
+                  <rect x="100" y="114" width="200" height="45" rx="3" fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
+
+                  {/* === LILA — narrowest, stepped ear-tabs === */}
+                  {(() => {
+                    const s = selectedZone === "Lila";
+                    return (
+                      <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        {/* Main body */}
+                        <path d={`
+                          M130,185 L135,185 L135,190
+                          L265,190 L265,185 L270,185
+                          L270,195 L275,195
+                          L268,235 L132,235
+                          L125,195 L130,195 Z
+                        `}
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
+                        <text x="200" y="220" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
+                        {s && <text x="200" y="233" textAnchor="middle" fill="rgba(255,255,255,0.7)"
+                          style={{ fontSize: "10px", fontWeight: 600, pointerEvents: "none" }}>$2,699 MXN</text>}
+                      </g>
+                    );
+                  })()}
+
+                  {/* === BLANCA — wider, stepped ear-tabs === */}
+                  {(() => {
+                    const s = selectedZone === "Blanca";
+                    return (
+                      <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        <path d={`
+                          M90,240 L95,240 L95,245
+                          L305,245 L305,240 L310,240
+                          L310,250 L318,250
+                          L310,295 L90,295
+                          L82,250 L90,250 Z
+                        `}
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
+                        <text x="200" y="278" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
+                        {s && <text x="200" y="291" textAnchor="middle" fill="rgba(255,255,255,0.7)"
+                          style={{ fontSize: "10px", fontWeight: 600, pointerEvents: "none" }}>$1,999 MXN</text>}
+                      </g>
+                    );
+                  })()}
+
+                  {/* === DORADA — full width rectangle === */}
+                  {(() => {
+                    const s = selectedZone === "Dorada";
+                    return (
+                      <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
+                        <rect x="30" y="300" width="340" height="55" rx="3"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                          style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
+                        <text x="200" y="335" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
+                        {s && <text x="200" y="350" textAnchor="middle" fill="rgba(255,255,255,0.7)"
+                          style={{ fontSize: "10px", fontWeight: 600, pointerEvents: "none" }}>$1,499 MXN</text>}
+                      </g>
+                    );
+                  })()}
+
+                  {/* === DARK NOTCH below Dorada === */}
+                  <path d={`
+                    M145,360 L155,360 L155,362 L160,365
+                    L240,365 L245,362 L245,360 L255,360
+                    L250,382 L150,382 Z
+                  `} fill="#2a2a2a" stroke="#e0e0e0" strokeWidth="1.5" />
+
+                  {/* === ESCENARIO === */}
+                  <rect x="120" y="390" width="160" height="28" rx="4" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <text x="200" y="409" textAnchor="middle" fill="#fff"
+                    style={{ fontSize: "13px", fontWeight: 900, letterSpacing: "0.15em" }}>ESCENARIO</text>
+                </svg>
+
+                {/* Price legend as buttons */}
+                <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", padding: "0.75rem 0.5rem", background: "#111", flexWrap: "wrap" }}>
                   {zones.map((z) => (
                     <button key={z.name} onClick={() => { setSelectedZone(z.name); setQuantity(1); }}
                       style={{
-                        background: selectedZone === z.name ? "rgba(230,57,70,0.2)" : "transparent",
-                        border: selectedZone === z.name ? "1px solid rgba(230,57,70,0.5)" : "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: "6px", padding: "0.35rem 0.7rem", cursor: "pointer",
-                        color: selectedZone === z.name ? "#fff" : "rgba(255,255,255,0.5)",
-                        fontSize: "0.75rem", fontWeight: 600, fontFamily: "inherit",
+                        background: selectedZone === z.name ? "rgba(230,57,70,0.2)" : "rgba(255,255,255,0.04)",
+                        border: selectedZone === z.name ? "1.5px solid #E63946" : "1.5px solid rgba(255,255,255,0.1)",
+                        borderRadius: "6px", padding: "0.4rem 0.65rem", cursor: "pointer",
+                        color: "#fff", fontSize: "0.7rem", fontWeight: 700, fontFamily: "inherit",
                         transition: "all 0.15s",
                       }}>
-                      {z.name} · <span style={{ color: "#E63946", fontWeight: 800 }}>${z.price.toLocaleString()}</span>
+                      {z.name} <span style={{ color: "#E63946" }}>${z.price.toLocaleString()}</span>
                     </button>
                   ))}
                 </div>
