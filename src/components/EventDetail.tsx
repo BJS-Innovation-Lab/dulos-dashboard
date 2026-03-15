@@ -41,10 +41,9 @@ const eventZones: Record<string, Zone[]> = {
     { name: "General", color: "#2A7AE8", price: 199, seats: 160 },
   ],
   "Lucero": [
-    { name: "VIP", color: "#E63946", price: 2999, seats: 24 },
-    { name: "Preferente", color: "#E88D2A", price: 1999, seats: 56 },
-    { name: "General", color: "#2A7AE8", price: 1499, seats: 150 },
-    { name: "Balcón", color: "#2ECC71", price: 999, seats: 80 },
+    { name: "Lila", color: "#E63946", price: 2699, seats: 40 },
+    { name: "Blanca", color: "#E63946", price: 1999, seats: 80 },
+    { name: "Dorada", color: "#E63946", price: 1499, seats: 120 },
   ],
 };
 
@@ -364,73 +363,79 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                 </p>
 
                 {/* SVG Venue Map */}
-                <div style={{ background: "#1a1a1a", borderRadius: "1rem", padding: "1.25rem 1rem", border: "1px solid rgba(255,255,255,0.08)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", padding: "0 0.25rem" }}>
-                    <span style={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.1em", color: "rgba(255,255,255,0.5)" }}>🎭 DULOS</span>
-                    <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.08em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
+                <div style={{ borderRadius: "1rem", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  {/* Header */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.75rem 1rem", background: "#fff" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 900, color: "#E63946", letterSpacing: "0.05em" }}>🎵 Dulos</span>
+                    <span style={{ fontSize: "0.6rem", fontWeight: 800, color: "#222", letterSpacing: "0.08em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                   </div>
 
-                  <svg viewBox="0 0 300 360" style={{ width: "100%", height: "auto" }}>
-                    {/* Background sections (upper = unavailable) */}
+                  <svg viewBox="0 0 300 380" style={{ width: "100%", height: "auto", background: "#bbb" }}>
+                    {/* Upper gray area */}
+                    <rect x="0" y="0" width="300" height="190" fill="#bbb" />
+
+                    {/* Upper seats (unavailable — dark rows) */}
                     {[0, 1, 2].map((i) => (
-                      <rect key={`upper-${i}`} x="60" y={20 + i * 52} width="180" height="40" rx="4"
-                        fill="#222" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+                      <rect key={`upper-${i}`} x="50" y={15 + i * 58} width="200" height="44" rx="3"
+                        fill="#333" stroke="#555" strokeWidth="1.5" />
                     ))}
 
-                    {/* Venue shape — trapezoid sections */}
+                    {/* Lower venue section — lighter gray bg */}
+                    <rect x="0" y="190" width="300" height="190" fill="#999" />
+
+                    {/* Clickable zones with notched edges */}
                     {zones.map((zone, i) => {
                       const isSelected = selectedZone === zone.name;
-                      const yBase = 195 + i * 42;
-                      const shrink = i * 8;
+                      const yBase = 200 + i * 48;
+                      const inset = 10 + i * 12;
+                      const notch = 8;
                       return (
                         <g key={zone.name} onClick={() => { setSelectedZone(zone.name); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                          {/* Zone shape */}
                           <path
-                            d={`M${55 + shrink},${yBase} L${245 - shrink},${yBase} L${240 - shrink},${yBase + 36} L${60 + shrink},${yBase + 36} Z`}
-                            fill={isSelected ? zone.color : "#333"}
-                            stroke={isSelected ? zone.color : "rgba(255,255,255,0.15)"}
-                            strokeWidth={isSelected ? "2" : "1"}
-                            style={{ transition: "all 0.2s", filter: isSelected ? `drop-shadow(0 0 12px ${zone.color}66)` : "none" }}
+                            d={`M${45 + inset},${yBase}
+                                L${65 + inset},${yBase}
+                                L${68 + inset},${yBase + 4}
+                                L${232 - inset},${yBase + 4}
+                                L${235 - inset},${yBase}
+                                L${255 - inset},${yBase}
+                                L${250 - inset},${yBase + 40}
+                                L${50 + inset},${yBase + 40} Z`}
+                            fill={isSelected ? zone.color : "#E63946"}
+                            stroke="#fff" strokeWidth="2"
+                            style={{
+                              transition: "all 0.2s",
+                              filter: isSelected ? `drop-shadow(0 0 15px rgba(230,57,70,0.6))` : "none",
+                              opacity: isSelected ? 1 : 0.85,
+                            }}
                           />
-                          {/* Zone label */}
-                          <text
-                            x="150" y={yBase + 23}
-                            textAnchor="middle" fill="#fff"
-                            style={{ fontSize: "13px", fontWeight: 800, letterSpacing: "0.1em", pointerEvents: "none", textTransform: "uppercase" }}
-                          >
-                            {zone.name}
+                          <text x="150" y={yBase + 27} textAnchor="middle" fill="#fff"
+                            style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.1em", pointerEvents: "none" }}>
+                            {zone.name.toUpperCase()}
                           </text>
-                          {/* Price label */}
-                          {isSelected && (
-                            <text x="150" y={yBase + 35} textAnchor="middle" fill="rgba(255,255,255,0.7)"
-                              style={{ fontSize: "9px", fontWeight: 600, pointerEvents: "none" }}>
-                              ${zone.price.toLocaleString()} MXN
-                            </text>
-                          )}
                         </g>
                       );
                     })}
 
                     {/* Escenario */}
-                    <rect x="80" y="340" width="140" height="28" rx="4" fill="#E63946" />
-                    <text x="150" y="358" textAnchor="middle" fill="#fff"
-                      style={{ fontSize: "11px", fontWeight: 800, letterSpacing: "0.15em" }}>
+                    <rect x="85" y="350" width="130" height="24" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                    <text x="150" y="366" textAnchor="middle" fill="#fff"
+                      style={{ fontSize: "10px", fontWeight: 900, letterSpacing: "0.15em" }}>
                       ESCENARIO
                     </text>
                   </svg>
-
-                  {/* Legend */}
-                  <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "0.75rem", flexWrap: "wrap" }}>
-                    {zones.map((zone) => (
-                      <div key={zone.name} style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
-                        <div style={{ width: "8px", height: "8px", borderRadius: "2px", background: selectedZone === zone.name ? zone.color : "#444" }} />
-                        <span style={{ fontSize: "0.65rem", color: selectedZone === zone.name ? "#fff" : "rgba(255,255,255,0.4)", fontWeight: selectedZone === zone.name ? 700 : 400 }}>
-                          {zone.name} · ${zone.price.toLocaleString()}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
                 </div>
+
+                {/* Selected zone info */}
+                {selected && (
+                  <div style={{
+                    marginTop: "0.75rem", padding: "0.75rem 1rem",
+                    background: "rgba(230,57,70,0.1)", border: "1px solid rgba(230,57,70,0.3)",
+                    borderRadius: "0.5rem", display: "flex", justifyContent: "space-between", alignItems: "center",
+                  }}>
+                    <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>Zona {selected.name} · {selected.seats} disponibles</span>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 900, color: "#E63946" }}>${selected.price.toLocaleString()}</span>
+                  </div>
+                )}
               </div>
 
               {/* Quantity + Total */}
