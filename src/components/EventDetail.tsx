@@ -407,70 +407,63 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <span style={{ fontSize: "0.6rem", fontWeight: 900, color: "#111", letterSpacing: "0.05em", textTransform: "uppercase" }}>{event.venue.split("•")[0].trim()}</span>
                 </div>
 
-                <svg viewBox="0 0 400 500" style={{ width: "100%", height: "auto", display: "block" }}>
+                <svg viewBox="0 0 400 400" style={{ width: "100%", height: "auto", display: "block" }}>
                   {/* Gray background */}
-                  <rect x="0" y="0" width="400" height="500" fill="#aaa" />
+                  <rect x="0" y="0" width="400" height="400" fill="#aaa" />
 
                   {/* 3 dark NARROW rows at top */}
                   <rect x="105" y="15" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — same width as dark rows */}
+                  {/* LILA */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="105" y="160" width="190" height="45" rx="3"
-                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                        <rect x="105" y="158" width="190" height="38" rx="3"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="190" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "22px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
+                        <text x="200" y="184" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>LILA</text>
                       </g>
                     );
                   })()}
 
-                  {/* BLANCA — wider than LILA/grays */}
+                  {/* BLANCA */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="65" y="215" width="270" height="50" rx="3"
-                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                        <rect x="105" y="203" width="190" height="38" rx="3"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="248" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "24px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
+                        <text x="200" y="229" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>BLANCA</text>
                       </g>
                     );
                   })()}
 
-                  {/* DORADA — widest */}
+                  {/* DORADA */}
                   {(() => {
                     const s = selectedZone === "Dorada";
                     return (
                       <g onClick={() => { setSelectedZone("Dorada"); setQuantity(1); }} style={{ cursor: "pointer" }}>
-                        <rect x="25" y="275" width="350" height="55" rx="3"
-                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2.5"
+                        <rect x="105" y="248" width="190" height="38" rx="3"
+                          fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : "none" }} />
-                        <text x="200" y="310" textAnchor="middle" fill="#fff"
-                          style={{ fontSize: "26px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
+                        <text x="200" y="274" textAnchor="middle" fill="#fff"
+                          style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "0.06em", pointerEvents: "none" }}>DORADA</text>
                       </g>
                     );
                   })()}
 
                   {/* Dark notch between DORADA and ESCENARIO */}
-                  <path d={[
-                    "M155,340",
-                    "L245,340",
-                    "L240,380",
-                    "L160,380",
-                    "Z"
-                  ].join(" ")}
-                    fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
+                  <rect x="105" y="298" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* ESCENARIO — same width as dark rows */}
-                  <rect x="105" y="390" width="190" height="30" rx="4" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
-                  <text x="200" y="411" textAnchor="middle" fill="#fff"
+                  {/* ESCENARIO */}
+                  <rect x="105" y="348" width="190" height="30" rx="3" fill="#E63946" stroke="#fff" strokeWidth="1.5" />
+                  <text x="200" y="369" textAnchor="middle" fill="#fff"
                     style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "0.12em" }}>ESCENARIO</text>
                 </svg>
 
