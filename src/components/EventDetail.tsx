@@ -421,28 +421,30 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                   <rect x="105" y="60" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
                   <rect x="105" y="105" width="190" height="38" rx="3" fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />
 
-                  {/* LILA — staircase: wide top, steps inward, narrow bottom */}
+                  {/* LILA — staircase: wide top, steps inward, narrow bottom — rounded corners */}
                   {(() => {
                     const s = selectedZone === "Lila";
                     const fill = s ? "#b00d1c" : "#E63946";
+                    const r = 4;
                     return (
                       <g onClick={() => { setSelectedZone("Lila"); setQuantity(1); }} style={{ cursor: "pointer" }}>
                         <path d={[
-                          "M105,158",   // top-left (widest)
-                          "L295,158",   // top-right
-                          "L295,168",   // down (step 1)
-                          "L285,168",   // inward
-                          "L285,178",   // down (step 2)
-                          "L275,178",   // inward
-                          "L275,196",   // down to bottom
-                          "L125,196",   // across bottom (narrowest)
-                          "L125,178",   // up
-                          "L115,178",   // inward (step 2)
-                          "L115,168",   // up
-                          "L105,168",   // inward (step 1)
+                          `M${105+r},158`,
+                          `L${295-r},158 Q295,158 295,${158+r}`,
+                          `L295,${168-r} Q295,168 ${295-r},168`,
+                          `L${285+r},168 Q285,168 285,${168+r}`,
+                          `L285,${178-r} Q285,178 ${285-r},178`,
+                          `L${275+r},178 Q275,178 275,${178+r}`,
+                          `L275,${196-r} Q275,196 ${275-r},196`,
+                          `L${125+r},196 Q125,196 125,${196-r}`,
+                          `L125,${178+r} Q125,178 ${125-r},178`,
+                          `L${115+r},178 Q115,178 115,${178-r}`,
+                          `L115,${168+r} Q115,168 ${115-r},168`,
+                          `L${105+r},168 Q105,168 105,${168-r}`,
+                          `L105,${158+r} Q105,158 ${105+r},158`,
                           "Z"
                         ].join(" ")}
-                          fill={fill} stroke="#fff" strokeWidth="2" strokeLinejoin="round"
+                          fill={fill} stroke="#fff" strokeWidth="2"
                           filter="url(#zone-glow)"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="184" textAnchor="middle" fill="#fff"
@@ -451,24 +453,25 @@ export default function EventDetailPage({ event }: { event: EventData }) {
                     );
                   })()}
 
-                  {/* BLANCA — full width rect with top corner notches cut out */}
+                  {/* BLANCA — rect with top corner notches, rounded */}
                   {(() => {
                     const s = selectedZone === "Blanca";
                     const fill = s ? "#b00d1c" : "#E63946";
+                    const r = 4;
                     return (
                       <g onClick={() => { setSelectedZone("Blanca"); setQuantity(1); }} style={{ cursor: "pointer" }}>
                         <path d={[
-                          "M105,210",   // left side, below notch
-                          "L115,210",   // right edge of left notch
-                          "L115,203",   // up to top
-                          "L285,203",   // across top
-                          "L285,210",   // down to right notch
-                          "L295,210",   // right edge
-                          "L295,241",   // down right side
-                          "L105,241",   // across bottom
+                          `M105,${210+r} Q105,210 ${105+r},210`,
+                          `L${115-r},210 Q115,210 115,${210-r}`,
+                          `L115,${203+r} Q115,203 ${115+r},203`,
+                          `L${285-r},203 Q285,203 285,${203+r}`,
+                          `L285,${210-r} Q285,210 ${285+r},210`,
+                          `L${295-r},210 Q295,210 295,${210+r}`,
+                          `L295,${241-r} Q295,241 ${295-r},241`,
+                          `L${105+r},241 Q105,241 105,${241-r}`,
                           "Z"
                         ].join(" ")}
-                          fill={fill} stroke="#fff" strokeWidth="2" strokeLinejoin="round"
+                          fill={fill} stroke="#fff" strokeWidth="2"
                           filter="url(#zone-glow)"
                           style={{ transition: "all 0.2s", filter: s ? "brightness(0.7)" : undefined }} />
                         <text x="200" y="229" textAnchor="middle" fill="#fff"
@@ -494,22 +497,26 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
                   {/* Dark notch between DORADA and ESCENARIO */}
                   {/* Dark shape — 3-tier staircase: wide top, steps inward, narrow bottom */}
-                  <path d={[
-                    "M105,336",     // top-left (widest)
-                    "L295,336",     // top-right
-                    "L295,346",     // down (step 1)
-                    "L275,346",     // inward
-                    "L275,356",     // down (step 2)
-                    "L255,356",     // inward
-                    "L255,380",     // down to bottom
-                    "L145,380",     // across bottom (narrowest)
-                    "L145,356",     // up
-                    "L125,356",     // outward (step 2)
-                    "L125,346",     // up
-                    "L105,346",     // outward (step 1)
-                    "Z"
-                  ].join(" ")}
-                    fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" strokeLinejoin="round" />
+                  {(() => {
+                    const r = 4;
+                    return <path d={[
+                      `M${105+r},336`,
+                      `L${295-r},336 Q295,336 295,${336+r}`,
+                      `L295,${346-r} Q295,346 ${295-r},346`,
+                      `L${275+r},346 Q275,346 275,${346+r}`,
+                      `L275,${356-r} Q275,356 ${275-r},356`,
+                      `L${255+r},356 Q255,356 255,${356+r}`,
+                      `L255,${380-r} Q255,380 ${255-r},380`,
+                      `L${145+r},380 Q145,380 145,${380-r}`,
+                      `L145,${356+r} Q145,356 ${145-r},356`,
+                      `L${125+r},356 Q125,356 125,${356-r}`,
+                      `L125,${346+r} Q125,346 ${125-r},346`,
+                      `L${105+r},346 Q105,346 105,${346-r}`,
+                      `L105,${336+r} Q105,336 ${105+r},336`,
+                      "Z"
+                    ].join(" ")}
+                      fill="#2a2a2a" stroke="#ccc" strokeWidth="1.5" />;
+                  })()}
 
                   {/* ESCENARIO */}
                   <rect x="105" y="386" width="190" height="30" rx="5" fill="#E63946" stroke="#fff" strokeWidth="1.5"
