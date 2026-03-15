@@ -7,8 +7,8 @@ import { useRef, useState } from "react";
 const events = [
   { name: "Lucero", city: "Puebla", venue: "Auditorio Explanada", price: 1499, original: 2300, image: "/event5.png", date: "28 Marzo 2026", url: "/lucero/auditorio-explanada-puebla" },
   { name: "Así Lo Veo Yo", city: "CDMX", venue: "Nuevo Teatro Libanés", price: 299, original: 600, image: "/event1.jpg", date: "25 Feb — 25 Mar", url: "/asi-lo-veo-yo/nuevo-teatro-libanes-cdmx" },
-  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, image: "/event2.jpg", date: "13 Marzo 2026", url: "/mijares-sinfonico/teatro-morelos-toluca" },
-  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, image: "/event3.jpg", date: "6 Marzo 2026", url: "/infierno/teatro-enrique-lizalde-cdmx" },
+  { name: "Mijares Sinfónico", city: "Toluca", venue: "Teatro Morelos", price: 1249, original: 2500, image: "/event2.jpg", date: "13 Marzo 2026", url: "/mijares-sinfonico/teatro-morelos-toluca" },
+  { name: "Infierno", city: "CDMX", venue: "Teatro Enrique Lizalde", price: 299, original: 710, image: "/event3.jpg", date: "6 Marzo 2026", url: "/infierno/teatro-enrique-lizalde-cdmx" },
   { name: "¡Oh Karen!", city: "CDMX", venue: "Teatro Xola", price: 199, image: "/event4.png", date: "25 Marzo 2026", url: "/oh-karen/teatro-xola-cdmx" },
 ];
 

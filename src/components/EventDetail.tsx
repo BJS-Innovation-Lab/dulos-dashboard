@@ -20,31 +20,25 @@ interface Zone {
 }
 
 const eventZones: Record<string, Zone[]> = {
+  // Datos reales de dulos.io — actualizado 14 mar 2026
   "Así Lo Veo Yo": [
-    { name: "VIP", color: "#E63946", price: 599, seats: 42 },
-    { name: "Preferente", color: "#E88D2A", price: 449, seats: 86 },
-    { name: "General", color: "#2A7AE8", price: 299, seats: 214 },
-    { name: "Balcón", color: "#2ECC71", price: 199, seats: 120 },
+    { name: "General", color: "#2A7AE8", price: 299, originalPrice: 600, seats: 434 },
   ],
   "Mijares Sinfónico": [
-    { name: "VIP", color: "#E63946", price: 2499, seats: 30 },
-    { name: "Preferente", color: "#E88D2A", price: 1749, seats: 64 },
-    { name: "General", color: "#2A7AE8", price: 1249, seats: 180 },
-    { name: "Balcón", color: "#2ECC71", price: 899, seats: 95 },
+    { name: "General", color: "#2A7AE8", price: 1249, originalPrice: 2500, seats: 180 },
   ],
   "Infierno": [
-    { name: "VIP", color: "#E63946", price: 499, seats: 38 },
-    { name: "Preferente", color: "#E88D2A", price: 399, seats: 72 },
-    { name: "General", color: "#2A7AE8", price: 299, seats: 200 },
+    { name: "Preferente", color: "#E88D2A", price: 299, originalPrice: 710, seats: 37 },
   ],
   "¡Oh Karen!": [
-    { name: "VIP", color: "#E63946", price: 349, seats: 50 },
-    { name: "General", color: "#2A7AE8", price: 199, seats: 160 },
+    { name: "Zona de Karen", color: "#E63946", price: 349, seats: 83 },
+    { name: "Preferente", color: "#E88D2A", price: 299, seats: 82 },
+    { name: "General", color: "#2A7AE8", price: 199, seats: 83 },
   ],
   "Lucero": [
-    { name: "Lila", color: "#E63946", price: 1499, originalPrice: 2300, seats: 40 },
-    { name: "Blanca", color: "#E63946", price: 1725, originalPrice: 2700, seats: 80 },
-    { name: "Dorada", color: "#E63946", price: 1950, originalPrice: 3000, seats: 120 },
+    { name: "Dorada", color: "#FFD700", price: 1499, originalPrice: 2300, seats: 49 },
+    { name: "Blanca", color: "#E0E0E0", price: 1725, originalPrice: 2700, seats: 40 },
+    { name: "Premium", color: "#C0A0FF", price: 1950, originalPrice: 3000, seats: 48 },
   ],
 };
 
@@ -560,11 +554,11 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
                   {/* LILA */}
                   {(() => {
-                    const s = selectedZone === "Lila";
+                    const s = selectedZone === "Dorada";
                     const fill = s ? "#b00d1c" : "#E63946";
                     const r = 4;
                     return (
-                      <g onClick={() => handleZoneSelect("Lila")} style={{ cursor: "pointer" }}>
+                      <g onClick={() => handleZoneSelect("Dorada")} style={{ cursor: "pointer" }}>
                         <path d={[
                           `M${105+r},158`,
                           `L${295-r},158 Q295,158 295,${158+r}`,
@@ -619,9 +613,9 @@ export default function EventDetailPage({ event }: { event: EventData }) {
 
                   {/* DORADA */}
                   {(() => {
-                    const s = selectedZone === "Dorada";
+                    const s = selectedZone === "Premium";
                     return (
-                      <g onClick={() => handleZoneSelect("Dorada")} style={{ cursor: "pointer" }}>
+                      <g onClick={() => handleZoneSelect("Premium")} style={{ cursor: "pointer" }}>
                         <rect x="105" y="248" width="190" height="76" rx="5"
                           fill={s ? "#b00d1c" : "#E63946"} stroke="#fff" strokeWidth="2"
                           filter="url(#zone-glow)"
